@@ -21,15 +21,12 @@ function drawBarChart(data, options, element) {
   let title = `<div id="title">${options.title}</div>`;
 
   //to store the maximum value in data
-  let maxVal = data[0][0];
-
+  let maxVal = Math.max(...data[0]);
 
   element.html(title + xAxis);
   //calculate the height of the bar content
-  let barMaxHeight = options.height - $("#title").innerHeight() - $("#x-axis").innerHeight();
-
-  console.log(barMaxHeight);
-
+  // let barMaxHeight = options.height - $("#title").innerHeight() - $("#x-axis").innerHeight();
+  let barMaxHeight = options.height - 100;
   //decide the position of ticks on y-axis
   let pow = 0;
   for(pow = 0; maxVal > Math.pow(10, pow); pow++) {
@@ -43,17 +40,28 @@ function drawBarChart(data, options, element) {
     yTick += `<div style="width: 10px; height: ${tickInterval*heightPerUnit-1}px; border-top: 1px black solid"></div>`;
     yLabel += `<div style="display: flex; align-items: flex-end; justify-content: flex-end; height: ${tickInterval*heightPerUnit}px">${i}</div>`;
   }
+  yTick = `<div id="y-tick">${yTick}</div>`;
   yLabel += `<div style="text-align: right">${maxTick}</div>`;
+  yLabal = `<div id="y-label">${yLabel}</div>`;
 
-    //plot the bar graph with value in parameter "data"
+  element.html(yLabel + yTick);
+
+  let barMaxWidth = options.width - 30;
+  let widthPerBar = barMaxWidth/2/data[0].length;
+
+  //plot the bar graph with value in parameter "data"
   for(let val of data[0]) {
-    //update maxVal
-    if(val > maxVal) {
-      maxVal = val;
-    }
-    chartContent += (`<div><div style="text-align: center">${val}</div><div style="background-color: black; width: 20px; height: ${val*heightPerUnit}px; margin: 0px 20px"></div></div>`);
+    chartContent += (`<div><div style="text-align: center">${val}</div><div style="background-color: black; width: ${widthPerBar}px; height: ${val*heightPerUnit}px; margin: 0px ${widthPerBar/2}px"></div></div>`);
   };
 
+  //re label the x-axis
+  xAxis = "";
+
+  for(let val of data[1]) {
+    xAxis += (`<div style="text-align: center; overflow-wrap: break-word; width: ${widthPerBar*2}px">${val}</div>`);
+  };
+
+  xAxis = `<div id="x-axis">${xAxis}</div>`;
 
   let chart = `<div id="chart">${title}<div id="middle"><div id="y-label">${yLabel}</div><div id="y-tick">${yTick}</div><div id="chartContent">${chartContent}</div></div>${xAxis}</div>`;
   element.html(chart);
@@ -65,9 +73,9 @@ function drawBarChart(data, options, element) {
   $( "#middle" ).css( "display", "flex");
   $( "#title" ).css( "text-align", "center" );
   $( "#title" ).css( "margin", "15px" );
-  $( "#y-tick" ).css("border-right", "1px black solid");
   $( "#middle" ).css("display", "flex");
   $( "#middle" ).css("align-items", "flex-end");
+  $( "#y-tick" ).css("border-right", "1px black solid");
   $( "#y-label" ).css("display", "flex");
   $( "#y-label" ).css("flex-direction", "column-reverse");
   $( "#y-label" ).css("margin-right", "0px");
