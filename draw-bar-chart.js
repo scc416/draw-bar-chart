@@ -41,15 +41,11 @@ function drawBarChart(data, options, element) {
   element.html(yLabel + yTick);
 
   let barMaxWidth = options.width - 30;
-  let widthPerBar = barMaxWidth/2/data[0].length;
-
   //plot the bar graph with value in parameter "data"
   for(let val of data[0]) {
-    chartContent += (`<div style="background-color: black; color: white; text-align: center; width: ${80/(data[0].length)}%; margin: 0 ${10/(data[0].length)}%">${val}</div>`);
+    chartContent += (`<div style="background-color: black; color: white; text-align: center; height: ${100 * val / maxTick}%;width: ${80/(data[0].length)}%; margin: 0 ${10/(data[0].length)}%">${val}</div>`);
   };
 
-  let barWidth = 0.9 * $("#chartContent").innerWidth()/data[0].length;
-  let yAxisWidth = $("#y-label").innerWidth() + $("#y-tick").innerWidth();
   //label x-axis
   for(let val of data[1]) {
     xAxis += (`<div style="text-align: center; overflow-wrap: break-word; width: ${80/(data[0].length)}%; margin: 0 ${10/(data[0].length)}%">${val}</div>`);
@@ -58,7 +54,7 @@ function drawBarChart(data, options, element) {
   xAxis = `<div class="left-container"><div id="x-axis">${xAxis}</div></div>`;
 
   // let chart = `<div id="chart">${title}<div id="middle"><div id="y-label">${yLabel}</div><div id="y-tick">${yTick}</div><div id="chartContent">${chartContent}</div></div>${xAxis}</div>`;
-  let chart = `<div id="chart">${title}<div id="middle"><div id="y-label">${yLabel}</div><div id="y-tick">${yTick}</div><div id="chartContent">${chartContent}</div></div>${xAxis}</div>`;
+  let chart = `${title}<div id="middle"><div id="y-label">${yLabel}</div><div id="y-tick">${yTick}</div><div id="chartContent">${chartContent}</div></div>${xAxis}`;
   element.html(chart);
   element.css("border", "1px black solid");
   element.css("display", "flex");
@@ -68,8 +64,9 @@ function drawBarChart(data, options, element) {
   element.css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
 
   $( "#middle" ).css( "display", "flex");
-  // $( "#middle" ).css( "height", "100%");
+  $( "#middle" ).css( "height", "100%");
   $( "#title" ).css( "text-align", "center" );
+  $( "#title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
   // $( "#title" ).css( "margin", "15px" );
   // $( "#middle" ).css("display", "flex");
   // $( "#middle" ).css("align-items", "flex-end");
@@ -87,6 +84,7 @@ function drawBarChart(data, options, element) {
   $( "#chartContent" ).css("display", "flex");
   $( "#chartContent" ).css("align-items", "flex-end");
   $( "#chartContent" ).css("width", "100%");
+  $( "#chartContent" ).css("height", "100%");
   $( "#x-axis" ).css("display", "flex");
   $( "#x-axis" ).css("justify-content", "flex-end");
   $( "#x-axis" ).css("width", `${$("#chartContent").innerWidth()}px`);
