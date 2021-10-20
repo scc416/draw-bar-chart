@@ -26,10 +26,8 @@ function drawBarChart(data, options, element) {
   for(let i = 0; i <= maxVal; i += tickInterval) {
     // minus one from tick interval to leave space for the border
     yTick += `<div style="border-bottom: 1px black solid; width: 10px;"></div>`;
-    yLabel += `<div style="text-align:right; height: 0">${i}</div>`;
-    // yTick += `<div style="width: 10px; height: ${tickInterval*heightPerUnit-1}px; border-top: 1px black solid"></div>`;
-    // yLabel += `<div style="display: flex; align-items: flex-end; justify-content: flex-end; height: ${tickInterval*heightPerUnit}px">${i}</div>`;
-  } //= `<div id="y-tick">${yTick}</div>`;
+    yLabel += `<div style="height: 0">${i}</div>`;
+  }
   yTick = `<div id="y-tick">${yTick}</div>`;
 
   //plot the bar graph with value in parameter "data"
@@ -42,7 +40,8 @@ function drawBarChart(data, options, element) {
     xAxis += (`<div style="text-align: center; overflow-wrap: break-word; width: ${80/(data.length)}%; margin: 0 ${10/(data.length)}%">${val}</div>`);
   };
 
-  xAxis = `<div class="left-container"><div id="x-axis">${xAxis}</div></div>`;
+  // xAxis = `<div class="left-container"><div style="width: 10px;"></div><div style="height: 0">${maxTick}</div><div id="x-axis">${xAxis}</div></div>`;
+  xAxis = `<div class="left-container"><div id="left-corner"></div><div id="x-axis">${xAxis}</div></div>`;
 
   let chart = `${title}<div id="middle"><div id="y-label" style="text-align: right">${yLabel}</div>${yTick}<div id="chartContent">${chartContent}</div></div>${xAxis}`;
   element.html(chart);
@@ -57,9 +56,6 @@ function drawBarChart(data, options, element) {
   $( "#middle" ).css( "height", "100%");
   $( "#title" ).css( "text-align", "center" );
   $( "#title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
-  // $( "#title" ).css( "margin", "15px" );
-  // $( "#middle" ).css("display", "flex");
-  // $( "#middle" ).css("align-items", "flex-end");
   $( "#y-tick" ).css("border-right", "1px black solid");
   $( "#y-tick" ).css("display", "flex");
   $( "#y-tick" ).css("flex-direction", "column-reverse");
@@ -67,23 +63,16 @@ function drawBarChart(data, options, element) {
   $( "#y-label" ).css("display", "flex");
   $( "#y-label" ).css("flex-direction", "column-reverse");
   $( "#y-label" ).css("justify-content", "space-between");
-  // $( "#y-label" ).css("margin-right", "0px");
-  // $( "#y-label" ).css("justify-content", "space-evenly");
-  // $( "#y-tick" ).css("height", "100%");
-  // $( "#y-tick" ).css("flex-direction", "column");
-  // $( "#y-tick" ).css("justify-content", "flex-end");
-  // $( "#chart" ).css("max-height", "100%");
-  // $( "#y-tick" ).css("border-bottom", "1px black solid");
   $( "#chartContent" ).css("border-bottom", "1px black solid");
   $( "#chartContent" ).css("display", "flex");
   $( "#chartContent" ).css("align-items", "flex-end");
   $( "#chartContent" ).css("width", "100%");
   $( "#chartContent" ).css("height", "100%");
   $( "#x-axis" ).css("display", "flex");
-  $( "#x-axis" ).css("justify-content", "flex-end");
-  $( "#x-axis" ).css("width", `${$("#chartContent").innerWidth()}px`);
+  $( "#x-axis" ).css("width", "100%");
   $( ".left-container" ).css("width", "100%");
   $( ".left-container" ).css("display", "flex");
-  $( ".left-container" ).css("justify-content", "flex-end");
+  $( "#left-corner" ).css("width", $( "#y-label" ).innerWidth() + $( "#y-tick" ).innerWidth() + 1);
+  // $( ".left-container" ).css("justify-content", "flex-end");
 
 };
