@@ -83,7 +83,7 @@ let drawBarChart = (data, options, element) => {
 
   //plot the bar graph with value in parameter "data"
   for(let val of data[0]) {
-    bar += (`<div style="background-color: black; color: white; height: ${100 * val / maxTick}%;width: ${80/dataNum}%; margin: 0 ${10/(dataNum)}%">${val}</div>`);
+    bar += (`<div style="background-color: black; color: white; height: ${100 * val / maxTick}%; width: ${80/dataNum}%; margin: 0 ${10/(dataNum)}%">${val}</div>`);
   };
 
   //label x-axis
@@ -94,12 +94,20 @@ let drawBarChart = (data, options, element) => {
   xAxis = `<div class="x-axis"><div id="left-corner-${options.Id}"></div>${xAxis}</div>`;
 
   let chart = `${chartTitleDiv}<div class="middle">${yLabel}${yTick}<div class="bar">${bar}</div></div>${xAxis}`;
+
+  $( document ).ready(function() {
   element.html(chart);
   element.css("height", options.height);
   element.css("width", options.width);
   element.css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
   $( ".chart-title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
-  $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-label-${options.Id}` ).innerWidth() + $( `#y-tick-${options.Id}` ).innerWidth()}px`);
-  console.log($( `#y-tick-${options.Id}` ).innerWidth());
-  console.log($( `#y-label-${options.Id}` ).innerWidth());
+  $( document ).ready(function() {
+    $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-label-${options.Id}` ).width() + $( `#y-tick-${options.Id}` ).width()}px`);
+  })
+  }
+  )
+    // $( `#left-corner-${options.Id}` ).css("min-width", `300px`);
+
+
+
 };
