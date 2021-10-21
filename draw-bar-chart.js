@@ -20,7 +20,7 @@ function drawBarChart(data, options, element) {
   let yLabel = "";
 
   //put the title in a div
-  let title = `<div id="title">${options.chartTitle}</div>`;
+  let title = `<div class="chart-title">${options.chartTitle}</div>`;
 
   //the maximum value in data
   let maxVal = Math.max(...data[0]);
@@ -29,7 +29,7 @@ function drawBarChart(data, options, element) {
   let dataNum = data[0].length;
 
   //decide the position of ticks on y-tick
-  let pow = 0;
+  let pow;
   for(pow = 0; maxVal > Math.pow(10, pow); pow++) {
 
   }
@@ -40,7 +40,7 @@ function drawBarChart(data, options, element) {
     yTick += `<div style="border-bottom: 1px black solid; width: 10px;"></div>`;
     yLabel += `<div style="height: 0">${i}</div>`;
   }
-  yTick = `<div id="y-tick">${yTick}</div>`;
+  yTick = `<div class="y-tick" id="y-tick-${options.Id}">${yTick}</div>`;
 
   //plot the bar graph with value in parameter "data"
   for(let val of data[0]) {
@@ -52,10 +52,9 @@ function drawBarChart(data, options, element) {
     xAxis += (`<div style="text-align: center; overflow-wrap: anywhere; width: ${80/dataNum}%; margin: 0 ${10/dataNum}%">${val}</div>`);
   };
 
-  // xAxis = `<div class="left-container"><div style="width: 10px;"></div><div style="height: 0">${maxTick}</div><div id="x-axis">${xAxis}</div></div>`;
-  xAxis = `<div class="left-container"><div id="x-axis"><div id="left-corner"></div>${xAxis}</div></div>`;
+  xAxis = `<div class="left-container"><div class="x-axis"><div id="left-corner-${options.Id}"></div>${xAxis}</div></div>`;
 
-  let chart = `${title}<div id="middle"><div id="y-label" style="text-align: right">${yLabel}</div>${yTick}<div id="bar">${bar}</div></div>${xAxis}`;
+  let chart = `${title}<div class="middle"><div class="y-label" id="y-label-${options.Id}" style="text-align: right">${yLabel}</div>${yTick}<div class="bar">${bar}</div></div>${xAxis}`;
   element.html(chart);
   element.css("border", "1px black solid");
   element.css("display", "flex");
@@ -63,7 +62,6 @@ function drawBarChart(data, options, element) {
   element.css("height", options.height);
   element.css("width", options.width);
   element.css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
-  $( "#title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
-
-  $( "#left-corner" ).css("min-width", `${$( "#y-label" ).innerWidth() + $( "#y-tick" ).innerWidth() + 1}px`);
+  $( ".chart-title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
+  $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-label-${options.Id}` ).innerWidth() + $( `#y-tick-${options.Id}` ).innerWidth() + 1}px`);
 };

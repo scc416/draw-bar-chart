@@ -1,26 +1,26 @@
-#middle {
+.middle {
   display: flex;
   height: 100%;
 }
 
-#title {
+.chart-title {
   text-align: center;
 }
 
-#y-tick {
+.y-tick {
   border-right: 1px black solid;
   display: flex;
   flex-direction: column-reverse;
   justify-content: space-between;
 }
 
-#y-label {
+.y-label {
   display: flex;
   flex-direction: column-reverse;
   justify-content: space-between;
 }
 
-#bar {
+.bar {
   border-bottom: 1px black solid;
   display: flex;
   align-items: flex-end;
@@ -28,7 +28,7 @@
   height: 100%;
 }
 
-#x-axis {
+.x-axis {
   display: flex;
   width: 100%;
 }
