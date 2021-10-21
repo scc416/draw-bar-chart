@@ -11,10 +11,12 @@ function drawBarChart(data, options, element) {
   xAxis = `<div id="x-axis">${xAxis}</div>`;
 
   //put the title in a div
-  let title = `<div id="title">${options.title}</div>`;
+  let title = `<div id="title">${options.chartTitle}</div>`;
 
   //the maximum value in data
-  let maxVal = Math.max(...data);
+  let maxVal = Math.max(...data[0]);
+
+  let dataNum = data[0].length;
 
   //decide the position of ticks on y-tick
   let pow = 0;
@@ -31,13 +33,13 @@ function drawBarChart(data, options, element) {
   yTick = `<div id="y-tick">${yTick}</div>`;
 
   //plot the bar graph with value in parameter "data"
-  for(let val of data) {
-    chartContent += (`<div style="background-color: black; color: white; text-align: center; height: ${100 * val / maxTick}%;width: ${80/(data.length)}%; margin: 0 ${10/(data.length)}%">${val}</div>`);
+  for(let val of data[0]) {
+    chartContent += (`<div style="background-color: black; color: white; text-align: center; height: ${100 * val / maxTick}%;width: ${80/dataNum}%; margin: 0 ${10/(dataNum)}%">${val}</div>`);
   };
 
   //label x-axis
-  for(let val of options.label) {
-    xAxis += (`<div style="text-align: center; overflow-wrap: break-word; width: ${80/(data.length)}%; margin: 0 ${10/(data.length)}%">${val}</div>`);
+  for(let val of data[1]) {
+    xAxis += (`<div style="text-align: center; overflow-wrap: break-word; width: ${80/dataNum}%; margin: 0 ${10/dataNum}%">${val}</div>`);
   };
 
   // xAxis = `<div class="left-container"><div style="width: 10px;"></div><div style="height: 0">${maxTick}</div><div id="x-axis">${xAxis}</div></div>`;

@@ -11,11 +11,21 @@
     </div>
     <script>
       drawBarChart(
-        [100, 499, 500, 230, 45, 200, 50],
-        {title: "hi this is the title",
-        width: "80vw",
-        height: "100vh",
-        label: ["very very very very long value", "value1", "value2", "value3", "value4", "value5", "value6"] },
+        [
+          [100, 480, 500, 230, 45, 200, 50],
+          ["very very very very long value", "value1", "value2", "value3", "value4", "value5", "value6"]
+        ],
+        {
+          chartTitle: "hi this is the title",
+          width: "80vw",
+          height: "100vh",
+          yAxisTitle: "",
+          xAxisTitle: "",
+          dataLabel: "",
+          barColour: "",
+          labelColour: "",
+          barSpacing: ""
+        },
         $( "#test" )
         );
     </script>
