@@ -18,7 +18,7 @@
     <script>
       drawBarChart(
         [
-          [0.1, 0.480, 0.500, 0.230, 0.45, 0.200, 0.50],
+          [110, 0.480, 0.500, 0.230, 0.45, 0.200, 0.50],
           ["very very very very long value", "value1", "value2", "value3", "value4", "value5", "value6"]
         ],
         {
@@ -35,7 +35,8 @@
           labelColour: "",
           barSpacing: "",
           stacked: false,
-          userSelect: false
+          userSelect: false,
+          minTickVal: 1
         },
         $( "#test" )
         );
