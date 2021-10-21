@@ -4,6 +4,7 @@
   <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="draw-bar-chart.js"></script>
+    <link href="style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
     <div id="test">
@@ -12,7 +13,7 @@
     <script>
       drawBarChart(
         [
-          [100, 480, 500, 230, 45, 200, 50],
+          [0.1, 0.480, 0.500, 0.230, 0.45, 0.200, 0.50],
           ["very very very very long value", "value1", "value2", "value3", "value4", "value5", "value6"]
         ],
         {
@@ -27,7 +28,7 @@
           barColour: "",
           labelColour: "",
           barSpacing: "",
-          stacked: false;
+          stacked: false
         },
         $( "#test" )
         );
