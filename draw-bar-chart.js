@@ -56,9 +56,6 @@ function drawBarChart(data, options, element) {
 
   let chart = `${title}<div class="middle"><div class="y-label" id="y-label-${options.Id}" style="text-align: right">${yLabel}</div>${yTick}<div class="bar">${bar}</div></div>${xAxis}`;
   element.html(chart);
-  element.css("border", "1px black solid");
-  element.css("display", "flex");
-  element.css("flex-direction", "column");
   element.css("height", options.height);
   element.css("width", options.width);
   element.css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);

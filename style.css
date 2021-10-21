@@ -1,3 +1,9 @@
+.bar-chart {
+  border: 1px black solid;
+  display: flex;
+  flex-direction: column;
+}
+
 .middle {
   display: flex;
   height: 100%;
