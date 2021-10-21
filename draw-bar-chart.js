@@ -46,21 +46,47 @@ let findTicks = (options, maxVal) => {
   return [tickInterval, maxTick];
 }
 
+let makeYAxisDiv = (tickInterval, maxTick, id) => {
+  let yTick = "";
+  let yLabel = "";
+
+  for(let i = 0; i <= maxTick; i += tickInterval) {
+    yTick += `<div style="border-bottom: 1px black solid"></div>`;
+    yLabel += `<div style="height: 0">${i}</div>`;
+  }
+
+  yTick = `<div class="y-tick" id="y-tick-${id}">${yTick}</div>`;
+  yLabel = `<div class="y-label" id="y-label-${id}">${yLabel}</div>`;
+
+  return yLabel + yTick;
+}
+
+let makeBars = (data, maxTick) => {
+  let bars = "";
+  let dataNum = data.length;
+  for(let val of data) {
+    bars += (`<div style="background-color: black; color: white; height: ${100 * val / maxTick}%; width: ${80/dataNum}%; margin: 0 ${10/(dataNum)}%">${val}</div>`);
+  }
+  return `<div class="bar">${bars}</div>`;
+}
+
+let makeXAxis = (labelArr, id) => {
+  let xAxis = "";
+  let dataNum = labelArr.length;
+
+  //label x-axis
+  for(let val of labelArr) {
+    xAxis += (`<div style="width: ${80/dataNum}%; margin: 0 ${10/dataNum}%">${val}</div>`);
+  };
+
+  return `<div class="x-axis"><div id="left-corner-${id}"></div>${xAxis}</div>`;
+}
+
 // top-level function
 let drawBarChart = (data, options, element) => {
 
   //make title Div
   let chartTitleDiv = makeTitleDiv(options);
-
-  //for the bars
-  let bar = "";
-
-  //for the x-axis
-  let xAxis = "";
-
-  //for the label on y-axis
-  let yTick = "";
-  let yLabel = "";
 
   //the number of data, i.e. bar
   let dataNum = data[0].length;
@@ -72,42 +98,24 @@ let drawBarChart = (data, options, element) => {
   let [tickInterval, maxTick] = findTicks(options, maxVal);
 
   //make div for the ticks and labels on y-axis
-  for(let i = 0; i <= maxTick; i += tickInterval) {
-    // minus one from tick interval to leave space for the border
-    yTick += `<div style="border-bottom: 1px black solid"></div>`;
-    yLabel += `<div style="height: 0">${i}</div>`;
-  }
-
-  yTick = `<div class="y-tick" id="y-tick-${options.Id}">${yTick}</div>`;
-  yLabel = `<div class="y-label" id="y-label-${options.Id}">${yLabel}</div>`;
+  let yAxis = makeYAxisDiv(tickInterval, maxTick, options.Id);
 
   //plot the bar graph with value in parameter "data"
-  for(let val of data[0]) {
-    bar += (`<div style="background-color: black; color: white; height: ${100 * val / maxTick}%; width: ${80/dataNum}%; margin: 0 ${10/(dataNum)}%">${val}</div>`);
-  };
+  let bars = makeBars(data[0], maxTick);
 
-  //label x-axis
-  for(let val of data[1]) {
-    xAxis += (`<div style="width: ${80/dataNum}%; margin: 0 ${10/dataNum}%">${val}</div>`);
-  };
+  let xAxis = makeXAxis(data[1], options.Id);
 
-  xAxis = `<div class="x-axis"><div id="left-corner-${options.Id}"></div>${xAxis}</div>`;
-
-  let chart = `${chartTitleDiv}<div class="middle">${yLabel}${yTick}<div class="bar">${bar}</div></div>${xAxis}`;
+  //html of the whole chard
+  let chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;
 
   $( document ).ready(function() {
-  element.html(chart);
-  element.css("height", options.height);
-  element.css("width", options.width);
-  element.css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
-  $( ".chart-title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
-  $( document ).ready(function() {
-    $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-label-${options.Id}` ).width() + $( `#y-tick-${options.Id}` ).width()}px`);
-  })
-  }
-  )
-    // $( `#left-corner-${options.Id}` ).css("min-width", `300px`);
-
-
-
+    element.html(chart);
+    element.css("height", options.height);
+    element.css("width", options.width);
+    element.css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
+    $( ".chart-title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
+    $( document ).ready(function() {
+      $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-label-${options.Id}` ).width() + $( `#y-tick-${options.Id}` ).width()}px`);
+    });
+  });
 };
