@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 .bar-chart {
+  font-family: Open Sans;
   border: 1px black solid;
   display: flex;
   flex-direction: column;

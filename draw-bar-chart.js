@@ -9,18 +9,39 @@
 // for value < 1
 // make css file
 
-function drawBarChart(data, options, element) {
+let makeTitleDiv = (options) => {
+  let titleDiv = options.hasOwnProperty("chartTitle") ? options.chartTitle : "Untitled";
+
+  switch(options.hasOwnProperty("titleFontSize")) {
+    case(true):
+    titleDiv = `font-size: ${options.titleFontSize}">${titleDiv}</div>`
+    break;
+  case(false):
+    titleDiv = `font-size: 24px">${titleDiv}</div>`
+  }
+
+  switch(options.hasOwnProperty("titleColour")) {
+    case(true):
+      titleDiv = `color: ${options.titleColour}; ${titleDiv}`
+      break;
+  }
+
+  return `<div class="chart-title" style="text-align: center; ${titleDiv}`;
+};
+
+let drawBarChart = (data, options, element) => {
+
   let bar = "";
 
-  //for the label on x-axis
+  //for the x-axis
   let xAxis = "";
 
   //for the label on y-axis
   let yTick = "";
   let yLabel = "";
 
-  //put the title in a div
-  let title = `<div class="chart-title">${options.chartTitle}</div>`;
+  //make title Div
+  let chartTitleDiv = makeTitleDiv(options);
 
   //the maximum value in data
   let maxVal = Math.max(...data[0]);
@@ -49,16 +70,18 @@ function drawBarChart(data, options, element) {
 
   //label x-axis
   for(let val of data[1]) {
-    xAxis += (`<div style="text-align: center; overflow-wrap: anywhere; width: ${80/dataNum}%; margin: 0 ${10/dataNum}%">${val}</div>`);
+    xAxis += (`<div style="width: ${80/dataNum}%; margin: 0 ${10/dataNum}%">${val}</div>`);
   };
 
-  xAxis = `<div class="left-container"><div class="x-axis"><div id="left-corner-${options.Id}"></div>${xAxis}</div></div>`;
+  xAxis = `<div class="left-container"><div class="x-axis" style="text-align: center; overflow-wrap: anywhere"><div id="left-corner-${options.Id}"></div>${xAxis}</div></div>`;
 
-  let chart = `${title}<div class="middle"><div class="y-label" id="y-label-${options.Id}" style="text-align: right">${yLabel}</div>${yTick}<div class="bar">${bar}</div></div>${xAxis}`;
+  let chart = `${chartTitleDiv}<div class="middle"><div class="y-label" id="y-label-${options.Id}" style="text-align: right">${yLabel}</div>${yTick}<div class="bar">${bar}</div></div>${xAxis}`;
   element.html(chart);
   element.css("height", options.height);
   element.css("width", options.width);
   element.css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
   $( ".chart-title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
-  $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-label-${options.Id}` ).innerWidth() + $( `#y-tick-${options.Id}` ).innerWidth() + 1}px`);
+  $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-label-${options.Id}` ).innerWidth() + $( `#y-tick-${options.Id}` ).innerWidth()}px`);
+  console.log($( `#y-tick-${options.Id}` ).innerWidth());
+  console.log($( `#y-label-${options.Id}` ).innerWidth());
 };
