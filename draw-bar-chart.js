@@ -117,6 +117,21 @@ let makeBars = (data, maxTick, options) => {
   let dataLabelColour;
   let barColour;
   let dataLabelPosition;
+  let barSpacing;
+
+  if(options.hasOwnProperty("barSpacing")) {
+    if(CSS.supports("margin", options.barSpacing)) {
+      barSpacing = options.barSpacing;
+      let num = parseFloat( barSpacing.replace(/\D*/g, "") );
+      let unit = barSpacing.replace(/\d*/g, "");
+      barSpacing = num / 2 + unit;
+    } else {
+      invalidOption(options.Id, "bar spacing", "barSpacing");
+      barSpacing = 10/(dataNum) + "%" ;
+    }
+  } else {
+    barSpacing = 10/(dataNum) + "%" ;
+  }
 
   if(options.hasOwnProperty("barColour")) {
     if(CSS.supports("background-color", options.barColour)) {
@@ -160,7 +175,7 @@ let makeBars = (data, maxTick, options) => {
   }
 
   for(let val of data) {
-    bars += (`<div class="bar" style="align-items: ${dataLabelPosition}; background-color: ${barColour}; color: ${dataLabelColour}; height: ${100 * val / maxTick}%; width: ${80/dataNum}%; margin: 0 ${10/(dataNum)}%">${val}</div>`);
+    bars += (`<div class="bar" style="align-items: ${dataLabelPosition}; background-color: ${barColour}; color: ${dataLabelColour}; height: ${100 * val / maxTick}%; width: ${100/dataNum}%; margin: 0 ${barSpacing}">${val}</div>`);
   }
   return `<div class="bars">${bars}</div>`;
 }
@@ -168,10 +183,24 @@ let makeBars = (data, maxTick, options) => {
 let makeXAxis = (labelArr, options) => {
   let xAxis = "";
   let dataNum = labelArr.length;
+  let barSpacing;
 
+  if(options.hasOwnProperty("barSpacing")) {
+    if(CSS.supports("margin", options.barSpacing)) {
+      barSpacing = options.barSpacing;
+      let num = parseFloat( barSpacing.replace(/\D*/g, "") );
+      let unit = barSpacing.replace(/\d*/g, "");
+      barSpacing = num / 2 + unit;
+    } else {
+      invalidOption(options.Id, "bar spacing", "barSpacing");
+      barSpacing = 10/(dataNum) + "%" ;
+    }
+  } else {
+    barSpacing = 10/(dataNum) + "%" ;
+  }
   //label x-axis
   for(let val of labelArr) {
-    xAxis += (`<div style="width: ${80/dataNum}%; margin: 0 ${10/dataNum}%">${val}</div>`);
+    xAxis += (`<div style="width: ${100/dataNum}%; margin: 0 ${barSpacing}">${val}</div>`);
   };
 
   xAxis = `<div class="x-axis"><div id="left-corner-${options.Id}"></div>${xAxis}</div>`
