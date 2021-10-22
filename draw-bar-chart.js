@@ -60,10 +60,16 @@ let findTicks = (options, maxVal) => {
   let tickInterval;
 
   let defaultInterval = () => {
-    let pow;
-    for(pow = 0; maxVal > Math.pow(10, pow); pow++) {
+    let pow = 0;
+    if(maxVal >= 1) {
+      for( ; maxVal > Math.pow(10, pow); pow++) {
+      }
+      pow--;
+    } else {
+      for( ; maxVal < Math.pow(10, pow); pow--) {
+      }
     }
-    return Math.pow(10, pow - 1);
+    return Math.pow(10, pow);
   }
 
   if(options.hasOwnProperty("minTickVal")) {
@@ -110,50 +116,26 @@ let makeYAxis = (tickInterval, maxTick, options) => {
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel + yTick}</div>`;
 }
 
-let makeBars = (data, maxTick, options) => {
+let makeBars = (data, maxTick, options, barSpacing) => {
   let bars = "";
   let dataNum = data.length;
 
-  let dataLabelColour;
-  let barColour;
+  let defineProp = (property, optProp, displayStr, defaultVal) => {
+    if(options.hasOwnProperty(optProp)) {
+      if(CSS.supports(property, options[optProp])) {
+        return options[optProp];
+      } else {
+        invalidOption(options.Id, displayStr, optProp);
+        return defaultVal;
+      }
+    } else {
+      return defaultVal;
+    }
+  };
+
+  let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white");
+  let barColour = defineProp("background-color", "barColour", "bar colour", "black");
   let dataLabelPosition;
-  let barSpacing;
-
-  if(options.hasOwnProperty("barSpacing")) {
-    if(CSS.supports("margin", options.barSpacing)) {
-      barSpacing = options.barSpacing;
-      let num = parseFloat( barSpacing.replace(/\D*/g, "") );
-      let unit = barSpacing.replace(/\d*/g, "");
-      barSpacing = num / 2 + unit;
-    } else {
-      invalidOption(options.Id, "bar spacing", "barSpacing");
-      barSpacing = 10/(dataNum) + "%" ;
-    }
-  } else {
-    barSpacing = 10/(dataNum) + "%" ;
-  }
-
-  if(options.hasOwnProperty("barColour")) {
-    if(CSS.supports("background-color", options.barColour)) {
-      barColour = options.barColour;
-    } else {
-      invalidOption(options.Id, "bar colour", "barColour");
-      barColour = "black";
-    }
-  } else {
-    barColour = "black";
-  }
-
-  if(options.hasOwnProperty("dataLabelColour")) {
-    if(CSS.supports("color", options.dataLabelColour)) {
-      dataLabelColour = options.dataLabelColour;
-    } else {
-      invalidOption(options.Id, "data label colour", "dataLabelColour");
-      dataLabelColour = "white";
-    }
-  } else {
-    dataLabelColour = "white";
-  }
 
   if(options.hasOwnProperty("dataLabelPosition")) {
     switch(options.dataLabelPosition) {
@@ -175,29 +157,42 @@ let makeBars = (data, maxTick, options) => {
   }
 
   for(let val of data) {
-    bars += (`<div class="bar" style="align-items: ${dataLabelPosition}; background-color: ${barColour}; color: ${dataLabelColour}; height: ${100 * val / maxTick}%; width: ${100/dataNum}%; margin: 0 ${barSpacing}">${val}</div>`);
+    bars +=
+      (
+        `<div class="bar"
+          style="
+            align-items: ${dataLabelPosition};
+            background-color: ${barColour};
+            color: ${dataLabelColour};
+            height: ${100 * val / maxTick}%;
+            width: ${100/dataNum}%;
+            margin: 0 ${barSpacing}">
+          ${val}
+        </div>`
+      );
   }
   return `<div class="bars">${bars}</div>`;
 }
 
-let makeXAxis = (labelArr, options) => {
-  let xAxis = "";
-  let dataNum = labelArr.length;
-  let barSpacing;
-
+let defineBarSpacing = (options) => {
   if(options.hasOwnProperty("barSpacing")) {
     if(CSS.supports("margin", options.barSpacing)) {
-      barSpacing = options.barSpacing;
-      let num = parseFloat( barSpacing.replace(/\D*/g, "") );
-      let unit = barSpacing.replace(/\d*/g, "");
-      barSpacing = num / 2 + unit;
+      let num = parseFloat( options.barSpacing.replace(/\D*/g, "") );
+      let unit = options.barSpacing.replace(/\d*/g, "");
+      return num / 2 + unit;
     } else {
       invalidOption(options.Id, "bar spacing", "barSpacing");
-      barSpacing = 10/(dataNum) + "%" ;
+      return 10/(dataNum) + "%" ;
     }
   } else {
-    barSpacing = 10/(dataNum) + "%" ;
+    return 10/(dataNum) + "%" ;
   }
+}
+
+let makeXAxis = (labelArr, options, barSpacing) => {
+  let xAxis = "";
+  let dataNum = labelArr.length;
+
   //label x-axis
   for(let val of labelArr) {
     xAxis += (`<div style="width: ${100/dataNum}%; margin: 0 ${barSpacing}">${val}</div>`);
@@ -218,6 +213,28 @@ let checkId = (options) => {
   };
 };
 
+let setWidthHeight = (options, element) => {
+  let setCSS = (dimension) => {
+    if(options.hasOwnProperty(dimension)) {
+      if(CSS.supports(dimension, options[dimension])) {
+        element.css(dimension, options[dimension]);
+      } else {
+        invalidOption(options.Id, dimension, dimension);
+      }
+    }
+  }
+  setCSS("width");
+  setCSS("height");
+};
+
+let setUserSelect = (options, element) => {
+  if(options.hasOwnProperty("userSelect")) {
+    if(!options.userSelect){
+      element.css("user-select", "auto");
+    }
+  }
+}
+
 // top-level function
 let drawBarChart = (data, options, element) => {
 
@@ -236,20 +253,21 @@ let drawBarChart = (data, options, element) => {
   //make div for the ticks and labels on y-axis
   let yAxis = makeYAxis(tickInterval, maxTick, options);
 
-  //plot the bar graph with value in parameter "data"
-  let bars = makeBars(data[0], maxTick, options);
+  let barSpacing = defineBarSpacing(options);
 
-  let xAxis = makeXAxis(data[1], options);
+  //plot the bar graph with value in parameter "data"
+  let bars = makeBars(data[0], maxTick, options, barSpacing);
+
+  //label the x axis
+  let xAxis = makeXAxis(data[1], options, barSpacing);
 
   //html of the whole chard
   let chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;
 
   $( document ).ready(function() {
     element.html(chart);
-    element.css("height", options.height);
-    element.css("width", options.width);
-    element.css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
-    $( ".chart-title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
+    setWidthHeight(options, element);
+    setUserSelect(options, element);
     $( document ).ready(function() {
       $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-axis-${options.Id}` ).width()}px`);
     });

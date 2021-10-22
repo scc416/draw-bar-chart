@@ -5,6 +5,8 @@
   border: 1px black solid;
   display: flex;
   flex-direction: column;
+  padding: min(15%, 10px);
+  user-select: none;
 }
 
 .middle {
@@ -15,6 +17,7 @@
 
 .chart-title {
   text-align: center;
+  padding: min(5%, 15px);
 }
 
 .y-tick {
@@ -58,7 +61,7 @@
 .bar {
   display: flex;
   justify-content: center;
-  padding: min(1%, 10px);
+  padding: 0 min(1%, 10px);
 }
 
 .x-axis {

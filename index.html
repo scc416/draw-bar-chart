@@ -18,25 +18,26 @@
     <script>
       drawBarChart(
         [
-          [1, 0.480, 0.500, 0.230, 0.45, 0.200, 0.50],
+          [0.0001, 0.00480, 0.000500, 0.000230, 0.00045, 0.000200, 0.00050],
           ["very very very very very very very very very lon glon glong very long value", "value1", "value2", "value3", "value4", "value5", "value6"]
         ],
         {
           Id: 1,
-          chartTitle: "hi this is the title",
-          titleFontSize: "36px", //default is 36px
-          titleColour: "green",
+          chartTitle: "this is the title",
+          titleFontSize: "36px",
+          titleColour: "black",
           width: "90vw",
-          height: "100vh",
+          height: "90vh",
           yAxisTitle: "this is y-axis",
           xAxisTitle: "this is x-axis",
-          dataLabelPosition: "bottom", //option: top, centre or bottom (of the bar)
+          dataLabelPosition: "bottom", // option: top, centre or bottom (of the bar)
           dataLabelColour: "grey",
           barColour: "orange",
-          barSpacing: "45px",//
+          barSpacing: "45px",
           stacked: false,//
-          userSelect: false,//
-          minTickVal: 0.1
+          userSelect: false,
+          minTickVal: "",
+          scientificNotation: false
         },
         $( "#test" )
         );
