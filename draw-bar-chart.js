@@ -3,16 +3,17 @@
 //more options
 // extra flare with things like CSS transitions and animations
 // what to do when there is no input from the options
-//add comments
+// add comments
 // for negative values
 // for value < 1
+// check height & weight of option
 
-//
+//display a sentence to log when invalid option is found
 let invalidOption = (id, option, key) => {
-  console.log(`Bar chart (Id: ${id}) doesn't have a VALID ${option} (${key}) in options.`);
+  console.log(`The ${option} (${key}) of Bar chart (Id: ${id}) is not valid.`);
 }
 
-// check if input type is number
+// check if input's type is number
 let isNumber = (num) => {
   if(typeof num === "number") return true;
   return false;
@@ -100,16 +101,68 @@ let makeYAxis = (tickInterval, maxTick, options) => {
   yTick = `<div class="y-tick" >${yTick}</div>`;
   yAxisLabel = `<div class="y-axis-label">${yAxisLabel}</div>`;
 
-  return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisLabel + yTick}</div>`;
+  let yAxisTitle = "";
+
+  if(options.hasOwnProperty("yAxisTitle")) {
+    yAxisTitle = `<div class="y-axis-title">${options.yAxisTitle}</div>`;
+  }
+
+  return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel + yTick}</div>`;
 }
 
 let makeBars = (data, maxTick, options) => {
   let bars = "";
   let dataNum = data.length;
-  for(let val of data) {
-    bars += (`<div style="background-color: black; color: white; height: ${100 * val / maxTick}%; width: ${80/dataNum}%; margin: 0 ${10/(dataNum)}%">${val}</div>`);
+
+  let dataLabelColour;
+  let barColour;
+  let dataLabelPosition;
+
+  if(options.hasOwnProperty("barColour")) {
+    if(CSS.supports("background-color", options.barColour)) {
+      barColour = options.barColour;
+    } else {
+      invalidOption(options.Id, "bar colour", "barColour");
+      barColour = "black";
+    }
+  } else {
+    barColour = "black";
   }
-  return `<div class="bar">${bars}</div>`;
+
+  if(options.hasOwnProperty("dataLabelColour")) {
+    if(CSS.supports("color", options.dataLabelColour)) {
+      dataLabelColour = options.dataLabelColour;
+    } else {
+      invalidOption(options.Id, "data label colour", "dataLabelColour");
+      dataLabelColour = "white";
+    }
+  } else {
+    dataLabelColour = "white";
+  }
+
+  if(options.hasOwnProperty("dataLabelPosition")) {
+    switch(options.dataLabelPosition) {
+      case "top":
+        dataLabelPosition = "flex-start";
+        break;
+      case "centre":
+        dataLabelPosition = "center";
+        break;
+      case "bottom":
+        dataLabelPosition = "flex-end";
+        break;
+      default:
+        dataLabelPosition = "flex-start";
+        invalidOption(options.Id, "data label position", "dataLabelPosition");
+    }
+  } else {
+    dataLabelPosition = "flex-start";
+  }
+
+  for(let val of data) {
+    bars += (`<div class="bar" style="align-items: ${dataLabelPosition}; background-color: ${barColour}; color: ${dataLabelColour}; height: ${100 * val / maxTick}%; width: ${80/dataNum}%; margin: 0 ${10/(dataNum)}%">${val}</div>`);
+  }
+  return `<div class="bars">${bars}</div>`;
 }
 
 let makeXAxis = (labelArr, options) => {
