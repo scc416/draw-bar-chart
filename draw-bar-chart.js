@@ -12,25 +12,11 @@ let invalidOption = (id, option, key) => {
   console.log(`Bar chart (Id: ${id}) doesn't have a VALID ${option} (${key}) in options.`);
 }
 
-
 // check if input type is number
 let isNumber = (num) => {
   if(typeof num === "number") return true;
   return false;
 }
-
-// check if a string is valid color
-let isColour = (strColor) => {
-  let s = new Option().style;
-  s.color = strColor;
-  return s.color == strColor;
-}
-
-// check if a string is valid width/height
-let isWidthHeight = (str) => {
-  if (str === "" || typeof str !== "string")  return false;
-  return str.replace(/(\d*)(px|%|vw|vh)/, "") === "";
-};
 
 //function that use the options to create div for the chart title
 let makeTitleDiv = (options) => {
@@ -39,35 +25,30 @@ let makeTitleDiv = (options) => {
 
   //Set the title text
   if(options.hasOwnProperty("chartTitle")) {
-    titleDiv = options.chartTitle + titleDiv;
+    titleDiv = `">` + options.chartTitle + titleDiv;
   } else {
-    titleDiv = "Untitled" + titleDiv;
+    titleDiv = `">Untitled` + titleDiv;
+  }
+
+  //function that add style to titleDiv
+  let addStyle = (property, optProp, displayStr, defaultVal) => {
+    if(options.hasOwnProperty(optProp)) {
+      if(CSS.supports(property, options[optProp])) {
+        titleDiv = `${property}: ${options[optProp]}; ${titleDiv} `;
+      } else {
+        titleDiv = `${property}: ${defaultVal}; ${titleDiv}; `;
+        invalidOption(options.Id, displayStr, optProp);
+      }
+    } else {
+      titleDiv = `${property}: ${defaultVal}; ${titleDiv}; `;
+    }
   }
 
   //Set the font size of the title
-  if(options.hasOwnProperty("titleFontSize")) {
-    if(isWidthHeight(options.titleFontSize)) {
-      titleDiv = `font-size: ${options.titleFontSize}">${titleDiv}`;
-    } else {
-      titleDiv = `font-size: 36px">${titleDiv}`;
-      invalidOption(options.Id, "title font size", "titleFontSize");
-    }
-  } else {
-    titleDiv = `font-size: 36px">${titleDiv}`;
-  }
+  addStyle("font-size", "titleFontSize", "title font size", "36px");
 
   //Set the color of the title
-  if(options.hasOwnProperty("titleColour")) {
-    if(isColour(options.titleColour)) {
-      titleDiv = `color: ${options.titleColour}; ${titleDiv}`;
-    } else {
-      titleDiv = `color: black; ${titleDiv}`;
-      invalidOption(options.Id, "title colour", "titleColour");
-    }
-  } else {
-    titleDiv = `color: black; ${titleDiv}`;
-    console.log(`Bar chart (Id: ${options.Id}) doesn't have a title colour (titleColour) in options (default: black).`);
-  }
+  addStyle("color", "titleColour", "title colour", "black");
 
   return `<div class="chart-title" style="${titleDiv}`;
 };
@@ -75,15 +56,25 @@ let makeTitleDiv = (options) => {
 // the function that find the value of tick and largest value of the tick
 let findTicks = (options, maxVal) => {
 
-  let pow;
-  for(pow = 0; maxVal > Math.pow(10, pow); pow++) {
+  let tickInterval;
+
+  let defaultInterval = () => {
+    let pow;
+    for(pow = 0; maxVal > Math.pow(10, pow); pow++) {
+    }
+    return Math.pow(10, pow - 1);
   }
 
-  let tickInterval = Math.pow(10, pow - 1);
-
-  tickInterval = options.hasOwnProperty("minTickVal") ?
-    ( isNumber(options.minTickVal) ? options.minTickVal : tickInterval ) :
-    tickInterval;
+  if(options.hasOwnProperty("minTickVal")) {
+    if(isNumber(options.minTickVal)) {
+      tickInterval = options.minTickVal;
+    } else {
+      tickInterval = defaultInterval();
+      invalidOption(options.Id, "tick interval", "minTickVal");
+    }
+  } else {
+    tickInterval = defaultInterval();
+  }
 
   let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
 
