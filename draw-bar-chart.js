@@ -1,13 +1,11 @@
 //to-do list
-// mske smaller functions
 //stacked
 //more options
 // extra flare with things like CSS transitions and animations
-//what to do when there is no input from the options
+// what to do when there is no input from the options
 //add comments
 // for negative values
 // for value < 1
-// make css file
 
 //function that use the options to create div for the chart title
 let makeTitleDiv = (options) => {
@@ -46,19 +44,26 @@ let findTicks = (options, maxVal) => {
   return [tickInterval, maxTick];
 }
 
-let makeYAxisDiv = (tickInterval, maxTick, id) => {
+let countDecimals = (value) => {
+  if(Math.floor(value) === value) return 0;
+  return value.toString().split(".")[1].length || 0;
+}
+
+let makeYAxis = (tickInterval, maxTick, options) => {
+  //calculate the number of decimals of the tick interval to format the labels later
+  let decimals = countDecimals(tickInterval);
   let yTick = "";
-  let yLabel = "";
+  let yAxisLabel = "";
 
   for(let i = 0; i <= maxTick; i += tickInterval) {
     yTick += `<div style="border-bottom: 1px black solid"></div>`;
-    yLabel += `<div style="height: 0">${i}</div>`;
+    yAxisLabel += `<div style="height: 0">${i.toFixed(decimals)}</div>`;
   }
 
-  yTick = `<div class="y-tick" id="y-tick-${id}">${yTick}</div>`;
-  yLabel = `<div class="y-label" id="y-label-${id}">${yLabel}</div>`;
+  yTick = `<div class="y-tick" id="y-tick-${options.Id}">${yTick}</div>`;
+  yAxisLabel = `<div class="y-axis-label" id="y-axis-label-${options.Id}">${yAxisLabel}</div>`;
 
-  return yLabel + yTick;
+  return yAxisLabel + yTick;
 }
 
 let makeBars = (data, maxTick) => {
@@ -70,7 +75,7 @@ let makeBars = (data, maxTick) => {
   return `<div class="bar">${bars}</div>`;
 }
 
-let makeXAxis = (labelArr, id) => {
+let makeXAxis = (labelArr, options) => {
   let xAxis = "";
   let dataNum = labelArr.length;
 
@@ -79,8 +84,16 @@ let makeXAxis = (labelArr, id) => {
     xAxis += (`<div style="width: ${80/dataNum}%; margin: 0 ${10/dataNum}%">${val}</div>`);
   };
 
-  return `<div class="x-axis"><div id="left-corner-${id}"></div>${xAxis}</div>`;
+  xAxis = `<div class="x-axis"><div id="left-corner-${options.Id}"></div>${xAxis}</div>`
+
+  if(options.hasOwnProperty("xAxisTitle")) {
+    xAxis += `<div class="x-axis-title">${options.xAxisTitle}</div>`;
+  }
+
+  return xAxis;
 }
+
+
 
 // top-level function
 let drawBarChart = (data, options, element) => {
@@ -98,12 +111,12 @@ let drawBarChart = (data, options, element) => {
   let [tickInterval, maxTick] = findTicks(options, maxVal);
 
   //make div for the ticks and labels on y-axis
-  let yAxis = makeYAxisDiv(tickInterval, maxTick, options.Id);
+  let yAxis = makeYAxis(tickInterval, maxTick, options);
 
   //plot the bar graph with value in parameter "data"
   let bars = makeBars(data[0], maxTick);
 
-  let xAxis = makeXAxis(data[1], options.Id);
+  let xAxis = makeXAxis(data[1], options);
 
   //html of the whole chard
   let chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;
@@ -115,7 +128,9 @@ let drawBarChart = (data, options, element) => {
     element.css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
     $( ".chart-title" ).css("padding", `min(${element.innerWidth() * 0.10}px, 15px)`);
     $( document ).ready(function() {
-      $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-label-${options.Id}` ).width() + $( `#y-tick-${options.Id}` ).width()}px`);
+      console.log($( `#y-axis-label-${options.Id}` ).width());
+      console.log($( `#y-tick-${options.Id}` ).width());
+      $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-axis-label-${options.Id}` ).width() + $( `#y-tick-${options.Id}` ).width()}px`);
     });
   });
 };

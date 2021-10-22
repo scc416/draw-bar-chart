@@ -25,7 +25,7 @@
   width: 10px;
 }
 
-.y-label {
+.y-axis-label {
   display: flex;
   flex-direction: column-reverse;
   justify-content: space-between;
@@ -46,4 +46,9 @@
   width: 100%;
   text-align: center;
   overflow-wrap: anywhere;
+}
+
+.x-axis-title {
+  text-align: center;
+  font-size: 24px;
 }
