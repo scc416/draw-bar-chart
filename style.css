@@ -32,6 +32,11 @@
   text-align: right;
 }
 
+.y-axis {
+  height: 100%;
+  display: flex;
+}
+
 .bar {
   border-bottom: 1px black solid;
   display: flex;
