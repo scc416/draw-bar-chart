@@ -5,7 +5,6 @@
 // what to do when there is no input from the options
 // add comments
 // for negative values
-// check height & weight of option
 // make notes
 
 let powerOfTen = (num) => {
@@ -145,7 +144,78 @@ let makeYAxis = (tickInterval, maxTick, options) => {
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel + yTick}</div>`;
 }
 
-let makeBars = (data, maxTick, options, barSpacing) => {
+let makeStackedBars = (data, maxTick, options, barSpacing) => {
+  let bars = "";
+  let dataNum = data.length;
+  let format = options.hasOwnProperty("scientificNotation") ?
+    (options.scientificNotation === true ?
+      i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5)}</span></sup>`:
+      i => i ) :
+    i => i ;
+
+  let defineProp = (property, optProp, displayStr, defaultVal) => {
+    if(options.hasOwnProperty(optProp)) {
+      if(CSS.supports(property, options[optProp])) {
+        return options[optProp];
+      } else {
+        invalidOption(options.Id, displayStr, optProp);
+        return defaultVal;
+      }
+    } else {
+      return defaultVal;
+    }
+  };
+
+  let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white");
+  // let barColour = defineProp("background-color", "barColour", "bar colour", "black");
+  let barColour = options.barColour;
+  let dataLabelPosition;
+
+  if(options.hasOwnProperty("dataLabelPosition")) {
+    switch(options.dataLabelPosition) {
+      case "top":
+        dataLabelPosition = "flex-start";
+        break;
+      case "centre":
+        dataLabelPosition = "center";
+        break;
+      case "bottom":
+        dataLabelPosition = "flex-end";
+        break;
+      default:
+        dataLabelPosition = "flex-start";
+        invalidOption(options.Id, "data label position", "dataLabelPosition");
+    }
+  } else {
+    dataLabelPosition = "flex-start";
+  }
+  for(let arr of data) {
+    let bar = "";
+    let length = arr.length;
+    let lastVal = arr[length - 1];
+    for(let i = length - 1; i >= 0; i--) {
+      let val = i === 0 ? arr[0] : arr[i] - arr[i-1];
+      bar +=
+      (`<div style="display: flex; justify-content: center; align-items: ${dataLabelPosition}; height: ${val * 100 / lastVal}%; background-color: ${barColour[i]}; width: 100%;">${arr[i]}</div>`
+      );
+    }
+    bar = `<div
+    style="
+      color: ${dataLabelColour};
+      height: ${100 * lastVal / maxTick}%;
+      width: ${100/dataNum}%;
+      margin: 0 ${barSpacing};
+      display: flex;
+      justify-content: flex-end;
+      flex-direction: column">
+      ${bar}
+    </div>`
+    bars += bar;
+  }
+  return `<div class="bars">${bars}</div>`;
+}
+
+let makeNonStackedBars = (data, maxTick, options, barSpacing) => {
   let bars = "";
   let dataNum = data.length;
   let format = options.hasOwnProperty("scientificNotation") ?
@@ -206,6 +276,14 @@ let makeBars = (data, maxTick, options, barSpacing) => {
       );
   }
   return `<div class="bars">${bars}</div>`;
+}
+
+let makeBars = (data, maxTick, options, barSpacing) => {
+  if(Array.isArray(data[0])) {
+    return makeStackedBars(data, maxTick, options, barSpacing);
+  } else {
+    return makeNonStackedBars(data, maxTick, options, barSpacing);
+  }
 }
 
 let defineBarSpacing = (options) => {
@@ -294,7 +372,12 @@ let dataChecker = (data) => {
       }
     }
   } else if (Array.isArray(data[0][0])) {
+    let length = data[0][0].length;
     for(let arr of data[0]) {
+      if(arr.length !== length) {
+        console.log("ALERT: The value set have different number of data.");
+        return false;
+      }
       if(!Array.isArray(arr)) {
         console.log("ALERT: One of the value set is not an array.");
         return false;
@@ -302,6 +385,12 @@ let dataChecker = (data) => {
       for(let data of arr) {
         if(typeof data !== "number") {
           console.log("ALERT: One of the value is not number.");
+          return false;
+        }
+      }
+      for(let i = 0; i < length - 1; i++) {
+        if(arr[i] > arr[i+1]) {
+          console.log("One of the value set is not in ascending order.");
           return false;
         }
       }
@@ -325,7 +414,7 @@ let drawBarChart = (data, options, element) => {
     let chartTitleDiv = makeTitleDiv(options);
 
     //the maximum value in data
-    let maxVal = Math.max(...data[0]);
+    let maxVal = Math.max(...data[0].flat());
 
     //find the tick interval and value of the maximum tick
     let [tickInterval, maxTick] = findTicks(options, maxVal);

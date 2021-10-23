@@ -64,6 +64,11 @@
   padding: 0 min(1%, 10px);
 }
 
+.stacked-bar {
+  display: flex;
+  justify-content: center;
+}
+
 .x-axis {
   display: flex;
   width: 100%;
@@ -78,4 +83,8 @@
 
 .sup {
   vertical-align: super;
+}
+
+.stacked-bar {
+  width: 100%;
 }
