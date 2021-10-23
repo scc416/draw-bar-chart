@@ -8,6 +8,23 @@
 // for value < 1
 // check height & weight of option
 
+let powerOfTen = (num) => {
+  let result = 1;
+  if (num > 0) {
+    while(num > 0) {
+      result *= 10;
+      num --;
+    }
+  } else {
+    while(num < 0) {
+      result /= 10;
+      num ++;
+    }
+  }
+
+  return result;
+}
+
 //display a sentence to log when invalid option is found
 let invalidOption = (id, option, key) => {
   console.log(`The ${option} (${key}) of Bar chart (Id: ${id}) is not valid.`);
@@ -62,14 +79,14 @@ let findTicks = (options, maxVal) => {
   let defaultInterval = () => {
     let pow = 0;
     if(maxVal >= 1) {
-      for( ; maxVal > Math.pow(10, pow); pow++) {
+      for( ; maxVal > powerOfTen(pow); pow++) {
       }
       pow--;
     } else {
-      for( ; maxVal < Math.pow(10, pow); pow--) {
+      for( ; maxVal <= powerOfTen(pow); pow--) {
       }
     }
-    return Math.pow(10, pow);
+    return powerOfTen(pow);
   }
 
   if(options.hasOwnProperty("minTickVal")) {
@@ -94,24 +111,36 @@ let countDecimals = (val) => {
 }
 
 let makeYAxis = (tickInterval, maxTick, options) => {
-  //calculate the number of decimals of the tick interval to format the labels later
-  let decimals = countDecimals(tickInterval);
   let yTick = "";
   let yAxisLabel = "";
+  let yAxisTitle = "</div>";
 
-  for(let i = 0; i <= maxTick; i += tickInterval) {
+  if(options.hasOwnProperty("scientificNotation")) {
+    if(options.scientificNotation === true) {
+      let exp = tickInterval.toExponential(2);
+      let index = exp.indexOf("e");
+      let pow = parseInt(exp.slice(index+1));
+      maxTick /= powerOfTen(pow);
+      tickInterval = parseFloat(exp.slice(0, index));
+      yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
+    };
+  }
+
+  if(options.hasOwnProperty("yAxisTitle")) {
+    yAxisTitle = `<div class="y-axis-title">${options.yAxisTitle +  yAxisTitle}`;
+  } else {
+    yAxisTitle = `<div class="y-axis-title">${yAxisTitle}`
+  }
+
+  let decimals = countDecimals(tickInterval);
+  let max = maxTick / tickInterval;
+  for(let i = 0; i <= max; i ++) {
     yTick += `<div style="border-bottom: 1px black solid"></div>`;
-    yAxisLabel += `<div style="height: 0">${i.toFixed(decimals)}</div>`;
+    yAxisLabel += `<div style="height: 0">${(i * tickInterval).toFixed(decimals)}</div>`;
   }
 
   yTick = `<div class="y-tick" >${yTick}</div>`;
   yAxisLabel = `<div class="y-axis-label">${yAxisLabel}</div>`;
-
-  let yAxisTitle = "";
-
-  if(options.hasOwnProperty("yAxisTitle")) {
-    yAxisTitle = `<div class="y-axis-title">${options.yAxisTitle}</div>`;
-  }
 
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel + yTick}</div>`;
 }
@@ -119,6 +148,11 @@ let makeYAxis = (tickInterval, maxTick, options) => {
 let makeBars = (data, maxTick, options, barSpacing) => {
   let bars = "";
   let dataNum = data.length;
+  let format = options.hasOwnProperty("scientificNotation") ?
+    (options.scientificNotation === true ?
+      i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5)}</span></sup>`:
+      i => i ) :
+    i => i ;
 
   let defineProp = (property, optProp, displayStr, defaultVal) => {
     if(options.hasOwnProperty(optProp)) {
@@ -167,7 +201,7 @@ let makeBars = (data, maxTick, options, barSpacing) => {
             height: ${100 * val / maxTick}%;
             width: ${100/dataNum}%;
             margin: 0 ${barSpacing}">
-          ${val}
+          ${format(val)}
         </div>`
       );
   }
