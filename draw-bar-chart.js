@@ -304,16 +304,18 @@ let defineBarSpacing = (options) => {
 let makeXAxis = (labelArr, options, barSpacing) => {
   let xAxis = "";
   let dataNum = labelArr.length;
+  let xAxisTitleFontSize = defineProp("font-size", "xAxisTitleFontSize", "x-axis title font size", "24px", options);
+  let xAxisLabelFontSize = defineProp("font-size", "xAxisLabelFontSize", "x-axis label font size", "16px", options);
 
   //label x-axis
   for(let val of labelArr) {
     xAxis += (`<div style="width: ${100/dataNum}%; margin: 0 ${barSpacing}">${val}</div>`);
   };
 
-  xAxis = `<div class="x-axis"><div id="left-corner-${options.Id}"></div>${xAxis}</div>`
+  xAxis = `<div class="x-axis" style="font-size: ${xAxisLabelFontSize}"><div id="left-corner-${options.Id}"></div>${xAxis}</div>`
 
   if(options.hasOwnProperty("xAxisTitle")) {
-    xAxis += `<div class="x-axis-title">${options.xAxisTitle}</div>`;
+    xAxis += `<div class="x-axis-title" style="font-size: ${xAxisTitleFontSize}">${options.xAxisTitle}</div>`;
   }
 
   return xAxis;
