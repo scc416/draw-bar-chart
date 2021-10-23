@@ -1,5 +1,6 @@
 //to-do list
-//stacked
+//stacked - bar/label colour check
+//refractor
 //more options
 // extra flare with things like CSS transitions and animations
 // what to do when there is no input from the options
@@ -20,7 +21,6 @@ let powerOfTen = (num) => {
       num ++;
     }
   }
-
   return result;
 }
 
@@ -28,6 +28,19 @@ let powerOfTen = (num) => {
 let invalidOption = (id, option, key) => {
   console.log(`The ${option} (${key}) of Bar chart (Id: ${id}) is not valid.`);
 }
+
+let defineProp = (property, optProp, displayStr, defaultVal, options) => {
+  if(options.hasOwnProperty(optProp)) {
+    if(CSS.supports(property, options[optProp])) {
+      return options[optProp];
+    } else {
+      invalidOption(options.Id, displayStr, optProp);
+      return defaultVal;
+    }
+  } else {
+    return defaultVal;
+  }
+};
 
 // check if input's type is number
 let isNumber = (num) => {
@@ -121,7 +134,9 @@ let makeYAxis = (tickInterval, maxTick, options) => {
       let pow = parseInt(exp.slice(index+1));
       maxTick /= powerOfTen(pow);
       tickInterval = parseFloat(exp.slice(0, index));
-      yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
+      if(pow !== 0) {
+        yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
+      }
     };
   }
 
@@ -149,25 +164,14 @@ let makeStackedBars = (data, maxTick, options, barSpacing) => {
   let dataNum = data.length;
   let format = options.hasOwnProperty("scientificNotation") ?
     (options.scientificNotation === true ?
-      i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5)}</span></sup>`:
+      i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5).replace("+", "")}</span></sup>`:
       i => i ) :
     i => i ;
 
-  let defineProp = (property, optProp, displayStr, defaultVal) => {
-    if(options.hasOwnProperty(optProp)) {
-      if(CSS.supports(property, options[optProp])) {
-        return options[optProp];
-      } else {
-        invalidOption(options.Id, displayStr, optProp);
-        return defaultVal;
-      }
-    } else {
-      return defaultVal;
-    }
-  };
 
-  let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white");
-  // let barColour = defineProp("background-color", "barColour", "bar colour", "black");
+
+  let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
+  let dataLabelFontSize = defineProp("font-size", "dataLabelFontSize", "data label font size", "16px", options);
   let barColour = options.barColour;
   let dataLabelPosition;
 
@@ -196,23 +200,29 @@ let makeStackedBars = (data, maxTick, options, barSpacing) => {
     for(let i = length - 1; i >= 0; i--) {
       let val = i === 0 ? arr[0] : arr[i] - arr[i-1];
       bar +=
-      (`<div style="display: flex; justify-content: center; align-items: ${dataLabelPosition}; height: ${val * 100 / lastVal}%; background-color: ${barColour[i]}; width: 100%;">${arr[i]}</div>`
-      );
+        (`<div
+          class="bar"
+          style="
+            align-items: ${dataLabelPosition};
+            height: ${val * 100 / lastVal}%;
+            background-color: ${barColour[i]}; ">
+              ${format(arr[i])}
+          </div>`
+        );
     }
     bar = `<div
+    class = "stacked-bar"
     style="
       color: ${dataLabelColour};
       height: ${100 * lastVal / maxTick}%;
       width: ${100/dataNum}%;
       margin: 0 ${barSpacing};
-      display: flex;
-      justify-content: flex-end;
-      flex-direction: column">
+      ">
       ${bar}
     </div>`
     bars += bar;
   }
-  return `<div class="bars">${bars}</div>`;
+  return `<div class="bars" style="font-size: ${dataLabelFontSize}">${bars}</div>`;
 }
 
 let makeNonStackedBars = (data, maxTick, options, barSpacing) => {
@@ -220,25 +230,13 @@ let makeNonStackedBars = (data, maxTick, options, barSpacing) => {
   let dataNum = data.length;
   let format = options.hasOwnProperty("scientificNotation") ?
     (options.scientificNotation === true ?
-      i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5)}</span></sup>`:
+      i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5).replace("+", "")}</span></sup>`:
       i => i ) :
     i => i ;
 
-  let defineProp = (property, optProp, displayStr, defaultVal) => {
-    if(options.hasOwnProperty(optProp)) {
-      if(CSS.supports(property, options[optProp])) {
-        return options[optProp];
-      } else {
-        invalidOption(options.Id, displayStr, optProp);
-        return defaultVal;
-      }
-    } else {
-      return defaultVal;
-    }
-  };
-
-  let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white");
-  let barColour = defineProp("background-color", "barColour", "bar colour", "black");
+  let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
+  let dataLabelFontSize = defineProp("font-size", "dataLabelFontSize", "data label font size", "16px", options);
+  let barColour = defineProp("background-color", "barColour", "bar colour", "black", options);
   let dataLabelPosition;
 
   if(options.hasOwnProperty("dataLabelPosition")) {
@@ -275,7 +273,7 @@ let makeNonStackedBars = (data, maxTick, options, barSpacing) => {
         </div>`
       );
   }
-  return `<div class="bars">${bars}</div>`;
+  return `<div class="bars" style="font-size: ${dataLabelFontSize}">${bars}</div>`;
 }
 
 let makeBars = (data, maxTick, options, barSpacing) => {
