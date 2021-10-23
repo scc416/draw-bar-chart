@@ -126,6 +126,8 @@ let makeYAxis = (tickInterval, maxTick, options) => {
   let yTick = "";
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
+  let yAxisTitleFontSize = defineProp("font-size", "yAxisTitleFontSize", "y-axis title font size", "24px", options);
+  let yAxisLabelFontSize = defineProp("font-size", "yAxisLabelFontSize", "y-axis label font size", "16px", options);
 
   if(options.hasOwnProperty("scientificNotation")) {
     if(options.scientificNotation === true) {
@@ -141,9 +143,9 @@ let makeYAxis = (tickInterval, maxTick, options) => {
   }
 
   if(options.hasOwnProperty("yAxisTitle")) {
-    yAxisTitle = `<div class="y-axis-title">${options.yAxisTitle +  yAxisTitle}`;
+    yAxisTitle = `<div class="y-axis-title" style="font-size: ${yAxisTitleFontSize}">${options.yAxisTitle +  yAxisTitle}`;
   } else {
-    yAxisTitle = `<div class="y-axis-title">${yAxisTitle}`
+    yAxisTitle = `<div class="y-axis-title style="font-size: ${yAxisTitleFontSize}">${yAxisTitle}`
   }
 
   let decimals = countDecimals(tickInterval);
@@ -154,7 +156,7 @@ let makeYAxis = (tickInterval, maxTick, options) => {
   }
 
   yTick = `<div class="y-tick" >${yTick}</div>`;
-  yAxisLabel = `<div class="y-axis-label">${yAxisLabel}</div>`;
+  yAxisLabel = `<div class="y-axis-label" style="font-size: ${yAxisLabelFontSize}">${yAxisLabel}</div>`;
 
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel + yTick}</div>`;
 }
