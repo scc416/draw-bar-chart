@@ -5,8 +5,8 @@
 // what to do when there is no input from the options
 // add comments
 // for negative values
-// for value < 1
 // check height & weight of option
+// make notes
 
 let powerOfTen = (num) => {
   let result = 1;
@@ -269,41 +269,92 @@ let setUserSelect = (options, element) => {
   }
 }
 
+let dataChecker = (data) => {
+  if(!Array.isArray(data)) {
+    console.log("ALERT: Data input is not an array.");
+    return false;
+  }
+  if(!Array.isArray(data[0])) {
+    console.log("ALERT: Data set is not an array.");
+    return false;
+  }
+  if(!Array.isArray(data[1])) {
+    console.log("ALERT: Label set is not an array.");
+    return false;
+  }
+  if(data[0].length !== data[1].length) {
+    console.log("ALERT: Number of data doesn't match with number of label");
+    return false;
+  }
+  if(typeof data[0][0] === "number") {
+    for(let val of data[0]) {
+      if(typeof val !== "number") {
+        console.log("ALERT: One of the value is not number.");
+        return false;
+      }
+    }
+  } else if (Array.isArray(data[0][0])) {
+    for(let arr of data[0]) {
+      if(!Array.isArray(arr)) {
+        console.log("ALERT: One of the value set is not an array.");
+        return false;
+      }
+      for(let data of arr) {
+        if(typeof data !== "number") {
+          console.log("ALERT: One of the value is not number.");
+          return false;
+        }
+      }
+    }
+  } else {
+    console.log("ALERT: One of the value is not number.");
+    return false;
+  }
+  return true;
+}
+
 // top-level function
 let drawBarChart = (data, options, element) => {
 
-  //check if the bar chart has an id
-  checkId(options);
+  if(dataChecker(data)) {
 
-  //make title Div
-  let chartTitleDiv = makeTitleDiv(options);
+    //check if the bar chart has an id
+    checkId(options);
 
-  //the maximum value in data
-  let maxVal = Math.max(...data[0]);
+    //make title Div
+    let chartTitleDiv = makeTitleDiv(options);
 
-  //find the tick interval and value of the maximum tick
-  let [tickInterval, maxTick] = findTicks(options, maxVal);
+    //the maximum value in data
+    let maxVal = Math.max(...data[0]);
 
-  //make div for the ticks and labels on y-axis
-  let yAxis = makeYAxis(tickInterval, maxTick, options);
+    //find the tick interval and value of the maximum tick
+    let [tickInterval, maxTick] = findTicks(options, maxVal);
 
-  let barSpacing = defineBarSpacing(options);
+    //make div for the ticks and labels on y-axis
+    let yAxis = makeYAxis(tickInterval, maxTick, options);
 
-  //plot the bar graph with value in parameter "data"
-  let bars = makeBars(data[0], maxTick, options, barSpacing);
+    let barSpacing = defineBarSpacing(options);
 
-  //label the x axis
-  let xAxis = makeXAxis(data[1], options, barSpacing);
+    //plot the bar graph with value in parameter "data"
+    let bars = makeBars(data[0], maxTick, options, barSpacing);
 
-  //html of the whole chard
-  let chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;
+    //label the x axis
+    let xAxis = makeXAxis(data[1], options, barSpacing);
 
-  $( document ).ready(function() {
-    element.html(chart);
-    setWidthHeight(options, element);
-    setUserSelect(options, element);
+    //html of the whole chard
+    let chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;
+
     $( document ).ready(function() {
-      $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-axis-${options.Id}` ).width()}px`);
+      element.html(chart);
+      setWidthHeight(options, element);
+      setUserSelect(options, element);
+      $( document ).ready(function() {
+        $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-axis-${options.Id}` ).width()}px`);
+      });
     });
+} else {
+  $( document ).ready(function() {
+    element.html("There is problem with the data. Please see web console.");
   });
+}
 };
