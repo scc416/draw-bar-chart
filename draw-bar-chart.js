@@ -1,7 +1,6 @@
 //to-do list
-//stacked - bar/label colour check
-//refractor
-//more options
+// stacked - dataLabelColour, dataLabelFontSize, barColour, background gradient line
+// refractor
 // extra flare with things like CSS transitions and animations
 // what to do when there is no input from the options
 // add comments
@@ -223,18 +222,26 @@ let makeYAxis = (tickInterval, maxTick, minTick, options, dataNum) => {
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel}</div>`;
 }
 
-let makeStackedBars = (data, maxTick, minTick, options, barSpacing) => {
-  let bars = "";
+let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
+  let difference = maxTick - minTick;
+  let posBars = "";
+  let negBars = "";
   let dataNum = data.length;
+  data = data.map(arr => [arr.filter(x => x < 0), arr.filter(x => x >= 0)]);
+
   let format = options.hasOwnProperty("scientificNotation") ?
     (options.scientificNotation === true ?
-      i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5).replace("+", "")}</span></sup>`:
+      (i) => {
+        let exp = i.toExponential(2);
+        let index = exp.indexOf("e");
+        return `${exp.slice(0, index)}x10<sup><span class="sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`
+    }:
       i => i ) :
     i => i ;
 
   let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
   let dataLabelFontSize = defineProp("font-size", "dataLabelFontSize", "data label font size", "16px", options);
-  let barColour = options.barColour;
+  let barColour = defineProp("background-color", "barColour", "bar colour", "black", options);
   let dataLabelPosition;
 
   if(options.hasOwnProperty("dataLabelPosition")) {
@@ -255,43 +262,220 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing) => {
   } else {
     dataLabelPosition = "flex-start";
   }
+
+  //   for(let arr of data) {
+//     let bar = "";
+//     let length = arr.length;
+//     let lastVal = arr[length - 1];
+//     for(let i = length - 1; i >= 0; i--) {
+//       let val = i === 0 ? arr[0] : arr[i] - arr[i-1];
+//       bar +=
+//         (`<div
+//           class="bar"
+//           style="
+//             align-items: ${dataLabelPosition};
+//             height: ${val * 100 / lastVal}%;
+//             background-color: ${barColour[i]}; ">
+//               ${format(arr[i])}
+//           </div>`
+//         );
+//     }
+//     bar = `<div
+//     class = "bar stacked-bar pos-bar"
+//     style="
+//       color: ${dataLabelColour};
+//       height: ${100 * lastVal / maxTick}%;
+//       width: ${100/dataNum}%;
+//       margin: 0 ${barSpacing};
+//       ">
+//       ${bar}
+//     </div>`
+//     bars += bar;
+//   }
+
   for(let arr of data) {
-    let bar = "";
-    let length = arr.length;
-    let lastVal = arr[length - 1];
-    for(let i = length - 1; i >= 0; i--) {
-      let val = i === 0 ? arr[0] : arr[i] - arr[i-1];
-      bar +=
-        (`<div
+    let posBar = "";
+    let posLength = arr[1].length;
+    let negBar = "";
+    let negLength = arr[0].length;
+    let maxVal = posLength > 0 ? arr[1][posLength - 1] : 0;
+    let minVal = negLength > 0 ? arr[0][0] : 0;
+    if(posLength > 0) {
+      let posArr = arr[1];
+      for(let i = posLength - 1; i >= 0; i--) {
+        let val = i === 0 ? posArr[0] : posArr[i] - posArr[i-1];
+        posBar +=`<div
           class="bar"
           style="
             align-items: ${dataLabelPosition};
-            height: ${val * 100 / lastVal}%;
-            background-color: ${barColour[i]}; ">
-              ${format(arr[i])}
+            height: ${val * 100 / maxVal}%;
+            background-color: ${barColour}; ">
+              ${format(posArr[i])}
           </div>`
-        );
-    }
-    bar = `<div
-    class = "stacked-bar"
-    style="
-      color: ${dataLabelColour};
-      height: ${100 * lastVal / maxTick}%;
-      width: ${100/dataNum}%;
-      margin: 0 ${barSpacing};
-      ">
-      ${bar}
+      }
+    } else {
+      posBar = `<div class="bar"
+      style="
+        width: ${100/dataNum}%;
+        margin: 0 ${barSpacing}">
     </div>`
-    bars += bar;
+    }
+
+    if(negLength > 0) {
+      let negArr = arr[0];
+      for(let i = 0; i < negLength; i++) {
+        let val = i === negLength - 1 ? negArr[negLength - 1] : negArr[i-1] - negArr[i];
+        negBar +=
+          (`<div
+            class="bar"
+            style="
+              align-items: ${dataLabelPosition};
+              height: ${val * 100 / minVal}%;
+              background-color: ${barColour}; ">
+                ${format(arr[0][i])}
+            </div>`
+          );
+      }
+    } else {
+      negBar = `<div class="bar"
+      style="
+        width: ${100/dataNum}%;
+        margin: 0 ${barSpacing}">
+    </div>`
+    }
+      negBars += `<div
+          class = "bar stacked-bar pos-bar"
+          style="
+            color: ${dataLabelColour};
+            height: ${100 * minVal / minTick}%;
+            width: ${100/dataNum}%;
+            margin: 0 ${barSpacing};
+            ">
+            ${negBar}
+          </div>`
+      posBars += `<div
+          class = "bar stacked-bar pos-bar"
+          style="
+            color: ${dataLabelColour};
+            height: ${100 * maxVal / maxTick}%;
+            width: ${100/dataNum}%;
+            margin: 0 ${barSpacing};
+            ">
+            ${posBar}
+          </div>`
+
+    //       bar +=
+//         (`<div
+//           class="bar"
+//           style="
+//             align-items: ${dataLabelPosition};
+//             height: ${val * 100 / lastVal}%;
+//             background-color: ${barColour[i]}; ">
+//               ${format(arr[i])}
+//           </div>`
+//         );
+//     }
+//     bar = `<div
+//     class = "bar stacked-bar pos-bar"
+//     style="
+//       color: ${dataLabelColour};
+//       height: ${100 * lastVal / maxTick}%;
+//       width: ${100/dataNum}%;
+//       margin: 0 ${barSpacing};
+//       ">
+//       ${bar}
+//     </div>`
+//     bars += bar;
   }
-  return `<div class="bars" style="font-size: ${dataLabelFontSize}">${bars}</div>`;
+  return `<div class="chart-content" style="
+  font-size: ${dataLabelFontSize};
+  background-image: repeating-linear-gradient(
+    to top,
+    grey 0px,
+    grey 1px,
+    transparent 1px,
+    transparent ${100/(difference/tickInterval)}%
+    "><div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
 }
+
+//   let bars = "";
+//   let dataNum = data.length;
+//   let format = options.hasOwnProperty("scientificNotation") ?
+//     (options.scientificNotation === true ?
+//       i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5).replace("+", "")}</span></sup>`:
+//       i => i ) :
+//     i => i ;
+//   let difference = maxTick - minTick;
+
+//   let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
+//   let dataLabelFontSize = defineProp("font-size", "dataLabelFontSize", "data label font size", "16px", options);
+//   let barColour = options.barColour;
+//   let dataLabelPosition;
+
+//   if(options.hasOwnProperty("dataLabelPosition")) {
+//     switch(options.dataLabelPosition) {
+//       case "top":
+//         dataLabelPosition = "flex-start";
+//         break;
+//       case "centre":
+//         dataLabelPosition = "center";
+//         break;
+//       case "bottom":
+//         dataLabelPosition = "flex-end";
+//         break;
+//       default:
+//         dataLabelPosition = "flex-start";
+//         invalidOption(options.Id, "data label position", "dataLabelPosition");
+//     }
+//   } else {
+//     dataLabelPosition = "flex-start";
+//   }
+//   for(let arr of data) {
+//     let bar = "";
+//     let length = arr.length;
+//     let lastVal = arr[length - 1];
+//     for(let i = length - 1; i >= 0; i--) {
+//       let val = i === 0 ? arr[0] : arr[i] - arr[i-1];
+//       bar +=
+//         (`<div
+//           class="bar"
+//           style="
+//             align-items: ${dataLabelPosition};
+//             height: ${val * 100 / lastVal}%;
+//             background-color: ${barColour[i]}; ">
+//               ${format(arr[i])}
+//           </div>`
+//         );
+//     }
+//     bar = `<div
+//     class = "bar stacked-bar pos-bar"
+//     style="
+//       color: ${dataLabelColour};
+//       height: ${100 * lastVal / maxTick}%;
+//       width: ${100/dataNum}%;
+//       margin: 0 ${barSpacing};
+//       ">
+//       ${bar}
+//     </div>`
+//     bars += bar;
+//   }
+//   return `<div class="bars"
+//   style="font-size: ${dataLabelFontSize};
+//     background-image: repeating-linear-gradient(
+//     to top,
+//     grey 0px,
+//     grey 1px,
+//     transparent 1px,
+//     transparent ${100/(difference/tickInterval)}%"
+//     ><div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
+// }
 
 let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
   let difference = maxTick - minTick;
   let posBars = "";
   let negBars = "";
   let dataNum = data.length;
+  console.log(minTick);
 
   let format = options.hasOwnProperty("scientificNotation") ?
     (options.scientificNotation === true ?
@@ -375,18 +559,20 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
     }
 
   }
-  return `<div class="chart-content" style="background-image: repeating-linear-gradient(
+  return `<div class="chart-content" style="
+  font-size: ${dataLabelFontSize};
+  background-image: repeating-linear-gradient(
     to top,
     grey 0px,
     grey 1px,
     transparent 1px,
     transparent ${100/(difference/tickInterval)}%
-    "><div class="bars pos-bars" style="font-size: ${dataLabelFontSize}; height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="font-size: ${dataLabelFontSize} ; height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
+    "><div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
 }
 
 let makeBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
   if(Array.isArray(data[0])) {
-    return makeStackedBars(data, maxTick, minTick, options, barSpacing);
+    return makeStackedBars(data, maxTick, minTick, options, barSpacing, tickInterval);
   } else {
     return makeNonStackedBars(data, maxTick, minTick, options, barSpacing, tickInterval);
   }

@@ -18,7 +18,7 @@
     <script>
       drawBarChart(
         [
-          [1, -4, 6, 5],
+          [[-1, 1, 2], [-3, 0, 2], [1, 2, 6], [-1,2,3]],
           // [1, 2, 3, 4, 5, 6, 7],
           ["very very very very very very very very very long value", "value1", "value2", "5"]
         ],
@@ -35,14 +35,14 @@
           xAxisTitle: "this is x-axis",
           xAxisTitleFontSize: "24px",
           xAxisLabelFontSize: "16px",
-          dataLabelPosition: "top", // option: top, centre or bottom (of the bar)
+          dataLabelPosition: "centre", // option: top, centre or bottom (of the bar)
           dataLabelColour: "white",
           dataLabelFontSize: "16px",
-          barColour: ["orange", "red", "green"],
+          barColour: "green",
           barSpacing: "15px",
           userSelect: false,
-          // minTickVal: 1,
-          scientificNotation: true
+          minTickVal: "1",
+          scientificNotation: false
         },
         $( "#test" )
         );

@@ -75,6 +75,7 @@
   display: flex;
   justify-content: flex-end;
   flex-direction: column;
+  width: 100%;
 }
 
 .x-axis {
@@ -92,10 +93,6 @@
 
 .sup {
   vertical-align: super;
-}
-
-.stacked-bar {
-  width: 100%;
 }
 
 .chart-content {
