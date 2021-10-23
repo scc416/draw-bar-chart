@@ -1,5 +1,5 @@
 //to-do list
-// stacked - dataLabelColour, dataLabelFontSize, barColour, background gradient line
+// stacked - dataLabelColour, barColour
 // refractor
 // extra flare with things like CSS transitions and animations
 // what to do when there is no input from the options
@@ -86,88 +86,44 @@ let makeTitleDiv = (options) => {
 let findTicks = (options, maxVal, minVal) => {
 
   let tickInterval;
+  let difference = maxVal - minVal;
 
-  if(minVal >= 0) {
-    let defaultInterval = () => {
-      let pow = 0;
-      if(maxVal >= 1) {
-        for( ; maxVal > powerOfTen(pow); pow++) {
-        }
-        pow--;
-      } else {
-        for( ; maxVal <= powerOfTen(pow); pow--) {
-        }
+  let defaultInterval = () => {
+    let pow = 0;
+    if(difference >= 1) {
+      for( ; difference > powerOfTen(pow); pow++) {
       }
-      return powerOfTen(pow);
+      pow--;
+    } else {
+      for( ; difference <= powerOfTen(pow); pow--) {
+      }
     }
+    return powerOfTen(pow);
+  }
 
-    if(options.hasOwnProperty("minTickVal")) {
-      if(isNumber(options.minTickVal)) {
-        tickInterval = options.minTickVal;
-      } else {
-        tickInterval = defaultInterval();
-        invalidOption(options.Id, "tick interval", "minTickVal");
-      }
+  if(options.hasOwnProperty("minTickVal")) {
+    if(isNumber(options.minTickVal)) {
+      tickInterval = options.minTickVal;
     } else {
       tickInterval = defaultInterval();
+      invalidOption(options.Id, "tick interval", "minTickVal");
     }
+  } else {
+    tickInterval = defaultInterval();
+  }
+
+  if(minVal >= 0) {
 
     let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
 
     return [tickInterval, maxTick, 0];
-  } else if (maxVal <= 0) {
-    let defaultInterval = () => {
-      let pow = 0;
-      if(minVal <= -1) {
-        for( ; minVal < -powerOfTen(pow); pow++) {
-        }
-        pow--;
-      } else {
-        for( ; minVal > -powerOfTen(pow); pow--) {
-        }
-      }
-      return powerOfTen(pow);
-    }
 
-    if(options.hasOwnProperty("minTickVal")) {
-      if(isNumber(options.minTickVal)) {
-        tickInterval = options.minTickVal;
-      } else {
-        tickInterval = defaultInterval();
-        invalidOption(options.Id, "tick interval", "minTickVal");
-      }
-    } else {
-      tickInterval = defaultInterval();
-    }
+  } else if (maxVal <= 0) {
 
     let minTick = Math.floor(minVal/tickInterval) * tickInterval;
 
     return [tickInterval, 0, minTick];
   } else {
-    let difference = maxVal - minVal;
-    let defaultInterval = () => {
-      let pow = 0;
-      if(maxVal >= 1) {
-        for( ; difference > powerOfTen(pow); pow++) {
-        }
-        pow--;
-      } else {
-        for( ; difference <= powerOfTen(pow); pow--) {
-        }
-      }
-      return powerOfTen(pow);
-    }
-
-    if(options.hasOwnProperty("minTickVal")) {
-      if(isNumber(options.minTickVal)) {
-        tickInterval = options.minTickVal;
-      } else {
-        tickInterval = defaultInterval();
-        invalidOption(options.Id, "tick interval", "minTickVal");
-      }
-    } else {
-      tickInterval = defaultInterval();
-    }
 
     let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
     let minTick = Math.floor(minVal/tickInterval) * tickInterval;
@@ -263,36 +219,6 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     dataLabelPosition = "flex-start";
   }
 
-  //   for(let arr of data) {
-//     let bar = "";
-//     let length = arr.length;
-//     let lastVal = arr[length - 1];
-//     for(let i = length - 1; i >= 0; i--) {
-//       let val = i === 0 ? arr[0] : arr[i] - arr[i-1];
-//       bar +=
-//         (`<div
-//           class="bar"
-//           style="
-//             align-items: ${dataLabelPosition};
-//             height: ${val * 100 / lastVal}%;
-//             background-color: ${barColour[i]}; ">
-//               ${format(arr[i])}
-//           </div>`
-//         );
-//     }
-//     bar = `<div
-//     class = "bar stacked-bar pos-bar"
-//     style="
-//       color: ${dataLabelColour};
-//       height: ${100 * lastVal / maxTick}%;
-//       width: ${100/dataNum}%;
-//       margin: 0 ${barSpacing};
-//       ">
-//       ${bar}
-//     </div>`
-//     bars += bar;
-//   }
-
   for(let arr of data) {
     let posBar = "";
     let posLength = arr[1].length;
@@ -363,29 +289,6 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
             ">
             ${posBar}
           </div>`
-
-    //       bar +=
-//         (`<div
-//           class="bar"
-//           style="
-//             align-items: ${dataLabelPosition};
-//             height: ${val * 100 / lastVal}%;
-//             background-color: ${barColour[i]}; ">
-//               ${format(arr[i])}
-//           </div>`
-//         );
-//     }
-//     bar = `<div
-//     class = "bar stacked-bar pos-bar"
-//     style="
-//       color: ${dataLabelColour};
-//       height: ${100 * lastVal / maxTick}%;
-//       width: ${100/dataNum}%;
-//       margin: 0 ${barSpacing};
-//       ">
-//       ${bar}
-//     </div>`
-//     bars += bar;
   }
   return `<div class="chart-content" style="
   font-size: ${dataLabelFontSize};
@@ -397,78 +300,6 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     transparent ${100/(difference/tickInterval)}%
     "><div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
 }
-
-//   let bars = "";
-//   let dataNum = data.length;
-//   let format = options.hasOwnProperty("scientificNotation") ?
-//     (options.scientificNotation === true ?
-//       i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5).replace("+", "")}</span></sup>`:
-//       i => i ) :
-//     i => i ;
-//   let difference = maxTick - minTick;
-
-//   let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
-//   let dataLabelFontSize = defineProp("font-size", "dataLabelFontSize", "data label font size", "16px", options);
-//   let barColour = options.barColour;
-//   let dataLabelPosition;
-
-//   if(options.hasOwnProperty("dataLabelPosition")) {
-//     switch(options.dataLabelPosition) {
-//       case "top":
-//         dataLabelPosition = "flex-start";
-//         break;
-//       case "centre":
-//         dataLabelPosition = "center";
-//         break;
-//       case "bottom":
-//         dataLabelPosition = "flex-end";
-//         break;
-//       default:
-//         dataLabelPosition = "flex-start";
-//         invalidOption(options.Id, "data label position", "dataLabelPosition");
-//     }
-//   } else {
-//     dataLabelPosition = "flex-start";
-//   }
-//   for(let arr of data) {
-//     let bar = "";
-//     let length = arr.length;
-//     let lastVal = arr[length - 1];
-//     for(let i = length - 1; i >= 0; i--) {
-//       let val = i === 0 ? arr[0] : arr[i] - arr[i-1];
-//       bar +=
-//         (`<div
-//           class="bar"
-//           style="
-//             align-items: ${dataLabelPosition};
-//             height: ${val * 100 / lastVal}%;
-//             background-color: ${barColour[i]}; ">
-//               ${format(arr[i])}
-//           </div>`
-//         );
-//     }
-//     bar = `<div
-//     class = "bar stacked-bar pos-bar"
-//     style="
-//       color: ${dataLabelColour};
-//       height: ${100 * lastVal / maxTick}%;
-//       width: ${100/dataNum}%;
-//       margin: 0 ${barSpacing};
-//       ">
-//       ${bar}
-//     </div>`
-//     bars += bar;
-//   }
-//   return `<div class="bars"
-//   style="font-size: ${dataLabelFontSize};
-//     background-image: repeating-linear-gradient(
-//     to top,
-//     grey 0px,
-//     grey 1px,
-//     transparent 1px,
-//     transparent ${100/(difference/tickInterval)}%"
-//     ><div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
-// }
 
 let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
   let difference = maxTick - minTick;
@@ -735,7 +566,7 @@ let drawBarChart = (data, options, element) => {
       setWidthHeight(options, element);
       setUserSelect(options, element);
       $( document ).ready(function() {
-        $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-axis-${options.Id}` ).width()}px`);
+        $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-axis-${options.Id}` ).outerWidth(true)}px`);
       });
     });
 } else {

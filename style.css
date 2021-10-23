@@ -64,6 +64,7 @@
 
 .pos-bars {
   align-items: flex-end;
+  border-bottom: 2px black solid;
 }
 
 .bar {
