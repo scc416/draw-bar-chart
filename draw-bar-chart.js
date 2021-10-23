@@ -183,7 +183,7 @@ let countDecimals = (val) => {
   return val.toString().split(".")[1].length || 0;
 }
 
-let makeYAxis = (tickInterval, maxTick, minTick, options) => {
+let makeYAxis = (tickInterval, maxTick, minTick, options, dataNum) => {
   let yTick = "";
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
@@ -208,19 +208,19 @@ let makeYAxis = (tickInterval, maxTick, minTick, options) => {
   } else {
     yAxisTitle = `<div class="y-axis-title style="font-size: ${yAxisTitleFontSize}">${yAxisTitle}`
   }
-
+2
   let decimals = countDecimals(tickInterval);
   let max = maxTick / tickInterval;
   let min = minTick / tickInterval;
   for(let i = min; i <= max; i ++) {
-    yTick += `<div style="border-bottom: 1px black solid"></div>`;
+    yTick += `<div class="tick"></div>`;
     yAxisLabel += `<div style="height: 0">${(i * tickInterval).toFixed(decimals)}</div>`;
   }
 
-  yTick = `<div class="y-tick" >${yTick}</div>`;
+  yTick = `<div class="y-tick">${yTick}</div>`;
   yAxisLabel = `<div class="y-axis-label" style="font-size: ${yAxisLabelFontSize}">${yAxisLabel}</div>`;
 
-  return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel + yTick}</div>`;
+  return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel}</div>`;
 }
 
 let makeStackedBars = (data, maxTick, minTick, options, barSpacing) => {
@@ -231,8 +231,6 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing) => {
       i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5).replace("+", "")}</span></sup>`:
       i => i ) :
     i => i ;
-
-
 
   let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
   let dataLabelFontSize = defineProp("font-size", "dataLabelFontSize", "data label font size", "16px", options);
@@ -289,7 +287,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing) => {
   return `<div class="bars" style="font-size: ${dataLabelFontSize}">${bars}</div>`;
 }
 
-let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing) => {
+let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
   let difference = maxTick - minTick;
   let posBars = "";
   let negBars = "";
@@ -377,14 +375,20 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing) => {
     }
 
   }
-  return `<div style="display: flex; flex-direction: column; height: 100%; width: 100%;"><div class="bars" style="font-size: ${dataLabelFontSize}; height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="font-size: ${dataLabelFontSize} ; height: ${-100 * minTick/difference}%; align-items: flex-start; border: none;">${negBars}</div></div>`;
+  return `<div class="chart-content" style="background-image: repeating-linear-gradient(
+    to top,
+    grey 0px,
+    grey 1px,
+    transparent 1px,
+    transparent ${100/(difference/tickInterval)}%
+    "><div class="bars pos-bars" style="font-size: ${dataLabelFontSize}; height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="font-size: ${dataLabelFontSize} ; height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
 }
 
-let makeBars = (data, maxTick, minTick, options, barSpacing) => {
+let makeBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
   if(Array.isArray(data[0])) {
     return makeStackedBars(data, maxTick, minTick, options, barSpacing);
   } else {
-    return makeNonStackedBars(data, maxTick, minTick, options, barSpacing);
+    return makeNonStackedBars(data, maxTick, minTick, options, barSpacing, tickInterval);
   }
 }
 
@@ -525,17 +529,14 @@ let drawBarChart = (data, options, element) => {
 
     //find the tick interval and value of the maximum tick
     let [tickInterval, maxTick, minTick] = findTicks(options, maxVal, minVal);
-    console.log(tickInterval);
-    console.log(maxTick);
-    console.log(minTick);
 
     //make div for the ticks and labels on y-axis
-    let yAxis = makeYAxis(tickInterval, maxTick, minTick, options);
+    let yAxis = makeYAxis(tickInterval, maxTick, minTick, options, (maxTick - minTick)/tickInterval);
 
     let barSpacing = defineBarSpacing(options);
 
     //plot the bar graph with value in parameter "data"
-    let bars = makeBars(data[0], maxTick, minTick, options, barSpacing);
+    let bars = makeBars(data[0], maxTick, minTick, options, barSpacing, tickInterval);
 
     //label the x axis
     let xAxis = makeXAxis(data[1], options, barSpacing);

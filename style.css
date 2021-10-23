@@ -21,10 +21,15 @@
 }
 
 .y-tick {
-  border-right: 1px black solid;
   display: flex;
   flex-direction: column-reverse;
   justify-content: space-between;
+  width: 10px;
+}
+
+.tick {
+  background-color: grey;
+  height: 0.5px;
   width: 10px;
 }
 
@@ -33,11 +38,13 @@
   flex-direction: column-reverse;
   justify-content: space-between;
   text-align: right;
+
 }
 
 .y-axis {
   height: 100%;
   display: flex;
+  margin-right: min(10%, 5px);
 }
 
 .y-axis-title {
@@ -50,11 +57,13 @@
 }
 
 .bars {
-  border-bottom: 1px black solid;
   display: flex;
-  align-items: flex-end;
   width: 100%;
   height: 100%;
+}
+
+.pos-bars {
+  align-items: flex-end;
 }
 
 .bar {
@@ -87,4 +96,14 @@
 
 .stacked-bar {
   width: 100%;
+}
+
+.chart-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  border-right: 1px black solid;
+  border-left: 1px black solid;
+  border-top: 1px grey solid;
 }
