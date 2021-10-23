@@ -84,37 +84,98 @@ let makeTitleDiv = (options) => {
 };
 
 // the function that find the value of tick and largest value of the tick
-let findTicks = (options, maxVal) => {
+let findTicks = (options, maxVal, minVal) => {
 
   let tickInterval;
 
-  let defaultInterval = () => {
-    let pow = 0;
-    if(maxVal >= 1) {
-      for( ; maxVal > powerOfTen(pow); pow++) {
+  if(minVal >= 0) {
+    let defaultInterval = () => {
+      let pow = 0;
+      if(maxVal >= 1) {
+        for( ; maxVal > powerOfTen(pow); pow++) {
+        }
+        pow--;
+      } else {
+        for( ; maxVal <= powerOfTen(pow); pow--) {
+        }
       }
-      pow--;
-    } else {
-      for( ; maxVal <= powerOfTen(pow); pow--) {
-      }
+      return powerOfTen(pow);
     }
-    return powerOfTen(pow);
-  }
 
-  if(options.hasOwnProperty("minTickVal")) {
-    if(isNumber(options.minTickVal)) {
-      tickInterval = options.minTickVal;
+    if(options.hasOwnProperty("minTickVal")) {
+      if(isNumber(options.minTickVal)) {
+        tickInterval = options.minTickVal;
+      } else {
+        tickInterval = defaultInterval();
+        invalidOption(options.Id, "tick interval", "minTickVal");
+      }
     } else {
       tickInterval = defaultInterval();
-      invalidOption(options.Id, "tick interval", "minTickVal");
     }
+
+    let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
+
+    return [tickInterval, maxTick, 0];
+  } else if (maxVal <= 0) {
+    let defaultInterval = () => {
+      let pow = 0;
+      if(minVal <= -1) {
+        for( ; minVal < -powerOfTen(pow); pow++) {
+        }
+        pow--;
+      } else {
+        for( ; minVal > -powerOfTen(pow); pow--) {
+        }
+      }
+      return powerOfTen(pow);
+    }
+
+    if(options.hasOwnProperty("minTickVal")) {
+      if(isNumber(options.minTickVal)) {
+        tickInterval = options.minTickVal;
+      } else {
+        tickInterval = defaultInterval();
+        invalidOption(options.Id, "tick interval", "minTickVal");
+      }
+    } else {
+      tickInterval = defaultInterval();
+    }
+
+    let minTick = Math.floor(minVal/tickInterval) * tickInterval;
+
+    return [tickInterval, 0, minTick];
   } else {
-    tickInterval = defaultInterval();
+    let difference = maxVal - minVal;
+    let defaultInterval = () => {
+      let pow = 0;
+      if(maxVal >= 1) {
+        for( ; difference > powerOfTen(pow); pow++) {
+        }
+        pow--;
+      } else {
+        for( ; difference <= powerOfTen(pow); pow--) {
+        }
+      }
+      return powerOfTen(pow);
+    }
+
+    if(options.hasOwnProperty("minTickVal")) {
+      if(isNumber(options.minTickVal)) {
+        tickInterval = options.minTickVal;
+      } else {
+        tickInterval = defaultInterval();
+        invalidOption(options.Id, "tick interval", "minTickVal");
+      }
+    } else {
+      tickInterval = defaultInterval();
+    }
+
+    let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
+    let minTick = Math.floor(minVal/tickInterval) * tickInterval;
+
+    return [tickInterval, maxTick, minTick];
   }
 
-  let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
-
-  return [tickInterval, maxTick];
 }
 
 let countDecimals = (val) => {
@@ -122,7 +183,7 @@ let countDecimals = (val) => {
   return val.toString().split(".")[1].length || 0;
 }
 
-let makeYAxis = (tickInterval, maxTick, options) => {
+let makeYAxis = (tickInterval, maxTick, minTick, options) => {
   let yTick = "";
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
@@ -150,7 +211,8 @@ let makeYAxis = (tickInterval, maxTick, options) => {
 
   let decimals = countDecimals(tickInterval);
   let max = maxTick / tickInterval;
-  for(let i = 0; i <= max; i ++) {
+  let min = minTick / tickInterval;
+  for(let i = min; i <= max; i ++) {
     yTick += `<div style="border-bottom: 1px black solid"></div>`;
     yAxisLabel += `<div style="height: 0">${(i * tickInterval).toFixed(decimals)}</div>`;
   }
@@ -161,7 +223,7 @@ let makeYAxis = (tickInterval, maxTick, options) => {
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel + yTick}</div>`;
 }
 
-let makeStackedBars = (data, maxTick, options, barSpacing) => {
+let makeStackedBars = (data, maxTick, minTick, options, barSpacing) => {
   let bars = "";
   let dataNum = data.length;
   let format = options.hasOwnProperty("scientificNotation") ?
@@ -227,12 +289,19 @@ let makeStackedBars = (data, maxTick, options, barSpacing) => {
   return `<div class="bars" style="font-size: ${dataLabelFontSize}">${bars}</div>`;
 }
 
-let makeNonStackedBars = (data, maxTick, options, barSpacing) => {
-  let bars = "";
+let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing) => {
+  let difference = maxTick - minTick;
+  let posBars = "";
+  let negBars = "";
   let dataNum = data.length;
+
   let format = options.hasOwnProperty("scientificNotation") ?
     (options.scientificNotation === true ?
-      i => `${i.toExponential(2).slice(0, 4)}x10<sup><span class="sup">${i.toExponential(2).slice(5).replace("+", "")}</span></sup>`:
+      (i) => {
+        let exp = i.toExponential(2);
+        let index = exp.indexOf("e");
+        return `${exp.slice(0, index)}x10<sup><span class="sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`
+    }:
       i => i ) :
     i => i ;
 
@@ -261,7 +330,8 @@ let makeNonStackedBars = (data, maxTick, options, barSpacing) => {
   }
 
   for(let val of data) {
-    bars +=
+    if(val > 0) {
+      posBars +=
       (
         `<div class="bar"
           style="
@@ -273,16 +343,48 @@ let makeNonStackedBars = (data, maxTick, options, barSpacing) => {
             margin: 0 ${barSpacing}">
           ${format(val)}
         </div>`
+      )
+      negBars +=
+      (
+        `<div class="bar"
+          style="
+            width: ${100/dataNum}%;
+            margin: 0 ${barSpacing}">
+        </div>`
       );
+    } else {
+      negBars +=
+      (
+        `<div class="bar"
+          style="
+            align-items: ${dataLabelPosition};
+            background-color: ${barColour};
+            color: ${dataLabelColour};
+            height: ${100 * val / minTick}%;
+            width: ${100/dataNum}%;
+            margin: 0 ${barSpacing}">
+          ${format(val)}
+        </div>`
+      );
+      posBars +=
+      (
+        `<div class="bar"
+          style="
+            width: ${100/dataNum}%;
+            margin: 0 ${barSpacing}">
+        </div>`
+      );
+    }
+
   }
-  return `<div class="bars" style="font-size: ${dataLabelFontSize}">${bars}</div>`;
+  return `<div style="display: flex; flex-direction: column; height: 100%; width: 100%;"><div class="bars" style="font-size: ${dataLabelFontSize}; height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="font-size: ${dataLabelFontSize} ; height: ${-100 * minTick/difference}%; align-items: flex-start; border: none;">${negBars}</div></div>`;
 }
 
-let makeBars = (data, maxTick, options, barSpacing) => {
+let makeBars = (data, maxTick, minTick, options, barSpacing) => {
   if(Array.isArray(data[0])) {
-    return makeStackedBars(data, maxTick, options, barSpacing);
+    return makeStackedBars(data, maxTick, minTick, options, barSpacing);
   } else {
-    return makeNonStackedBars(data, maxTick, options, barSpacing);
+    return makeNonStackedBars(data, maxTick, minTick, options, barSpacing);
   }
 }
 
@@ -418,16 +520,22 @@ let drawBarChart = (data, options, element) => {
     //the maximum value in data
     let maxVal = Math.max(...data[0].flat());
 
+    //the minimum value in data
+    let minVal = Math.min(...data[0].flat());
+
     //find the tick interval and value of the maximum tick
-    let [tickInterval, maxTick] = findTicks(options, maxVal);
+    let [tickInterval, maxTick, minTick] = findTicks(options, maxVal, minVal);
+    console.log(tickInterval);
+    console.log(maxTick);
+    console.log(minTick);
 
     //make div for the ticks and labels on y-axis
-    let yAxis = makeYAxis(tickInterval, maxTick, options);
+    let yAxis = makeYAxis(tickInterval, maxTick, minTick, options);
 
     let barSpacing = defineBarSpacing(options);
 
     //plot the bar graph with value in parameter "data"
-    let bars = makeBars(data[0], maxTick, options, barSpacing);
+    let bars = makeBars(data[0], maxTick, minTick, options, barSpacing);
 
     //label the x axis
     let xAxis = makeXAxis(data[1], options, barSpacing);
