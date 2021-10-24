@@ -5,7 +5,7 @@
 // edit readme.md
 // make github pages
 
-//this function is to reaplce function Math.pow, which can be inaccurate, this func
+// this function is to reimplement the function Math.pow(10, num)
 let powerOfTen = (num) => {
   let result = 1;
   if (num > 0) {
@@ -60,39 +60,14 @@ let isNumber = (num) => {
 //function that use the options to create div for the chart title
 let makeTitleDiv = (options) => {
 
-  let titleDiv = "</div>";
-
-  //Set the title text
-  if(options.hasOwnProperty("chartTitle")) {
-    titleDiv = `">` + options.chartTitle + titleDiv;
-  } else {
-    titleDiv = `">Untitled` + titleDiv;
-  }
-
-  //function that add style to titleDiv
-  let addStyle = (property, optProp, displayStr, defaultVal) => {
-    if(options.hasOwnProperty(optProp)) {
-      if(CSS.supports(property, options[optProp])) {
-        titleDiv = `${property}: ${options[optProp]}; ${titleDiv} `;
-      } else {
-        titleDiv = `${property}: ${defaultVal}; ${titleDiv}; `;
-        invalidOption(options.Id, displayStr, optProp);
-      }
-    } else {
-      titleDiv = `${property}: ${defaultVal}; ${titleDiv}; `;
-    }
-  }
-
-  //Set the font size of the title
-  addStyle("font-size", "titleFontSize", "title font size", "36px");
-
-  //Set the color of the title
-  addStyle("color", "titleColour", "title colour", "black");
-
-  return `<div class="chart-title" style="${titleDiv}`;
+  return `<div class="chart-title"
+    style="colour: ${options.titleColour};
+      font-size: ${options.titleFontSize}">
+      ${options.chartTitle}
+    </div>`;
 };
 
-// the function that find the value of tick and largest value of the tick
+// the function that find the value of tick interval, max. and min. tick
 let findTicks = (options, maxVal, minVal) => {
 
   let tickInterval;
@@ -111,6 +86,7 @@ let findTicks = (options, maxVal, minVal) => {
     return powerOfTen(pow);
   }
 
+  //decide on the tickInterval, either default or option given by the user
   if(options.hasOwnProperty("minTickVal")) {
     if(isNumber(options.minTickVal)) {
       tickInterval = options.minTickVal;
@@ -122,17 +98,21 @@ let findTicks = (options, maxVal, minVal) => {
     tickInterval = defaultInterval();
   }
 
+  //if all values are positive
   if(minVal >= 0) {
 
     let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
 
     return [tickInterval, maxTick, 0];
 
+  //if all values are negative
   } else if (maxVal <= 0) {
 
     let minTick = Math.floor(minVal/tickInterval) * tickInterval;
 
     return [tickInterval, 0, minTick];
+
+  // if there are both positive and negative number
   } else {
 
     let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
@@ -148,8 +128,7 @@ let countDecimals = (val) => {
   return val.toString().split(".")[1].length || 0;
 }
 
-
-let makeYAxis = (tickInterval, maxTick, minTick, options, dataNum) => {
+let makeYAxis = (tickInterval, maxTick, minTick, options) => {
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
   let yAxisTitleFontSize = defineProp("font-size", "yAxisTitleFontSize", "y-axis title font size", "24px", options);
@@ -432,7 +411,8 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
     grey 1px,
     transparent 1px,
     transparent ${100/(difference/tickInterval)}%
-    "><div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
+    ">
+    <div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
 }
 
 let makeBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
@@ -443,20 +423,7 @@ let makeBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
   }
 }
 
-let defineBarSpacing = (options, dataNum) => {
-  if(options.hasOwnProperty("barSpacing")) {
-    if(CSS.supports("margin", options.barSpacing)) {
-      let num = parseFloat( options.barSpacing.replace(/\D*/g, "") );
-      let unit = options.barSpacing.replace(/\d*/g, "");
-      return num / 2 + unit;
-    } else {
-      invalidOption(options.Id, "bar spacing", "barSpacing");
-      return 10/(dataNum) + "%" ;
-    }
-  } else {
-    return 10/(dataNum) + "%" ;
-  }
-}
+
 
 let makeXAxis = (labelArr, options, barSpacing) => {
   let xAxis = "";
@@ -506,6 +473,7 @@ let setUserSelect = (options, element) => {
   }
 }
 
+//check if the data all the compulsory options are valid
 let dataChecker = (data, options) => {
   if(!Array.isArray(data)) {
     console.log("ALERT: Data input is not an array.");
@@ -575,6 +543,85 @@ let dataChecker = (data, options) => {
   return true;
 }
 
+
+
+let completeOptions = (options, maxVal, minVal, data) => {
+
+  let checkIfOptionIsValid = (prop, defaultVal, test) => {
+    if(options.hasOwnProperty(prop)) {
+      if(!test(options[prop])) {
+        options[prop] = defaultVal;
+      }
+    } else {
+      options[prop] = defaultVal;
+    }
+  }
+
+  let length = data.length;
+
+  if(typeof data[0] === "number") {
+    options.stacked = false;
+  } else {
+    options.stacked = true;
+  }
+
+  checkIfOptionIsValid("chartTitle", "Untitled", () => true);
+  checkIfOptionIsValid("titleFontSize", "36px", (x) => CSS.supports("font-size", x));
+  checkIfOptionIsValid("titleColour", "black", (x) => CSS.supports("color", x));
+  checkIfOptionIsValid("width", "auto", (x) => CSS.supports("width", x));
+  checkIfOptionIsValid("height", "auto", (x) => CSS.supports("height", x));
+  checkIfOptionIsValid("yAxisTitle", "", () => true);
+  checkIfOptionIsValid("yAxisTitleFontSize", "24px", (x) => CSS.supports("font-size", x));
+  checkIfOptionIsValid("yAxisLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
+  checkIfOptionIsValid("xAxisTitle", "", () => true);
+  checkIfOptionIsValid("xAxisTitleFontSize", "24px", (x) => CSS.supports("font-size", x));
+  checkIfOptionIsValid("xAxisLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
+  checkIfOptionIsValid("dataLabelPosition", "top", (x) => {
+    switch(x) {
+      case "top":
+      case "centre":
+      case "bottom":
+        return true;
+    }
+    return false;
+  })
+  if(options.stacked === false) {
+    checkIfOptionIsValid("barColour", "black", (x) => CSS.supports("color", x));
+  }
+  checkIfOptionIsValid("dataLabelColour", "white", (x) => CSS.supports("color", x));
+  checkIfOptionIsValid("dataLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
+
+  let defineBarSpacing = (options, dataNum) => {
+    if(options.hasOwnProperty("barSpacing")) {
+      if(CSS.supports("margin", options.barSpacing)) {
+        let num = parseFloat( options.barSpacing.replace(/\D*/g, "") );
+        let unit = options.barSpacing.replace(/\d*/g, "");
+        return num / 2 + unit;
+      } else {
+        invalidOption(options.Id, "bar spacing", "barSpacing");
+        return 10/(dataNum) + "%" ;
+      }
+    } else {
+      return 10/(dataNum) + "%" ;
+    }
+  }
+
+  options.barSpacing = defineBarSpacing(options, length);
+
+  checkIfOptionIsValid("userSelect", "false", (x) => typeof x === "boolean");
+  checkIfOptionIsValid("scientificNotation", "false", (x) => typeof x === "boolean");
+  checkIfOptionIsValid("animationEffect", "true", (x) => typeof x === "boolean");
+  checkIfOptionIsValid("hoverEffect", "true", (x) => typeof x === "boolean");
+
+  //find the tick interval and value of the maximum tick
+  let [tickInterval, maxTick, minTick] = findTicks(options, maxVal, minVal);
+  options.tickInterval = tickInterval;
+  options.maxTick = maxTick;
+  options.minTick = minTick;
+
+  return options;
+}
+
 // top-level function
 let drawBarChart = (data, options, element) => {
 
@@ -583,28 +630,26 @@ let drawBarChart = (data, options, element) => {
     //check if the bar chart has an id
     checkId(options);
 
-    //make title Div
-    let chartTitleDiv = makeTitleDiv(options);
-
     //the maximum value in data
     let maxVal = Math.max(...data[0].flat());
 
     //the minimum value in data
     let minVal = Math.min(...data[0].flat());
 
-    //find the tick interval and value of the maximum tick
-    let [tickInterval, maxTick, minTick] = findTicks(options, maxVal, minVal);
+    options = completeOptions(options, maxVal, minVal, data[0]);
+    console.log(options);
 
-    //make div for the ticks and labels on y-axis
-    let yAxis = makeYAxis(tickInterval, maxTick, minTick, options, (maxTick - minTick)/tickInterval);
+    //make title Div
+    let chartTitleDiv = makeTitleDiv(options);
 
-    let barSpacing = defineBarSpacing(options, data[1].length);
+    //make y-axis
+    let yAxis = makeYAxis(options.tickInterval, options.maxTick, options.minTick, options);
 
     //plot the bar graph with value in parameter "data"
-    let bars = makeBars(data[0], maxTick, minTick, options, barSpacing, tickInterval);
+    let bars = makeBars(data[0], options.maxTick, options.minTick, options, options.barSpacing, options.tickInterval);
 
     //label the x axis
-    let xAxis = makeXAxis(data[1], options, barSpacing);
+    let xAxis = makeXAxis(data[1], options, options.barSpacing);
 
     //html of the whole chard
     let chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;
