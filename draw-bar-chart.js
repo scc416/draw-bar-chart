@@ -7,6 +7,7 @@
 // for negative values
 // make notes
 
+//this function is to reaplce function Math.pow, which can be inaccurate, this func
 let powerOfTen = (num) => {
   let result = 1;
   if (num > 0) {
@@ -138,6 +139,7 @@ let countDecimals = (val) => {
   return val.toString().split(".")[1].length || 0;
 }
 
+
 let makeYAxis = (tickInterval, maxTick, minTick, options, dataNum) => {
   let yTick = "";
   let yAxisLabel = "";
@@ -178,26 +180,57 @@ let makeYAxis = (tickInterval, maxTick, minTick, options, dataNum) => {
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel}</div>`;
 }
 
+let formatByOption = (options) => {
+  if(options.hasOwnProperty("scientificNotation")) {
+    if(options.scientificNotation === true) {
+      return (i) => {
+        let exp = i.toExponential(2);
+        let index = exp.indexOf("e");
+        return `${exp.slice(0, index)}x10<sup><span class="sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`
+    }
+    } else if (options.scientificNotation === false) {
+      return i => i;
+    } else {
+      invalidOption(options.Id, "option for scientific notation", "scientificNotation");
+      return i => i;
+    }
+  } else {
+    return i => i;
+  }
+
+
+}
+
 let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
   let difference = maxTick - minTick;
   let posBars = "";
   let negBars = "";
   let dataNum = data.length;
+  let stackedNum = data[0].length;
   data = data.map(arr => [arr.filter(x => x < 0), arr.filter(x => x >= 0)]);
 
-  let format = options.hasOwnProperty("scientificNotation") ?
-    (options.scientificNotation === true ?
-      (i) => {
-        let exp = i.toExponential(2);
-        let index = exp.indexOf("e");
-        return `${exp.slice(0, index)}x10<sup><span class="sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`
-    }:
-      i => i ) :
-    i => i ;
+  let format = formatByOption(options);
 
   let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
   let dataLabelFontSize = defineProp("font-size", "dataLabelFontSize", "data label font size", "16px", options);
-  let barColour = defineProp("background-color", "barColour", "bar colour", "black", options);
+  let barColour = [];
+  if(options.hasOwnProperty("barColour")) {
+    if(Array.isArray(options.barColour)) {
+      for(let colour of options.barColour) {
+        if(CSS.supports("background-color", colour)) {
+          barColour.push(colour);
+        } else {
+          barColour.push("black");
+          invalidOption(options.Id, "bar colour", "barColour");
+        }
+      }
+    }
+  } else {
+    invalidOption(options.Id, "bar colour", "barColour");
+    for(let i = 0; i < stackedNum; i++) {
+      barColour.push("black");
+    }
+  }
   let dataLabelPosition;
 
   if(options.hasOwnProperty("dataLabelPosition")) {
@@ -235,7 +268,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
           style="
             align-items: ${dataLabelPosition};
             height: ${val * 100 / maxVal}%;
-            background-color: ${barColour}; ">
+            background-color: ${barColour[i + negLength]}; ">
               ${format(posArr[i])}
           </div>`
       }
@@ -257,7 +290,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
             style="
               align-items: ${dataLabelPosition};
               height: ${val * 100 / minVal}%;
-              background-color: ${barColour}; ">
+              background-color: ${barColour[i]}; ">
                 ${format(arr[0][i])}
             </div>`
           );
@@ -270,7 +303,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     </div>`
     }
       negBars += `<div
-          class = "bar stacked-bar pos-bar"
+          class = "stacked-bar"
           style="
             color: ${dataLabelColour};
             height: ${100 * minVal / minTick}%;
@@ -280,7 +313,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
             ${negBar}
           </div>`
       posBars += `<div
-          class = "bar stacked-bar pos-bar"
+          class = "bar stacked-bar"
           style="
             color: ${dataLabelColour};
             height: ${100 * maxVal / maxTick}%;
@@ -306,17 +339,8 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
   let posBars = "";
   let negBars = "";
   let dataNum = data.length;
-  console.log(minTick);
 
-  let format = options.hasOwnProperty("scientificNotation") ?
-    (options.scientificNotation === true ?
-      (i) => {
-        let exp = i.toExponential(2);
-        let index = exp.indexOf("e");
-        return `${exp.slice(0, index)}x10<sup><span class="sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`
-    }:
-      i => i ) :
-    i => i ;
+  let format = formatByOption(options);
 
   let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
   let dataLabelFontSize = defineProp("font-size", "dataLabelFontSize", "data label font size", "16px", options);
@@ -398,7 +422,7 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
     grey 1px,
     transparent 1px,
     transparent ${100/(difference/tickInterval)}%
-    "><div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
+    "><div class="bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
 }
 
 let makeBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
@@ -472,7 +496,7 @@ let setUserSelect = (options, element) => {
   }
 }
 
-let dataChecker = (data) => {
+let dataChecker = (data, options) => {
   if(!Array.isArray(data)) {
     console.log("ALERT: Data input is not an array.");
     return false;
@@ -498,6 +522,20 @@ let dataChecker = (data) => {
     }
   } else if (Array.isArray(data[0][0])) {
     let length = data[0][0].length;
+    if(options.hasOwnProperty("barColour")) {
+      if(Array.isArray(options.barColour)) {
+        if(options.barColour.length !== length) {
+          console.log("ALERT: Length of bar colour (barColour) doesn't match with the number of data.");
+          return false;
+        }
+      } else {
+        console.log("ALERT: bar colour (barColour) has to be an array for stacked bar chart");
+        return false;
+      }
+    } else {
+      console.log("ALERT: Options do not have bar colour (barColour).");
+      return false;
+    }
     for(let arr of data[0]) {
       if(arr.length !== length) {
         console.log("ALERT: The value set have different number of data.");
@@ -530,7 +568,7 @@ let dataChecker = (data) => {
 // top-level function
 let drawBarChart = (data, options, element) => {
 
-  if(dataChecker(data)) {
+  if(dataChecker(data, options)) {
 
     //check if the bar chart has an id
     checkId(options);

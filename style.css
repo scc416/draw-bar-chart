@@ -63,8 +63,8 @@
 }
 
 .pos-bars {
-  align-items: flex-end;
   border-bottom: 2px black solid;
+  align-items: flex-end;
 }
 
 .bar {
@@ -74,7 +74,6 @@
 
 .stacked-bar {
   display: flex;
-  justify-content: flex-end;
   flex-direction: column;
   width: 100%;
 }
