@@ -56,6 +56,11 @@
   font-weight: bold;
 }
 
+@keyframes height-change {
+  0% { max-height: 0%; }
+  100% { max-height: 100%; }
+}
+
 .bars {
   display: flex;
   width: 100%;
@@ -67,25 +72,23 @@
   align-items: flex-end;
 }
 
+
 .bar {
   display: flex;
   justify-content: center;
 }
 
-@keyframes height-change {
-  0% { max-height: 0%; }
-  100% { max-height: 100%; }
+.bar-animation {
+  animation-name: height-change;
+  animation-duration: 1s;
+  animation-timing-function: linear;
 }
 
 .stacked-bar {
   display: flex;
   flex-direction: column;
   width: 100%;
-  animation-name: height-change;
-  animation-duration: 1s;
 }
-
-
 
 .x-axis {
   display: flex;

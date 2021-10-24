@@ -282,7 +282,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
             style="
               align-items: ${dataLabelPosition};
               height: ${ val * 100 / minVal }%;
-              background-color: ${barColour[negLength - i - 1]}; ">
+              background-color: ${barColour[i]}; ">
                 <span class="data">${format(arr[0][i])}</span>
             </div>`
           );
@@ -294,7 +294,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     </div>`
     }
       negBars += `<div
-          class = "stacked-bar"
+          class = "stacked-bar bar-animation"
           style="
             color: ${dataLabelColour};
             height: ${100 * minVal / minTick}%;
@@ -304,7 +304,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
             ${negBar}
           </div>`
       posBars += `<div
-          class = "bar stacked-bar"
+          class = "bar stacked-bar bar-animation"
           style="
             color: ${dataLabelColour};
             height: ${100 * maxVal / maxTick}%;
@@ -361,7 +361,7 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
     if(val > 0) {
       posBars +=
       (
-        `<div class="bar info"
+        `<div class="bar info bar-animation"
           style="
             align-items: ${dataLabelPosition};
             background-color: ${barColour};
@@ -383,7 +383,7 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
     } else {
       negBars +=
       (
-        `<div class="bar info"
+        `<div class="bar info bar-animation"
           style="
             align-items: ${dataLabelPosition};
             background-color: ${barColour};
@@ -413,7 +413,7 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
     grey 1px,
     transparent 1px,
     transparent ${100/(difference/tickInterval)}%
-    "><div class="bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
+    "><div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
 }
 
 let makeBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
@@ -481,7 +481,7 @@ let setWidthHeight = (options, element) => {
 
 let setUserSelect = (options, element) => {
   if(options.hasOwnProperty("userSelect")) {
-    if(!options.userSelect){
+    if(options.userSelect){
       element.css("user-select", "auto");
     }
   }
