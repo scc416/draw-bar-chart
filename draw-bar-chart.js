@@ -131,31 +131,25 @@ let countDecimals = (val) => {
 let makeYAxis = (options) => {
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
-  let yAxisLabelFontSize = defineProp("font-size", "yAxisLabelFontSize", "y-axis label font size", "16px", options);
 
   let maxTick = options.maxTick;
   let minTick = options.minTick;
   let tickInterval = options.tickInterval;
-  if(options.hasOwnProperty("scientificNotation")) {
-    if(options.scientificNotation === true) {
-      let exp = options.tickInterval.toExponential(2);
-      let index = exp.indexOf("e");
-      let pow = parseInt(exp.slice(index+1));
-      maxTick /= powerOfTen(pow);
-      minTick /= powerOfTen(pow);
-      tickInterval = parseFloat(exp.slice(0, index));
-      if(pow !== 0) {
-        yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
-      }
-    };
-  }
 
-  if(options.hasOwnProperty("yAxisTitle")) {
-    yAxisTitle = `<div class="y-axis-title" style="font-size: ${options.yAxisTitleFontSize}">${options.yAxisTitle +  yAxisTitle}`;
-  } else {
-    yAxisTitle = `<div class="y-axis-title style="font-size: ${options.yAxisTitleFontSize}">${yAxisTitle}`
-  }
-2
+  if(options.scientificNotation === true) {
+    let exp = options.tickInterval.toExponential(2);
+    let index = exp.indexOf("e");
+    let pow = parseInt(exp.slice(index+1));
+    maxTick /= powerOfTen(pow);
+    minTick /= powerOfTen(pow);
+    tickInterval = parseFloat(exp.slice(0, index));
+    if(pow !== 0) {
+      yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
+    }
+  };
+
+  yAxisTitle = `<div class="y-axis-title" style="font-size: ${options.yAxisTitleFontSize}">${options.yAxisTitle +  yAxisTitle}`;
+
   let decimals = countDecimals(tickInterval);
   let max = maxTick / tickInterval;
   let min = minTick / tickInterval;
@@ -163,7 +157,7 @@ let makeYAxis = (options) => {
     yAxisLabel += `<div style="height: 0">${(i * tickInterval).toFixed(decimals)}</div>`;
   }
 
-  yAxisLabel = `<div class="y-axis-label" style="font-size: ${yAxisLabelFontSize}">${yAxisLabel}</div>`;
+  yAxisLabel = `<div class="y-axis-label" style="font-size: ${options.yAxisLabelFontSize}">${yAxisLabel}</div>`;
 
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel}</div>`;
 }
