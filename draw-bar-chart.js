@@ -290,7 +290,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
             style="
               align-items: ${dataLabelPosition};
               height: ${val * 100 / minVal}%;
-              background-color: ${barColour[i]}; ">
+              background-color: ${barColour[negLength - i - 1]}; ">
                 ${format(arr[0][i])}
             </div>`
           );
