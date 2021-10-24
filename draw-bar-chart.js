@@ -2,7 +2,6 @@
 // refractor
 // extra flare with things like CSS transitions and animations
 // add comments
-// for negative values
 // make notes
 
 //this function is to reaplce function Math.pow, which can be inaccurate, this func
@@ -139,7 +138,6 @@ let countDecimals = (val) => {
 
 
 let makeYAxis = (tickInterval, maxTick, minTick, options, dataNum) => {
-  let yTick = "";
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
   let yAxisTitleFontSize = defineProp("font-size", "yAxisTitleFontSize", "y-axis title font size", "24px", options);
@@ -168,11 +166,9 @@ let makeYAxis = (tickInterval, maxTick, minTick, options, dataNum) => {
   let max = maxTick / tickInterval;
   let min = minTick / tickInterval;
   for(let i = min; i <= max; i ++) {
-    yTick += `<div class="tick"></div>`;
     yAxisLabel += `<div style="height: 0">${(i * tickInterval).toFixed(decimals)}</div>`;
   }
 
-  yTick = `<div class="y-tick">${yTick}</div>`;
   yAxisLabel = `<div class="y-axis-label" style="font-size: ${yAxisLabelFontSize}">${yAxisLabel}</div>`;
 
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel}</div>`;
@@ -273,8 +269,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     } else {
       posBar = `<div class="bar"
       style="
-        width: ${100/dataNum}%;
-        margin: 0 ${barSpacing}">
+        width: ${100/dataNum}%">
     </div>`
     }
 
@@ -296,8 +291,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     } else {
       negBar = `<div class="bar"
       style="
-        width: ${100/dataNum}%;
-        margin: 0 ${barSpacing}">
+        width: ${100/dataNum}%">
     </div>`
     }
       negBars += `<div
