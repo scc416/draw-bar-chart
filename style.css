@@ -72,11 +72,20 @@
   justify-content: center;
 }
 
+@keyframes height-change {
+  0% { max-height: 0%; }
+  100% { max-height: 100%; }
+}
+
 .stacked-bar {
   display: flex;
   flex-direction: column;
   width: 100%;
+  animation-name: height-change;
+  animation-duration: 1s;
 }
+
+
 
 .x-axis {
   display: flex;
@@ -104,3 +113,18 @@
   border-left: 1px black solid;
   border-top: 1px grey solid;
 }
+
+.info:hover {
+  font-weight: bolder;
+}
+
+.data {
+  position: relative;
+  transition: top left 0.1s;
+}
+
+.info:hover .data {
+  top: 2%;
+  left: 4%;
+}
+

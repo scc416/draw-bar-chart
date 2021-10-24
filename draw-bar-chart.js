@@ -1,4 +1,4 @@
-//to-do list
+// to-do list
 // refractor
 // extra flare with things like CSS transitions and animations
 // add comments
@@ -192,7 +192,6 @@ let formatByOption = (options) => {
     return i => i;
   }
 
-
 }
 
 let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
@@ -258,12 +257,12 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
       for(let i = posLength - 1; i >= 0; i--) {
         let val = i === 0 ? posArr[0] : posArr[i] - posArr[i-1];
         posBar +=`<div
-          class="bar"
+          class="bar info"
           style="
             align-items: ${dataLabelPosition};
             height: ${val * 100 / maxVal}%;
             background-color: ${barColour[i + negLength]}; ">
-              ${format(posArr[i])}
+              <span class="data">${format(posArr[i])}</span>
           </div>`
       }
     } else {
@@ -279,12 +278,12 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
         let val = i === negLength - 1 ? negArr[negLength - 1] : negArr[i] - negArr[i+1];
         negBar +=
           (`<div
-            class="bar"
+            class="bar info"
             style="
               align-items: ${dataLabelPosition};
               height: ${ val * 100 / minVal }%;
               background-color: ${barColour[negLength - i - 1]}; ">
-                ${format(arr[0][i])}
+                <span class="data">${format(arr[0][i])}</span>
             </div>`
           );
       }
@@ -362,7 +361,7 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
     if(val > 0) {
       posBars +=
       (
-        `<div class="bar"
+        `<div class="bar info"
           style="
             align-items: ${dataLabelPosition};
             background-color: ${barColour};
@@ -370,7 +369,7 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
             height: ${100 * val / maxTick}%;
             width: ${100/dataNum}%;
             margin: 0 ${barSpacing}">
-          ${format(val)}
+          <span class="data">${format(val)}</span>
         </div>`
       )
       negBars +=
@@ -384,7 +383,7 @@ let makeNonStackedBars = (data, maxTick, minTick, options, barSpacing, tickInter
     } else {
       negBars +=
       (
-        `<div class="bar"
+        `<div class="bar info"
           style="
             align-items: ${dataLabelPosition};
             background-color: ${barColour};
@@ -448,7 +447,7 @@ let makeXAxis = (labelArr, options, barSpacing) => {
 
   //label x-axis
   for(let val of labelArr) {
-    xAxis += (`<div style="width: ${100/dataNum}%; margin: 0 ${barSpacing}">${val}</div>`);
+    xAxis += (`<div class="info" style="width: ${100/dataNum}%; margin: 0 ${barSpacing}">${val}</div>`);
   };
 
   xAxis = `<div class="x-axis" style="font-size: ${xAxisLabelFontSize}"><div id="left-corner-${options.Id}"></div>${xAxis}</div>`
