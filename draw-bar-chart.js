@@ -128,18 +128,21 @@ let countDecimals = (val) => {
   return val.toString().split(".")[1].length || 0;
 }
 
-let makeYAxis = (tickInterval, maxTick, minTick, options) => {
+let makeYAxis = (options) => {
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
-  let yAxisTitleFontSize = defineProp("font-size", "yAxisTitleFontSize", "y-axis title font size", "24px", options);
   let yAxisLabelFontSize = defineProp("font-size", "yAxisLabelFontSize", "y-axis label font size", "16px", options);
 
+  let maxTick = options.maxTick;
+  let minTick = options.minTick;
+  let tickInterval = options.tickInterval;
   if(options.hasOwnProperty("scientificNotation")) {
     if(options.scientificNotation === true) {
-      let exp = tickInterval.toExponential(2);
+      let exp = options.tickInterval.toExponential(2);
       let index = exp.indexOf("e");
       let pow = parseInt(exp.slice(index+1));
       maxTick /= powerOfTen(pow);
+      minTick /= powerOfTen(pow);
       tickInterval = parseFloat(exp.slice(0, index));
       if(pow !== 0) {
         yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
@@ -148,9 +151,9 @@ let makeYAxis = (tickInterval, maxTick, minTick, options) => {
   }
 
   if(options.hasOwnProperty("yAxisTitle")) {
-    yAxisTitle = `<div class="y-axis-title" style="font-size: ${yAxisTitleFontSize}">${options.yAxisTitle +  yAxisTitle}`;
+    yAxisTitle = `<div class="y-axis-title" style="font-size: ${options.yAxisTitleFontSize}">${options.yAxisTitle +  yAxisTitle}`;
   } else {
-    yAxisTitle = `<div class="y-axis-title style="font-size: ${yAxisTitleFontSize}">${yAxisTitle}`
+    yAxisTitle = `<div class="y-axis-title style="font-size: ${options.yAxisTitleFontSize}">${yAxisTitle}`
   }
 2
   let decimals = countDecimals(tickInterval);
@@ -643,7 +646,7 @@ let drawBarChart = (data, options, element) => {
     let chartTitleDiv = makeTitleDiv(options);
 
     //make y-axis
-    let yAxis = makeYAxis(options.tickInterval, options.maxTick, options.minTick, options);
+    let yAxis = makeYAxis(options);
 
     //plot the bar graph with value in parameter "data"
     let bars = makeBars(data[0], options.maxTick, options.minTick, options, options.barSpacing, options.tickInterval);
