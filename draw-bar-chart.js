@@ -1,8 +1,6 @@
 //to-do list
-// stacked - dataLabelColour, barColour
 // refractor
 // extra flare with things like CSS transitions and animations
-// what to do when there is no input from the options
 // add comments
 // for negative values
 // make notes
@@ -282,14 +280,14 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
 
     if(negLength > 0) {
       let negArr = arr[0];
-      for(let i = 0; i < negLength; i++) {
-        let val = i === negLength - 1 ? negArr[negLength - 1] : negArr[i-1] - negArr[i];
+      for(let i = negLength - 1; i >= 0 ; i--) {
+        let val = i === negLength - 1 ? negArr[negLength - 1] : negArr[i] - negArr[i+1];
         negBar +=
           (`<div
             class="bar"
             style="
               align-items: ${dataLabelPosition};
-              height: ${val * 100 / minVal}%;
+              height: ${ val * 100 / minVal }%;
               background-color: ${barColour[negLength - i - 1]}; ">
                 ${format(arr[0][i])}
             </div>`
