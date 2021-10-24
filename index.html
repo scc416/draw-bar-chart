@@ -7,68 +7,88 @@
     <link href="style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div id="test" class="bar-chart">
-      TEST
+    <div id="demo" class="bar-chart">
+      DEMO
     </div>
 
-    <div id="test2" class="bar-chart">
-      TEST
+    <div id="demo2" class="bar-chart">
+      DEMO2
     </div>
 
     <script>
       drawBarChart(
         [
-          [200, -400, -500, 150],
-          // [1, 2, 3, 4, 5, 6, 7],
+          // the first parameter is an array of 2 arrays
+          // the first one is data, the second one is label
+          // data of a bar a number / array of number (stacked bar chart)
+          [[200, 400], [-400,50] , [-500,200] , [-40, 150]],
           ["very very very very very very very very very long value", "value1", "value2", "5"]
         ],
         {
+          // Id is crucial especially when there are multiple bar chart (so the function render to the correct bar chart)
           Id: 1,
-          chartTitle: "this is the title",
-          titleFontSize: "36px",
-          titleColour: "black",
-          width: "90vw",
-          height: "90vh",
-          yAxisTitle: "this is y-axis",
-          yAxisTitleFontSize: "24px",
-          yAxisLabelFontSize: "16px",
-          xAxisTitle: "this is x-axis",
-          xAxisTitleFontSize: "24px",
-          xAxisLabelFontSize: "16px",
-          dataLabelPosition: "centre", // option: top, centre or bottom (of the bar)
-          dataLabelColour: "white",
-          dataLabelFontSize: "16px",
-          barColour: ["blue", "red", "orange", "green"],
-          barSpacing: "50px",
-          userSelect: false,
-          // minTickVal: 50,
-          scientificNotation: false
+          chartTitle: "this is the title", //optional (default: "Untitled")
+          titleFontSize: "36px", //optional  (default: "36px")
+          titleColour: "black", //optional  (default: "black")
+          width: "90vw", //optional
+          height: "90vh", //optional
+          yAxisTitle: "title of y-axis", //optional
+          yAxisTitleFontSize: "24px", //optional (default: "24px")
+          yAxisLabelFontSize: "16px", //optional (default: "16px")
+          xAxisTitle: "title of x-axis", //optional
+          xAxisTitleFontSize: "24px", //optional (default: "24px")
+          xAxisLabelFontSize: "16px", //optional (default: "16px")
+          dataLabelPosition: "centre", // option: "top", "centre", "bottom" (of the bar) (default: "top")
+          dataLabelColour: "white", //optional (default: "white")
+          dataLabelFontSize: "16px", //optional (default: "16px")
+          // optional for bar chart that is not stacked (exptect type: string)(default: "black")
+          // compulsory for stacked bar (expected type: array of string)
+          barColour: ["blue", "red"],
+          barSpacing: "50px", // optional (default value is calculated based on the number of data)
+          userSelect: false, // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
+          minTickVal: 50, //optional (default value is calculated based on the value of the max. and min. data)
+          scientificNotation: false, // optional, to show the label in scientific notation
+          animationEffect: false, // optional (default: true)
+          hoverEffect: false // optional (default: true)
         },
-        $( "#test" )
+        $( "#demo" )
         );
 
-        // drawBarChart(
-        // [
-        //   [20, 0.480, 0.500, 0.230, 0.45, 0.200, 0.50],
-        //   ["very very very very long long long long value", "value1", "value2", "value3", "value4", "value5", "value6"]
-        // ],
-        // {
-        //   Id: 2,
-        //   chartTitle: "hi this is the title",
-        //   // titleFontSize: "hi this is the title",
-        //   // titleColour: "hi this is the title",
-        //   width: "50vw",
-        //   height: "20vh",
-        //   yAxisTitle: "",
-        //   xAxisTitle: "",
-        //   dataLabel: "",
-        //   barColour: "",
-        //   labelColour: "",
-        //   barSpacing: "",
-        //   stacked: false
-        // },
-        // $( "#test2" )
-        // );
+        drawBarChart(
+        [
+          // the first parameter is an array of 2 arrays
+          // the first one is data, the second one is label
+          // data of a bar a number / array of number (stacked bar chart)
+          [[200, 400], [-400,50] , [-500,200] , [-40, 150]],
+          ["very very very very very very very very very long value", "value1", "value2", "5"]
+        ],
+        {
+          // Id is crucial especially when there are multiple bar chart (so the function render to the correct bar chart)
+          Id: 1,
+          chartTitle: "this is the title", //optional (default: "Untitled")
+          titleFontSize: "36px", //optional  (default: "36px")
+          titleColour: "black", //optional  (default: "black")
+          width: "90vw", //optional
+          height: "90vh", //optional
+          yAxisTitle: "title of y-axis", //optional
+          yAxisTitleFontSize: "24px", //optional  (default: "24px")
+          yAxisLabelFontSize: "16px", //optional  (default: "16px")
+          xAxisTitle: "title of x-axis", //optional
+          xAxisTitleFontSize: "24px", //optional  (default: "24px")
+          xAxisLabelFontSize: "16px", //optional  (default: "16px")
+          dataLabelPosition: "centre", // option: "top", "centre", "bottom" (of the bar) (default: "top")
+          dataLabelColour: "white", //optional  (default: "white")
+          dataLabelFontSize: "16px", //optional  (default: "16px")
+          // optional for bar chart that is not stacked (exptect type: string)(default: "black")
+          // compulsory for stacked bar (expected type: array of string)
+          barColour: ["blue", "red"],
+          barSpacing: "50px", // optional (default value is calculated based on the number of data)
+          userSelect: false, // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
+          minTickVal: 50, //optional (default value is calculated based on the value of the max. and min. data)
+          scientificNotation: false // optional, to show the label in scientific notation
+        },
+        $( "#demo2" )
+        );
     </script>
   </body>
 
