@@ -1,8 +1,9 @@
 // to-do list
 // refractor
-// extra flare with things like CSS transitions and animations
 // add comments
 // make notes
+// edit readme.md
+// make github pages
 
 //this function is to reaplce function Math.pow, which can be inaccurate, this func
 let powerOfTen = (num) => {
