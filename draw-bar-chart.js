@@ -160,25 +160,19 @@ let makeYAxis = (options) => {
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel}</div>`;
 }
 
-let formatByOption = (options) => {
-  if(options.hasOwnProperty("scientificNotation")) {
-    if(options.scientificNotation === true) {
+let formatByOption = (opt) => {
+  if(opt === true) {
       return (i) => {
         let exp = i.toExponential(2);
         let index = exp.indexOf("e");
         return `${exp.slice(0, index)}x10<sup><span class="sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`
     }
-    } else if (options.scientificNotation === false) {
-      return i => i;
-    } else {
-      invalidOption(options.Id, "option for scientific notation", "scientificNotation");
-      return i => i;
-    }
   } else {
-    return i => i;
+      return i => i;
   }
 
 }
+
 
 let makeStackedBars = (data, options) => {
   let difference = options.maxTick - options.minTick;
@@ -188,7 +182,7 @@ let makeStackedBars = (data, options) => {
   let stackedNum = data[0].length;
   data = data.map(arr => [arr.filter(x => x < 0), arr.filter(x => x >= 0)]);
 
-  let format = formatByOption(options);
+  let format = formatByOption(options.scientificNotation);
 
   let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
   let barColour = [];
@@ -299,7 +293,7 @@ let makeNonStackedBars = (data, options) => {
   let negBars = "";
   let dataNum = data.length;
 
-  let format = formatByOption(options);
+  let format = formatByOption(options.scientificNotation);
 
   for(let val of data) {
     if(val > 0) {
@@ -369,14 +363,17 @@ let makeBars = (data, options) => {
   }
 }
 
-
 let makeXAxis = (labelArr, options) => {
   let xAxis = "";
   let dataNum = labelArr.length;
 
   //label x-axis
   for(let val of labelArr) {
-    xAxis += (`<div class="${options.hoverEffect}" style="width: ${100/dataNum}%; margin: 0 ${options.barSpacing}">${val}</div>`);
+    xAxis += `<div
+      class="${options.hoverEffect}"
+      style="width: ${100/dataNum}%; margin: 0 ${options.barSpacing}">
+        ${val}
+      </div>`;
   };
 
   return `<div class="x-axis"
@@ -536,6 +533,7 @@ let completeOptions = (options, data) => {
   } else {
     options.userSelect = "none";
   }
+
   checkIfOptionIsValid("scientificNotation", "false", (x) => typeof x === "boolean");
   checkIfOptionIsValid("animationEffect", "true", (x) => typeof x === "boolean");
   checkIfOptionIsValid("hoverEffect", "true", (x) => typeof x === "boolean");
