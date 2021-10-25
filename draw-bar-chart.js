@@ -180,8 +180,8 @@ let formatByOption = (options) => {
 
 }
 
-let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
-  let difference = maxTick - minTick;
+let makeStackedBars = (data, options) => {
+  let difference = options.maxTick - options.minTick;
   let posBars = "";
   let negBars = "";
   let dataNum = data.length;
@@ -191,7 +191,6 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
   let format = formatByOption(options);
 
   let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
-  let dataLabelFontSize = defineProp("font-size", "dataLabelFontSize", "data label font size", "16px", options);
   let barColour = [];
 
   if(options.hasOwnProperty("barColour")) {
@@ -268,7 +267,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
             color: ${dataLabelColour};
             height: ${100 * minVal / options.minTick}%;
             width: ${100/dataNum}%;
-            margin: 0 ${barSpacing};
+            margin: 0 ${options.barSpacing};
             ">
             ${negBar}
           </div>`
@@ -278,7 +277,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
             color: ${dataLabelColour};
             height: ${100 * maxVal / options.maxTick}%;
             width: ${100/dataNum}%;
-            margin: 0 ${barSpacing};
+            margin: 0 ${options.barSpacing};
             ">
             ${posBar}
           </div>`
@@ -290,8 +289,8 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     grey 0px,
     grey 1px,
     transparent 1px,
-    transparent ${100/(difference/tickInterval)}%
-    "><div class="bars pos-bars" style=" height: ${100 * maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * minTick/difference}%">${negBars}</div></div>`;
+    transparent ${100/(difference/options.tickInterval)}%
+    "><div class="bars pos-bars" style=" height: ${100 * options.maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * options.minTick/difference}%">${negBars}</div></div>`;
 }
 
 let makeNonStackedBars = (data, options) => {
@@ -362,9 +361,9 @@ let makeNonStackedBars = (data, options) => {
     <div class="bars pos-bars" style=" height: ${100 * options.maxTick/difference}%">${posBars}</div><div class="bars" style="height: ${-100 * options.minTick/difference}%">${negBars}</div></div>`;
 }
 
-let makeBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
+let makeBars = (data, options) => {
   if(Array.isArray(data[0])) {
-    return makeStackedBars(data, maxTick, minTick, options, barSpacing, tickInterval);
+    return makeStackedBars(data, options);
   } else {
     return makeNonStackedBars(data, options);
   }
@@ -396,28 +395,6 @@ let checkId = (options) => {
     console.log("A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.");
   };
 };
-
-let setWidthHeight = (options, element) => {
-  let setCSS = (dimension) => {
-    if(options.hasOwnProperty(dimension)) {
-      if(CSS.supports(dimension, options[dimension])) {
-        element.css(dimension, options[dimension]);
-      } else {
-        invalidOption(options.Id, dimension, dimension);
-      }
-    }
-  }
-  setCSS("width");
-  setCSS("height");
-};
-
-let setUserSelect = (options, element) => {
-  if(options.hasOwnProperty("userSelect")) {
-    if(options.userSelect){
-      element.css("user-select", "auto");
-    }
-  }
-}
 
 //check if the data all the compulsory options are valid
 let dataChecker = (data, options) => {
@@ -512,8 +489,8 @@ let completeOptions = (options, data) => {
   checkIfOptionIsValid("chartTitle", "Untitled", () => true);
   checkIfOptionIsValid("titleFontSize", "36px", (x) => CSS.supports("font-size", x));
   checkIfOptionIsValid("titleColour", "black", (x) => CSS.supports("color", x));
-  checkIfOptionIsValid("width", "auto", (x) => CSS.supports("width", x));
-  checkIfOptionIsValid("height", "auto", (x) => CSS.supports("height", x));
+  checkIfOptionIsValid("width", "100vw", (x) => CSS.supports("width", x));
+  checkIfOptionIsValid("height", "100vh", (x) => CSS.supports("height", x));
   checkIfOptionIsValid("yAxisTitle", "", () => true);
   checkIfOptionIsValid("yAxisTitleFontSize", "24px", (x) => CSS.supports("font-size", x));
   checkIfOptionIsValid("yAxisLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
@@ -553,6 +530,12 @@ let completeOptions = (options, data) => {
   options.barSpacing = defineBarSpacing(options, length);
 
   checkIfOptionIsValid("userSelect", "false", (x) => typeof x === "boolean");
+
+  if(options.userSelect === true) {
+    options.userSelect = "auto";
+  } else {
+    options.userSelect = "none";
+  }
   checkIfOptionIsValid("scientificNotation", "false", (x) => typeof x === "boolean");
   checkIfOptionIsValid("animationEffect", "true", (x) => typeof x === "boolean");
   checkIfOptionIsValid("hoverEffect", "true", (x) => typeof x === "boolean");
@@ -575,6 +558,7 @@ let drawBarChart = (data, options, element) => {
     //check if the bar chart has an id
     checkId(options);
 
+    //check if each option is valid and fill in the options that are not filled in
     options = completeOptions(options, data[0]);
 
     //make title Div
@@ -584,7 +568,7 @@ let drawBarChart = (data, options, element) => {
     let yAxis = makeYAxis(options);
 
     //plot the bar graph with value in parameter "data"
-    let bars = makeBars(data[0], options.maxTick, options.minTick, options, options.barSpacing, options.tickInterval);
+    let bars = makeBars(data[0], options);
 
     //label the x axis
     let xAxis = makeXAxis(data[1], options);
@@ -594,8 +578,9 @@ let drawBarChart = (data, options, element) => {
 
     $( document ).ready(function() {
       element.html(chart);
-      setWidthHeight(options, element);
-      setUserSelect(options, element);
+      element.css("width", options.width);
+      element.css("height", options.height);
+      element.css("user-select", options.userSelect);
       $( document ).ready(function() {
         $( `#left-corner-${options.Id}` ).css("min-width", `${$( `#y-axis-${options.Id}` ).outerWidth(true)}px`);
       });
