@@ -27,15 +27,13 @@ let invalidOption = (id, option, key) => {
   console.log(`The ${option} (${key}) of Bar chart (Id: ${id}) is not valid.`);
 }
 
-let makeClass = (options, property, styleClass, key) => {
-  if (options.hasOwnProperty(property)) {
-    if (options[property] === false) {
-      return "";
-    } else if (typeof options[property] !== "boolean") {
-      invalidOption(options.Id, property, key);
-    }
+let makeClass = (property, styleClass) => {
+  if (property === false) {
+    return "";
+  } else {
+    return styleClass;
   }
-  return styleClass;
+
 }
 
 let defineProp = (property, optProp, displayStr, defaultVal, options) => {
@@ -233,8 +231,6 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     dataLabelPosition = "flex-start";
   }
 
-  let barClass = makeClass(options, "hoverEffect", "info", "hover effect");
-
   for(let arr of data) {
 
     let posBar = "";
@@ -248,7 +244,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
       for(let i = posLength - 1; i >= 0; i--) {
         let val = i === 0 ? posArr[0] : posArr[i] - posArr[i-1];
         posBar +=`<div
-          class="bar ${barClass}"
+          class="bar ${options.hoverEffect}"
           style="
             align-items: ${dataLabelPosition};
             height: ${val * 100 / maxVal}%;
@@ -263,15 +259,13 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     </div>`
     }
 
-    let barAnimationClass = makeClass(options, "animationEffect", "bar-animation", "animation effect");
-
     if(negLength > 0) {
       let negArr = arr[0];
       for(let i = negLength - 1; i >= 0 ; i--) {
         let val = i === negLength - 1 ? negArr[negLength - 1] : negArr[i] - negArr[i+1];
         negBar +=
           (`<div
-            class="bar ${barClass}"
+            class="bar ${options.hoverEffect}"
             style="
               align-items: ${dataLabelPosition};
               height: ${ val * 100 / minVal }%;
@@ -287,7 +281,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
     </div>`
     }
       negBars += `<div
-          class = "stacked-bar ${barAnimationClass}"
+          class = "stacked-bar ${options.animationEffect}"
           style="
             color: ${dataLabelColour};
             height: ${100 * minVal / minTick}%;
@@ -297,7 +291,7 @@ let makeStackedBars = (data, maxTick, minTick, options, barSpacing, tickInterval
             ${negBar}
           </div>`
       posBars += `<div
-          class = "bar stacked-bar ${barAnimationClass}"
+          class = "bar stacked-bar ${options.animationEffect}"
           style="
             color: ${dataLabelColour};
             height: ${100 * maxVal / maxTick}%;
@@ -421,25 +415,24 @@ let makeBars = (data, maxTick, minTick, options, barSpacing, tickInterval) => {
 }
 
 
-
-let makeXAxis = (labelArr, options, barSpacing) => {
+let makeXAxis = (labelArr, options) => {
   let xAxis = "";
   let dataNum = labelArr.length;
-  let xAxisTitleFontSize = defineProp("font-size", "xAxisTitleFontSize", "x-axis title font size", "24px", options);
-  let xAxisLabelFontSize = defineProp("font-size", "xAxisLabelFontSize", "x-axis label font size", "16px", options);
-  let barClass = makeClass(options, "hoverEffect", "info", "hover effect");
+
   //label x-axis
   for(let val of labelArr) {
-    xAxis += (`<div class="${barClass}" style="width: ${100/dataNum}%; margin: 0 ${barSpacing}">${val}</div>`);
+    xAxis += (`<div class="${options.hoverEffect}" style="width: ${100/dataNum}%; margin: 0 ${options.barSpacing}">${val}</div>`);
   };
 
-  xAxis = `<div class="x-axis" style="font-size: ${xAxisLabelFontSize}"><div id="left-corner-${options.Id}"></div>${xAxis}</div>`
+  return `<div class="x-axis"
+    style="font-size: ${options.xAxisLabelFontSize}">
+      <div id="left-corner-${options.Id}"></div>
+        ${xAxis}
+        </div>
+        <div class="x-axis-title" style="font-size: ${options.xAxisTitleFontSize}">
+          ${options.xAxisTitle}
+        </div>`
 
-  if(options.hasOwnProperty("xAxisTitle")) {
-    xAxis += `<div class="x-axis-title" style="font-size: ${xAxisTitleFontSize}">${options.xAxisTitle}</div>`;
-  }
-
-  return xAxis;
 }
 
 let checkId = (options) => {
@@ -607,7 +600,8 @@ let completeOptions = (options, data) => {
   checkIfOptionIsValid("scientificNotation", "false", (x) => typeof x === "boolean");
   checkIfOptionIsValid("animationEffect", "true", (x) => typeof x === "boolean");
   checkIfOptionIsValid("hoverEffect", "true", (x) => typeof x === "boolean");
-
+  options.hoverEffect = makeClass(options.hoverEffect, "info");
+  options.animationEffect = makeClass(options.animationEffect, "bar-animation");
   //find the tick interval and value of the maximum tick
   let [tickInterval, maxTick, minTick] = findTicks(options, Math.max(...data.flat()), Math.min(...data.flat()));
   options.tickInterval = tickInterval;
@@ -637,7 +631,7 @@ let drawBarChart = (data, options, element) => {
     let bars = makeBars(data[0], options.maxTick, options.minTick, options, options.barSpacing, options.tickInterval);
 
     //label the x axis
-    let xAxis = makeXAxis(data[1], options, options.barSpacing);
+    let xAxis = makeXAxis(data[1], options);
 
     //html of the whole chard
     let chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;
