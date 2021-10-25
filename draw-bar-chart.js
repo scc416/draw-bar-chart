@@ -540,9 +540,7 @@ let dataChecker = (data, options) => {
   return true;
 }
 
-
-
-let completeOptions = (options, maxVal, minVal, data) => {
+let completeOptions = (options, data) => {
 
   let checkIfOptionIsValid = (prop, defaultVal, test) => {
     if(options.hasOwnProperty(prop)) {
@@ -611,7 +609,7 @@ let completeOptions = (options, maxVal, minVal, data) => {
   checkIfOptionIsValid("hoverEffect", "true", (x) => typeof x === "boolean");
 
   //find the tick interval and value of the maximum tick
-  let [tickInterval, maxTick, minTick] = findTicks(options, maxVal, minVal);
+  let [tickInterval, maxTick, minTick] = findTicks(options, Math.max(...data.flat()), Math.min(...data.flat()));
   options.tickInterval = tickInterval;
   options.maxTick = maxTick;
   options.minTick = minTick;
@@ -627,14 +625,7 @@ let drawBarChart = (data, options, element) => {
     //check if the bar chart has an id
     checkId(options);
 
-    //the maximum value in data
-    let maxVal = Math.max(...data[0].flat());
-
-    //the minimum value in data
-    let minVal = Math.min(...data[0].flat());
-
-    options = completeOptions(options, maxVal, minVal, data[0]);
-    console.log(options);
+    options = completeOptions(options, data[0]);
 
     //make title Div
     let chartTitleDiv = makeTitleDiv(options);
