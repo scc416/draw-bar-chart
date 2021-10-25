@@ -172,7 +172,6 @@ let makeStackedBars = (data, options) => {
   let posBars = "";
   let negBars = "";
   let dataNum = data.length;
-  let stackedNum = data[0].length;
   data = data.map(arr => [arr.filter(x => x < 0), arr.filter(x => x >= 0)]);
 
   let format = formatByOption(options.scientificNotation);
@@ -180,7 +179,6 @@ let makeStackedBars = (data, options) => {
   let dataLabelColour = defineProp("color", "dataLabelColour", "data label colour", "white", options);
   let barColour = [];
 
-  if(options.hasOwnProperty("barColour")) {
     if(Array.isArray(options.barColour)) {
       for(let colour of options.barColour) {
         if(CSS.supports("background-color", colour)) {
@@ -191,12 +189,7 @@ let makeStackedBars = (data, options) => {
         }
       }
     }
-  } else {
-    invalidOption(options.Id, "bar colour", "barColour");
-    for(let i = 0; i < stackedNum; i++) {
-      barColour.push("black");
-    }
-  }
+
   let dataLabelPosition;
 
   for(let arr of data) {
@@ -415,8 +408,8 @@ let dataChecker = (data, options) => {
     let length = data[0][0].length;
     if(options.hasOwnProperty("barColour")) {
       if(Array.isArray(options.barColour)) {
-        if(options.barColour.length !== length) {
-          console.log("ALERT: Length of bar colour (barColour) doesn't match with the number of data.");
+        if(options.barColour.length < length) {
+          console.log("ALERT: Length of bar colour (barColour) is smaller than the number of data.");
           return false;
         }
       } else {
@@ -533,10 +526,9 @@ let completeOptions = (options, data) => {
   options.hoverEffect = makeClass(options.hoverEffect, "info");
   options.animationEffect = makeClass(options.animationEffect, "bar-animation");
   //find the tick interval and value of the maximum tick
-  let [tickInterval, maxTick, minTick] = findTicks(options, Math.max(...data.flat()), Math.min(...data.flat()));
-  options.tickInterval = tickInterval;
-  options.maxTick = maxTick;
-  options.minTick = minTick;
+  [options.tickInterval,
+    options.maxTick,
+    options.minTick ] = findTicks(options, Math.max(...data.flat()), Math.min(...data.flat()));
 
   return options;
 }
