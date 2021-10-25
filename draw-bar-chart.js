@@ -96,25 +96,20 @@ let findTicks = (options, maxVal, minVal) => {
     tickInterval = defaultInterval();
   }
 
+  let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
+  let minTick = Math.floor(minVal/tickInterval) * tickInterval;
+
   //if all values are positive
   if(minVal >= 0) {
-
-    let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
-
     return [tickInterval, maxTick, 0];
 
   //if all values are negative
   } else if (maxVal <= 0) {
 
-    let minTick = Math.floor(minVal/tickInterval) * tickInterval;
-
     return [tickInterval, 0, minTick];
 
   // if there are both positive and negative number
   } else {
-
-    let maxTick = Math.ceil(maxVal/tickInterval) * tickInterval;
-    let minTick = Math.floor(minVal/tickInterval) * tickInterval;
 
     return [tickInterval, maxTick, minTick];
   }
@@ -170,9 +165,7 @@ let formatByOption = (opt) => {
   } else {
       return i => i;
   }
-
 }
-
 
 let makeStackedBars = (data, options) => {
   let difference = options.maxTick - options.minTick;
