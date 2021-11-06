@@ -21,7 +21,7 @@
           // the first parameter is an array of 2 arrays
           // the first one is data, the second one is label
           // data of a bar a number / array of number (stacked bar chart)
-          [100, -200 , 300, 400],
+          [0.00100, -0.00200 , 0.00300, 0.000400],
           ["very very very very very very very very very long value", "value1", "value2", "5"]
         ],
         {
@@ -47,7 +47,7 @@
           barColour: "green",
           barSpacing: "5px", // optional (default value is calculated based on the number of data)
           userSelect: true, // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
-          tickInterval: 50, //optional (default value is calculated based on the value of the max. and min. data)
+          // tickInterval: 50, //optional (default value is calculated based on the value of the max. and min. data)
           scientificNotation: true, // optional, to show the label in scientific notation
           animationEffect: false, // optional (default: true)
           hoverEffect: false // optional (default: true)
@@ -69,7 +69,7 @@
           chartTitle: "this is the title", //optional (default: "Untitled")
           titleFontSize: "36px", //optional  (default: "36px")
           titleColour: "black", //optional  (default: "black")
-          width: "50vw", //optional
+          width: "50vw00", //optional
           height: "90vh", //optional
           yAxisTitle: "title of y-axis", //optional
           yAxisTitleFontSize: "24px", //optional  (default: "24px")
@@ -85,7 +85,7 @@
           barColour: ["blue", "red"],
           barSpacing: "10px", // optional (default value is calculated based on the number of data)
           userSelect: "", // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
-          minTickVal: 50, //optional (default value is calculated based on the value of the max. and min. data)
+          tickInterval: 50, //optional (default value is calculated based on the value of the max. and min. data)
           scientificNotation: false // optional, to show the label in scientific notation
         },
         $( "#demo2" )
