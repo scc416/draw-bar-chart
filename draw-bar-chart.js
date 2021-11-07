@@ -159,11 +159,11 @@ const makeStackedBars = (data, options) => {
 
   const format = formatByOption(options.scientificNotation);
 
-  let dataLabelColour = defineProp("color", options.dataLabelColour, "white");
-  let barColour = [];
+  const dataLabelColour = defineProp("color", options.dataLabelColour, "white");
+  const barColour = [];
 
   if (Array.isArray(options.barColour)) {
-    for (let colour of options.barColour) {
+    for (const colour of options.barColour) {
       if (CSS.supports("background-color", colour)) {
         barColour.push(colour);
       } else {
@@ -174,18 +174,17 @@ const makeStackedBars = (data, options) => {
 
   let dataLabelPosition;
 
-  for (let arr of data) {
-
+  for (const arr of data) {
     let posBar = "";
-    let posLength = arr[1].length;
+    const posLength = arr[1].length;
     let negBar = "";
-    let negLength = arr[0].length;
-    let maxVal = posLength > 0 ? arr[1][posLength - 1] : 0;
-    let minVal = negLength > 0 ? arr[0][0] : 0;
+    const negLength = arr[0].length;
+    const maxVal = posLength > 0 ? arr[1][posLength - 1] : 0;
+    const minVal = negLength > 0 ? arr[0][0] : 0;
     if (posLength > 0) {
-      let posArr = arr[1];
+      const posArr = arr[1];
       for (let i = posLength - 1; i >= 0; i--) {
-        let val = i === 0 ? posArr[0] : posArr[i] - posArr[i - 1];
+        const val = i === 0 ? posArr[0] : posArr[i] - posArr[i - 1];
         posBar += `<div
           class="bar ${options.hoverEffect}"
           style="
@@ -203,9 +202,9 @@ const makeStackedBars = (data, options) => {
     }
 
     if (negLength > 0) {
-      let negArr = arr[0];
+      const negArr = arr[0];
       for (let i = negLength - 1; i >= 0; i--) {
-        let val = i === negLength - 1 ? negArr[negLength - 1] : negArr[i] - negArr[i + 1];
+        const val = i === negLength - 1 ? negArr[negLength - 1] : negArr[i] - negArr[i + 1];
         negBar +=
           (`<div
             class="bar ${options.hoverEffect}"
@@ -256,15 +255,14 @@ const makeStackedBars = (data, options) => {
     "><div class="bars pos-bars" style=" height: ${100 * options.maxTick / difference}%">${posBars}</div><div class="bars" style="height: ${-100 * options.minTick / difference}%">${negBars}</div></div>`;
 };
 
-let makeNonStackedBars = (data, options) => {
-  let difference = options.maxTick - options.minTick;
+const makeNonStackedBars = (data, options) => {
+  const difference = options.maxTick - options.minTick;
   let posBars = "";
   let negBars = "";
-  let dataNum = data.length;
+  const dataNum = data.length;
+  const format = formatByOption(options.scientificNotation);
 
-  let format = formatByOption(options.scientificNotation);
-
-  for (let val of data) {
+  for (const val of data) {
     if (val > 0) {
       posBars +=
       (
@@ -324,20 +322,18 @@ let makeNonStackedBars = (data, options) => {
     <div class="bars pos-bars" style=" height: ${100 * options.maxTick / difference}%">${posBars}</div><div class="bars" style="height: ${-100 * options.minTick / difference}%">${negBars}</div></div>`;
 };
 
-let makeBars = (data, options) => {
-  if (Array.isArray(data[0])) {
-    return makeStackedBars(data, options);
-  } else {
-    return makeNonStackedBars(data, options);
-  }
+const makeBars = (data, options) => {
+  const barIsStacked = Array.isArray(data[0]);
+  if (barIsStacked) return makeStackedBars(data, options);
+  return makeNonStackedBars(data, options);
 };
 
-let makeXAxis = (labelArr, options) => {
+const makeXAxis = (labelArr, options) => {
   let xAxis = "";
-  let dataNum = labelArr.length;
+  const dataNum = labelArr.length;
 
   //label x-axis
-  for (let val of labelArr) {
+  for (const val of labelArr) {
     xAxis += `<div
       class="${options.hoverEffect}"
       style="width: ${100 / dataNum}%; margin: 0 ${options.barSpacing}">
@@ -356,39 +352,40 @@ let makeXAxis = (labelArr, options) => {
 
 };
 
-let checkId = (options) => {
+const checkId = (options) => {
   if (!("Id" in options)) {
     console.log("A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.");
   }
 };
 
 //check if the data all the compulsory options are valid
-let dataChecker = (data, options) => {
-  if (!Array.isArray(data)) {
-    console.log("ALERT: Data input is not an array.");
-    return false;
-  }
-  if (!Array.isArray(data[0])) {
+const dataChecker = (data, options) => {
+  // if (!(num in data)) {
+  //   console.log("ALERT: Data input is not an array.");
+  //   return false;
+  // }
+
+  if (!Array.isArray(data.num)) {
     console.log("ALERT: Data set is not an array.");
     return false;
   }
-  if (!Array.isArray(data[1])) {
+  if (!Array.isArray(data.labels)) {
     console.log("ALERT: Label set is not an array.");
     return false;
   }
-  if (data[0].length !== data[1].length) {
+  if (data.num.length !== data.labels.length) {
     console.log("ALERT: Number of data doesn't match with number of label");
     return false;
   }
-  if (typeof data[0][0] === "number") {
-    for (let val of data[0]) {
+  if (typeof data.num[0] === "number") {
+    for (const val of data.num) {
       if (typeof val !== "number") {
         console.log("ALERT: One of the value is not number.");
         return false;
       }
     }
-  } else if (Array.isArray(data[0][0])) {
-    let length = data[0][0].length;
+  } else if (Array.isArray(data.num[0])) {
+    let length = data.num[0].length;
     if ("barColour" in options) {
       if (Array.isArray(options.barColour)) {
         if (options.barColour.length < length) {
@@ -403,7 +400,7 @@ let dataChecker = (data, options) => {
       console.log("ALERT: Options do not have bar colour (barColour).");
       return false;
     }
-    for (let arr of data[0]) {
+    for (let arr of data.num) {
       if (arr.length !== length) {
         console.log("ALERT: The value set have different number of data.");
         return false;
@@ -523,7 +520,7 @@ const drawBarChart = (data, options, element) => {
     checkId(options);
 
     //check if each option is valid and fill in the options that are not filled in
-    options = completeOptions(options, data[0]);
+    options = completeOptions(options, data.num);
 
     //make title Div
     const chartTitleDiv = makeTitleDiv(options);
@@ -532,10 +529,10 @@ const drawBarChart = (data, options, element) => {
     const yAxis = makeYAxis(options);
 
     //plot the bar graph with value in parameter "data"
-    const bars = makeBars(data[0], options);
+    const bars = makeBars(data.num, options);
 
     //label the x axis
-    const xAxis = makeXAxis(data[1], options);
+    const xAxis = makeXAxis(data.labels, options);
 
     //html of the whole chard
     const chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;

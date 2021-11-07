@@ -17,13 +17,13 @@
 
     <script>
       drawBarChart(
-        [
+        {
           // the first parameter is an array of 2 arrays
           // the first one is data, the second one is label
           // data of a bar a number / array of number (stacked bar chart)
-          [0.00100, -0.00200 , 0.00300, 0.000400],
-          ["very very very very very very very very very long value", "value1", "value2", "5"]
-        ],
+          num: [0.00100, -0.00200 , 0.00300, 0.000400],
+          labels: ["very very very very very very very very very long value", "value1", "value2", "5"]
+        },
         {
           // Id is crucial especially when there are multiple bar chart (so the function render to the correct bar chart)
           // it has to be unique
@@ -56,13 +56,13 @@
         );
 
         drawBarChart(
-        [
+        {
           // the first parameter is an array of 2 arrays
           // the first one is data, the second one is label
           // data of a bar a number / array of number (stacked bar chart)
-          [[200, 400], [-400,50] , [-500,200] , [-40, 150]],
-          ["very very very very very very very very very long value", "value1", "value2", "5"]
-        ],
+          num: [[200, 400], [-400,50] , [-500,200] , [-40, 150]],
+          labels: ["very very very very very very very very very long value", "value1", "value2", "5"]
+        },
         {
           // Id is crucial especially when there are multiple bar chart (so the function render to the correct bar chart)
           Id: 2,
