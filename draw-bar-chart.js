@@ -117,16 +117,29 @@ const makeYAxis = (options) => {
       ${options.yAxisTitle +  yAxisTitle}
     `);
 
-  const decimals = countDecimals(tickInterval);
+  const numOfDecimals = countDecimals(tickInterval);
   const max = maxTick / tickInterval;
   const min = minTick / tickInterval;
+  const formatTickValue = x => (x * tickInterval).toFixed(numOfDecimals);
   for (let i = min; i <= max; i ++) {
-    yAxisLabel += `<div style="height: 0">${(i * tickInterval).toFixed(decimals)}</div>`;
+    yAxisLabel += `<div style="height: 0">${formatTickValue(i)}</div>`;
   }
 
-  yAxisLabel = `<div class="y-axis-label" style="font-size: ${options.yAxisLabelFontSize}">${yAxisLabel}</div>`;
+  yAxisLabel = (
+    `<div
+      class="y-axis-label"
+      style="font-size: ${options.yAxisLabelFontSize}">
+      ${yAxisLabel}
+    </div>`);
 
-  return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel}</div>`;
+  const yAxis = (
+    `<div
+      class="y-axis"
+      id="y-axis-${options.Id}">
+      ${yAxisTitle + yAxisLabel}
+    </div>`);
+
+  return yAxis;
 };
 
 const formatByOption = (opt) => {
@@ -445,8 +458,8 @@ const completeOptions = (options, data) => {
       const barColourIsValid = CSS.supports("background-colour", barColourInOption);
       const everyBarColour =
         barColourIsValid
-        ? barColourInOption
-        : "black"
+          ? barColourInOption
+          : "black";
       for (let i = 0; i < dataNum; i++) barColour.push(everyBarColour);
     }
     options.barColour = barColour;
@@ -469,7 +482,7 @@ const completeOptions = (options, data) => {
   checkIfOptionIsValid("xAxisLabelFontSize", "16px", x => CSS.supports("font-size", x));
 
   const labelPosition = ["top", "centre", "bottom"];
-  checkIfOptionIsValid("dataLabelPosition", "top", x => labelPosition.indexOfx > -1);
+  checkIfOptionIsValid("dataLabelPosition", "top", x => labelPosition.indexOf(x) > -1);
 
   checkIfOptionIsValid("dataLabelColour", "white", x => CSS.supports("color", x));
   checkIfOptionIsValid("dataLabelFontSize", "16px", x => CSS.supports("font-size", x));
@@ -561,6 +574,4 @@ const drawBarChart = (data, options, element) => {
       });
     });
   }
-
-
 };
