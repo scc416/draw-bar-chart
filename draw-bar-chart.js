@@ -349,25 +349,27 @@ const checkIfEachValueAreNum = (arr) => {
   return true;
 };
 
+const makeAlertMessage = (alert) => `ALERT: ${alert}`;
+
 //check if the data all the compulsory options are valid
 const dataValidationCheck = (data, options) => {
-  // if (!(num in data)) {
-  //   console.log("ALERT: Data input is not an array.");
-  //   return false;
-  // }
+
   const dataIsArray = Array.isArray(data.num);
   const labelIsArray = Array.isArray(data.labels);
   const dataAndLabelHaveSameLength = data.num.length === data.labels.length;
   if (!dataIsArray) {
-    console.log("ALERT: Data set is not an array.");
+    const alert = "Data set is not an array.";
+    console.log(makeAlertMessage(alert));
     return false;
   }
   if (!labelIsArray) {
-    console.log("ALERT: Label set is not an array.");
+    const alert = "Label set is not an array.";
+    console.log(makeAlertMessage(alert));
     return false;
   }
   if (!dataAndLabelHaveSameLength) {
-    console.log("ALERT: Number of data doesn't match with number of label");
+    const alert = "Number of data doesn't match with number of label";
+    console.log(makeAlertMessage(alert));
     return false;
   }
 
@@ -384,12 +386,14 @@ const dataValidationCheck = (data, options) => {
     for (const dataForAStackedBar of data.num) {
       const dataIsArray = Array.isArray(dataForAStackedBar);
       if (!dataIsArray) {
-        console.log("ALERT: One of the value set is not an array.");
+        const alert = "One of the value set is not an array.";
+        console.log(makeAlertMessage(alert));
         return false;
       }
       const stackedNumIsValid = dataForAStackedBar.length === numOfStacked;
       if (!stackedNumIsValid) {
-        console.log("ALERT: The value set have different number of data.");
+        const alert = "The value set have different number of data.";
+        console.log(makeAlertMessage(alert));
         return false;
       }
       const allValAreNumber = checkIfEachValueAreNum(dataForAStackedBar);
@@ -397,14 +401,17 @@ const dataValidationCheck = (data, options) => {
 
       for (let i = 0; i < numOfStacked - 1; i++) {
         if (dataForAStackedBar[i] > dataForAStackedBar[i + 1]) {
-          console.log("One of the value set is not in ascending order.");
+          const alert = "One of the value set is not in ascending order.";
+          console.log(makeAlertMessage(alert));
           return false;
         }
       }
     }
   }
-  if (!("Id" in options)) {
-    console.log("A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.");
+  const idIsDefined = "Id" in options;
+  if (!idIsDefined) {
+    const alert = "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
+    console.log(makeAlertMessage(alert));
   }
   return true;
 };
