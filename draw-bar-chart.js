@@ -114,15 +114,18 @@ const makeYAxis = (options) => {
     `<div
       class="y-axis-title"
       style="font-size: ${options.yAxisTitleFontSize}">
-      ${options.yAxisTitle +  yAxisTitle}
+      ${options.yAxisTitle}${yAxisTitle}
     `);
 
   const numOfDecimals = countDecimals(tickInterval);
-  const max = maxTick / tickInterval;
-  const min = minTick / tickInterval;
-  const formatTickValue = x => (x * tickInterval).toFixed(numOfDecimals);
-  for (let i = min; i <= max; i ++) {
-    yAxisLabel += `<div style="height: 0">${formatTickValue(i)}</div>`;
+
+  const formatTickValue = val => val.toFixed(numOfDecimals);
+  const formatTickDiv = formatedVal => `<div style="height: 0">${formatedVal}</div>`;
+
+  for (let i = minTick; i <= maxTick; i += tickInterval) {
+    const val = formatTickValue(i);
+    const tickDiv = formatTickDiv(val);
+    yAxisLabel += tickDiv;
   }
 
   yAxisLabel = (
