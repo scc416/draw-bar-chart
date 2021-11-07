@@ -28,12 +28,6 @@ const makeClass = (property, styleClass) => {
   return "";
 };
 
-const defineProp = (property, value, defaultVal) => {
-  const propertyValueIsSupport = CSS.supports(property, value);
-  if (propertyValueIsSupport) return value;
-  return defaultVal;
-};
-
 // check if input's type is number
 const isNumber = (num) => {
   const isNumber = typeof num === "number";
@@ -159,7 +153,7 @@ const makeStackedBars = (data, options) => {
 
   const format = formatByOption(options.scientificNotation);
 
-  const dataLabelColour = defineProp("color", options.dataLabelColour, "white");
+  const dataLabelColour = options.dataLabelColour;
   const barColour = [];
 
   if (Array.isArray(options.barColour)) {
@@ -429,19 +423,16 @@ const dataChecker = (data, options) => {
   return true;
 };
 
-let completeOptions = (options, data) => {
+const completeOptions = (options, data) => {
 
-  let checkIfOptionIsValid = (prop, defaultVal, test) => {
-    if (prop in options) {
-      if (!test(options[prop])) {
-        options[prop] = defaultVal;
-      }
-    } else {
-      options[prop] = defaultVal;
-    }
+  const checkIfOptionIsValid = (prop, defaultVal, callback) => {
+    const val = options[prop];
+    const valIsValid = callback(val);
+    if (valIsValid) return options[prop] = val;
+    return options[prop] = defaultVal;
   };
 
-  let length = data.length;
+  const length = data.length;
 
   if (typeof data[0] === "number") {
     options.stacked = false;
