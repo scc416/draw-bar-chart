@@ -110,11 +110,14 @@ const makeYAxis = (options) => {
     if (pow !== 0) yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
   }
 
+  const titleFontSize = options.yAxisTitleFontSize;
+  const title = options.yAxisTitle;
+
   yAxisTitle = (
     `<div
       class="y-axis-title"
-      style="font-size: ${options.yAxisTitleFontSize}">
-      ${options.yAxisTitle}${yAxisTitle}
+      style="font-size: ${titleFontSize}">
+      ${title}${yAxisTitle}
     `);
 
   const numOfDecimals = countDecimals(tickInterval);
