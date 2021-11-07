@@ -338,79 +338,73 @@ const makeXAxis = (labelArr, options) => {
 
 };
 
-const checkId = (options) => {
-  if (!("Id" in options)) {
-    console.log("A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.");
+const checkIfEachValueAreNum = (arr) => {
+  for (const val of arr) {
+    const valIsNum = isNumber(val);
+    if (!valIsNum) {
+      console.log("ALERT: One of the value is not number.");
+      return false;
+    }
   }
-};
+  return true;
+}
 
 //check if the data all the compulsory options are valid
-const dataChecker = (data, options) => {
+const dataValidationCheck = (data, options) => {
   // if (!(num in data)) {
   //   console.log("ALERT: Data input is not an array.");
   //   return false;
   // }
-
-  if (!Array.isArray(data.num)) {
+  const dataIsArray = Array.isArray(data.num);
+  const labelIsArray = Array.isArray(data.labels);
+  const dataAndLabelHaveSameLength = data.num.length === data.labels.length
+  if (!dataIsArray) {
     console.log("ALERT: Data set is not an array.");
     return false;
   }
-  if (!Array.isArray(data.labels)) {
+  if (!labelIsArray) {
     console.log("ALERT: Label set is not an array.");
     return false;
   }
-  if (data.num.length !== data.labels.length) {
+  if (!dataAndLabelHaveSameLength) {
     console.log("ALERT: Number of data doesn't match with number of label");
     return false;
   }
-  if (typeof data.num[0] === "number") {
-    for (const val of data.num) {
-      if (typeof val !== "number") {
-        console.log("ALERT: One of the value is not number.");
-        return false;
-      }
-    }
-  } else if (Array.isArray(data.num[0])) {
-    let length = data.num[0].length;
-    if ("barColour" in options) {
-      if (Array.isArray(options.barColour)) {
-        if (options.barColour.length < length) {
-          console.log("ALERT: Length of bar colour (barColour) is smaller than the number of data.");
-          return false;
-        }
-      } else {
-        console.log("ALERT: bar colour (barColour) has to be an array for stacked bar chart");
-        return false;
-      }
-    } else {
-      console.log("ALERT: Options do not have bar colour (barColour).");
-      return false;
-    }
-    for (const arr of data.num) {
-      if (arr.length !== length) {
-        console.log("ALERT: The value set have different number of data.");
-        return false;
-      }
-      if (!Array.isArray(arr)) {
+
+  const dataValues = data.num;
+  const firstValue = dataValues[0];
+  const barChartIsStacked = Array.isArray(firstValue);
+  options.stacked = barChartIsStacked;
+  if (!barChartIsStacked) {
+    const allValAreNumber = checkIfEachValueAreNum(dataValues);
+    if (!allValAreNumber) return false;
+  }
+  if (barChartIsStacked) {
+    const numOfStacked = firstValue.length;
+    for (const dataForAStackedBar of data.num) {
+      const dataIsArray = Array.isArray(dataForAStackedBar);
+      if (!dataIsArray) {
         console.log("ALERT: One of the value set is not an array.");
         return false;
       }
-      for (const data of arr) {
-        if (typeof data !== "number") {
-          console.log("ALERT: One of the value is not number.");
-          return false;
-        }
+      const stackedNumIsValid = dataForAStackedBar.length === numOfStacked;
+      if (!stackedNumIsValid) {
+        console.log("ALERT: The value set have different number of data.");
+        return false;
       }
-      for (let i = 0; i < length - 1; i++) {
+      const allValAreNumber = checkIfEachValueAreNum(dataForAStackedBar);
+      if (!allValAreNumber) return false;
+
+      for (let i = 0; i < numOfStacked - 1; i++) {
         if (arr[i] > arr[i + 1]) {
           console.log("One of the value set is not in ascending order.");
           return false;
         }
       }
     }
-  } else {
-    console.log("ALERT: One of the value is not number.");
-    return false;
+  }
+  if (!("Id" in options)) {
+    console.log("A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.");
   }
   return true;
 };
@@ -424,12 +418,26 @@ const completeOptions = (options, data) => {
     return options[prop] = defaultVal;
   };
 
-  const length = data.length;
+  const dataNum = data.length;
 
-  if (typeof data[0] === "number") {
-    options.stacked = false;
-  } else {
-    options.stacked = true;
+  if (options.stacked) {
+    const barColour = [];
+    const barColourInOption = options.barColour;
+    const barColourInOptionsIsArray = Array.isArray(barColourInOption);
+    if (barColourInOptionsIsArray) {
+      for (const colour of barColourInOption) {
+        const colourIsValid = CSS.supports("background-color", colour);
+        if (colourIsValid) barColour.push(colour);
+        if (!colourIsValid) barColour.push("black");
+      }
+    }
+    if (!barColourInOptionsIsArray) {
+      for (let i = 0; i < dataNum; i++) barColour.push("black");
+    }
+    options.barColour = barColour;
+  }
+  if (!options.stacked) {
+    checkIfOptionIsValid("barColour", "black", (x) => CSS.supports("color", x));
   }
 
   checkIfOptionIsValid("chartTitle", "Untitled", () => true);
@@ -443,34 +451,10 @@ const completeOptions = (options, data) => {
   checkIfOptionIsValid("xAxisTitle", "", () => true);
   checkIfOptionIsValid("xAxisTitleFontSize", "24px", (x) => CSS.supports("font-size", x));
   checkIfOptionIsValid("xAxisLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
-  checkIfOptionIsValid("dataLabelPosition", "top", (x) => {
-    switch (x) {
-    case "top":
-    case "centre":
-    case "bottom":
-      return true;
-    }
-    return false;
-  });
-  if (!options.stacked) {
-    checkIfOptionIsValid("barColour", "black", (x) => CSS.supports("color", x));
-  } else {
-    const barColour = [];
-    if (Array.isArray(options.barColour)) {
-      for (const colour of options.barColour) {
-        if (CSS.supports("background-color", colour)) {
-          barColour.push(colour);
-        } else {
-          barColour.push("black");
-        }
-      }
-    } else {
-      for (let i = 0; i < length; i++) {
-        barColour.push("black");
-      }
-    }
-    options.barColour = barColour;
-  }
+
+  const labelPosition = ["top", "centre", "bottom"];
+  checkIfOptionIsValid("dataLabelPosition", "top", (x) => labelPosition.indexOf(x) > -1);
+
   checkIfOptionIsValid("dataLabelColour", "white", (x) => CSS.supports("color", x));
   checkIfOptionIsValid("dataLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
 
@@ -485,7 +469,7 @@ const completeOptions = (options, data) => {
     return 10 / (dataNum) + "%";
   };
 
-  options.barSpacing = defineBarSpacing(options, length);
+  options.barSpacing = defineBarSpacing(options, dataNum);
 
   checkIfOptionIsValid("userSelect", "false", (x) => typeof x === "boolean");
 
@@ -514,13 +498,18 @@ const completeOptions = (options, data) => {
 // top-level function
 const drawBarChart = (data, options, element) => {
 /* eslint-enable no-unused-vars */
-  if (dataChecker(data, options)) {
+  const dataAreValid = dataValidationCheck(data, options);
 
-    //check if the bar chart has an id
-    checkId(options);
+  if (!dataAreValid) {
+    $(document).ready(() => {
+      element.html("There is problem with the data. Please see web console.");
+    });
+  }
 
-    //check if each option is valid and fill in the options that are not filled in
-    options = completeOptions(options, data.num);
+  if (dataAreValid) {
+
+    //check if each option is valid and fill in default value to the options that are not filled in / values are not valid
+    completeOptions(options, data.num);
 
     //make title Div
     const chartTitleDiv = makeTitleDiv(options);
@@ -547,9 +536,7 @@ const drawBarChart = (data, options, element) => {
         ).outerWidth(true)}px`);
       });
     });
-  } else {
-    $(document).ready(() => {
-      element.html("There is problem with the data. Please see web console.");
-    });
   }
+
+
 };
