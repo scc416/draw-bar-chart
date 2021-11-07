@@ -21,7 +21,7 @@
           // the first parameter is an array of 2 arrays
           // the first one is data, the second one is label
           // data of a bar a number / array of number (stacked bar chart)
-          num: [0.00100, -0.00200 , 0.00300, 0.000400],
+          num: [0.00100, 0.00000 , -0.00300, 0.000400],
           labels: ["very very very very very very very very very long value", "value1", "value2", "5"]
         },
         {
@@ -45,7 +45,7 @@
           // optional for bar chart that is not stacked (exptect type: string)(default: "black")
           // compulsory for stacked bar (expected type: array of string)
           barColour: "green",
-          barSpacing: "5px", // optional (default value is calculated based on the number of data)
+          barSpacing: "20px", // optional (default value is calculated based on the number of data)
           userSelect: true, // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
           // tickInterval: 50, //optional (default value is calculated based on the value of the max. and min. data)
           scientificNotation: true, // optional, to show the label in scientific notation
@@ -60,7 +60,7 @@
           // the first parameter is an array of 2 arrays
           // the first one is data, the second one is label
           // data of a bar a number / array of number (stacked bar chart)
-          num: [[200, 400, 600], [-400,50, 100] , [-500,200, 300] , [-40, 150, 400]],
+          num: [[200, 400, 600], [-400,50, 100] , [-500, -200, 300] , [-40, 150, 400]],
           labels: ["very very very very very very very very very long value", "value1", "value2", "5"]
         },
         {
@@ -85,7 +85,7 @@
           barColour: ["blue", "black"],
           barSpacing: "10px", // optional (default value is calculated based on the number of data)
           userSelect: "", // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
-          tickInterval: 200, //optional (default value is calculated based on the value of the max. and min. data)
+          tickInterval: 100, //optional (default value is calculated based on the value of the max. and min. data)
           scientificNotation: false // optional, to show the label in scientific notation
         },
         $( "#demo2" )

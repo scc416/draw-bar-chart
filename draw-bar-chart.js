@@ -148,16 +148,15 @@ const makeYAxis = (options) => {
   return yAxis;
 };
 
-const formatByOption = (opt) => {
-  if (opt) {
+const formatByOption = (isScientificNotation) => {
+  if (isScientificNotation) {
     return (i) => {
       const exp = i.toExponential(2);
       const index = exp.indexOf("e");
       return `${exp.slice(0, index)}x10<sup><span class = "sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`;
     };
-  } else {
-    return i => i;
   }
+  return i => i;
 };
 
 const makeStackedBars = (data, options) => {
@@ -165,6 +164,8 @@ const makeStackedBars = (data, options) => {
   let posBars = "";
   let negBars = "";
   const dataNum = data.length;
+  const positiveData = data.map(arr => arr.filter(x => x >= 0));
+  const negativeData = data.map(arr => arr.filter(x => x < 0));
   data = data.map(arr => [arr.filter(x => x < 0), arr.filter(x => x >= 0)]);
 
   const format = formatByOption(options.scientificNotation);
@@ -172,28 +173,27 @@ const makeStackedBars = (data, options) => {
   const dataLabelColour = options.dataLabelColour;
   const barColour = options.barColour;
 
-
-
   let dataLabelPosition;
 
-  for (const arr of data) {
+  for (let i = 0; i < dataNum; i++) {
+    const positiveValues = positiveData[i];
+    const posLength = positiveValues.length;
+    const negativeValues = negativeData[i];
+    const negLength = negativeValues.length;
     let posBar = "";
-    const posLength = arr[1].length;
     let negBar = "";
-    const negLength = arr[0].length;
-    const maxVal = posLength > 0 ? arr[1][posLength - 1] : 0;
-    const minVal = negLength > 0 ? arr[0][0] : 0;
+    const maxVal = posLength > 0 ? positiveValues[posLength - 1] : 0;
+    const minVal = negLength > 0 ? negativeValues[0] : 0;
     if (posLength > 0) {
-      const posArr = arr[1];
       for (let i = posLength - 1; i >= 0; i--) {
-        const val = i === 0 ? posArr[0] : posArr[i] - posArr[i - 1];
+        const height = i === 0 ? positiveValues[0] : positiveValues[i] - positiveValues[i - 1];
         posBar += `<div
           class="bar ${options.hoverEffect}"
           style="
             align-items: ${options.dataLabelPosition};
-            height: ${val * 100 / maxVal}%;
+            height: ${height * 100 / maxVal}%;
             background-color: ${barColour[i + negLength]}; ">
-              <span class="data">${format(posArr[i])}</span>
+              <span class="data">${format(positiveValues[i])}</span>
           </div>`;
       }
     } else {
@@ -204,17 +204,16 @@ const makeStackedBars = (data, options) => {
     }
 
     if (negLength > 0) {
-      const negArr = arr[0];
       for (let i = negLength - 1; i >= 0; i--) {
-        const val = i === negLength - 1 ? negArr[negLength - 1] : negArr[i] - negArr[i + 1];
+        const height = i === negLength - 1 ? negativeValues[negLength - 1] : negativeValues[i] - negativeValues[i + 1];
         negBar +=
           (`<div
             class="bar ${options.hoverEffect}"
             style="
               align-items: ${dataLabelPosition};
-              height: ${ val * 100 / minVal }%;
+              height: ${ height * 100 / minVal }%;
               background-color: ${barColour[i]}; ">
-                <span class="data">${format(arr[0][i])}</span>
+                <span class="data">${format(negativeValues[i])}</span>
             </div>`
           );
       }
@@ -246,6 +245,7 @@ const makeStackedBars = (data, options) => {
           ${posBar}
       </div>`);
   }
+
   return `<div class="chart-content" style="
   font-size: ${options.dataLabelFontSize};
   background-image: repeating-linear-gradient(
@@ -258,74 +258,106 @@ const makeStackedBars = (data, options) => {
 };
 
 const makeNonStackedBars = (data, options) => {
-  const difference = options.maxTick - options.minTick;
   let posBars = "";
   let negBars = "";
+  const difference = options.maxTick - options.minTick;
+
   const dataNum = data.length;
-  const format = formatByOption(options.scientificNotation);
+  const scientificNotation = options.scientificNotation;
+  const format = formatByOption(scientificNotation);
+  const hoverEffectClass = options.hoverEffect;
+  const animationEffectClass = options.animationEffect;
+  const dataLabelPosition = options.dataLabelPosition;
+  const labelFontSize = options.dataLabelFontSize;
+  const barColour = options.barColour;
+  const labelColour = options.dataLabelColour;
+  const widthOfBar = 100 / dataNum + "%";
+  const horizontalMargin = options.barSpacing;
+
+  const maxTick = options.maxTick;
+  const heightOfBarForPositiveValue = val => 100 * val /  maxTick + "%";
+  const minTick = options.minTick;
+  const heightOfBarForNegativeValue = val => 100 * val /  minTick + "%";
+
+  const blankSpace = (
+    `<div class="bar"
+      style="
+        width: ${widthOfBar};
+        margin: 0 ${horizontalMargin}">
+    </div>`
+  );
+
+  const makeBarDiv = (val, isPositive) => {
+    const height =
+      isPositive
+        ? heightOfBarForPositiveValue(val)
+        : heightOfBarForNegativeValue(val);
+    const formatedVal = format(val);
+    const div = (
+      `<div class="bar ${hoverEffectClass} ${animationEffectClass}"
+        style="
+          align-items: ${dataLabelPosition};
+          background-color: ${barColour};
+          height: ${height};
+          width: ${widthOfBar};
+          margin: 0 ${horizontalMargin}">
+        <span class="data">
+          ${formatedVal}
+        </span>
+      </div>`
+    );
+    return div;
+  };
 
   for (const val of data) {
-    if (val > 0) {
-      posBars +=
-      (
-        `<div class="bar ${options.hoverEffect} ${options.animationEffect}"
-          style="
-            align-items: ${options.dataLabelPosition};
-            background-color: ${options.barColour};
-            color: ${options.dataLabelColour};
-            height: ${100 * val / options.maxTick}%;
-            width: ${100 / dataNum}%;
-            margin: 0 ${options.barSpacing}">
-          <span class="data">${format(val)}</span>
-        </div>`
-      );
-      negBars +=
-      (
-        `<div class="bar"
-          style="
-            width: ${100 / dataNum}%;
-            margin: 0 ${options.barSpacing}">
-        </div>`
-      );
-    } else {
-      negBars +=
-      (
-        `<div class="bar ${options.hoverEffect} ${options.animationEffect}"
-          style="
-            align-items: ${options.dataLabelPosition};
-            background-color: ${options.barColour};
-            color: ${options.dataLabelColour};
-            height: ${100 * val / options.minTick}%;
-            width: ${100 / dataNum}%;
-            margin: 0 ${options.barSpacing}">
-          ${format(val)}
-        </div>`
-      );
-      posBars +=
-      (
-        `<div class="bar"
-          style="
-            width: ${100 / dataNum}%;
-            margin: 0 ${options.barSpacing}">
-        </div>`
-      );
+    const valIsPostive = val > 0;
+
+    if (valIsPostive) {
+      const barDiv = makeBarDiv(val, true);
+      posBars += barDiv;
+      negBars += blankSpace;
     }
 
+    if (!valIsPostive) {
+      const barDiv = makeBarDiv(val, false);
+      negBars += barDiv;
+      posBars += blankSpace;
+    }
   }
-  return `<div class="chart-content" style="
-  font-size: ${options.dataLabelFontSize};
-  background-image: repeating-linear-gradient(
-    to top,
-    grey 0px,
-    grey 1px,
-    transparent 1px,
-    transparent ${100 / (difference / options.tickInterval)}%
-    ">
-    <div class="bars pos-bars" style=" height: ${100 * options.maxTick / difference}%">${posBars}</div><div class="bars" style="height: ${-100 * options.minTick / difference}%">${negBars}</div></div>`;
+
+  const heightOfPosBars = 100 * maxTick / difference + "%";
+  const heightofNegBars = -100 * minTick / difference + "%";
+  const SpaceBetweenTicks = 100 / (difference / options.tickInterval) + "%";
+
+  const barDiv = (
+    `<div
+      class="chart-content"
+      style="
+        color: ${labelColour};
+        font-size: ${labelFontSize};
+        background-image: repeating-linear-gradient(
+          to top,
+          grey 0px,
+          grey 1px,
+          transparent 1px,
+          transparent ${SpaceBetweenTicks} );">
+      <div
+        class="bars pos-bars"
+        style=" height: ${heightOfPosBars}">
+        ${posBars}
+      </div>
+      <div
+        class="bars"
+        style="height: ${heightofNegBars}">
+        ${negBars}
+      </div>
+    </div>`
+  );
+  return barDiv;
 };
 
 const makeBars = (data, options) => {
-  const barIsStacked = Array.isArray(data[0]);
+  const barIsStacked = options.stacked;
   if (barIsStacked) return makeStackedBars(data, options);
   return makeNonStackedBars(data, options);
 };
@@ -344,7 +376,7 @@ const makeXAxis = (labelArr, options) => {
         margin: 0 ${horizontalMargin}">
         ${val}
       </div>`;
-  }
+  };
 
   //label x-axis
   for (const val of labelArr) {
@@ -353,24 +385,26 @@ const makeXAxis = (labelArr, options) => {
   }
 
   const labelFontSize = options.xAxisLabelFontSize;
-  const id = options.id;
   const titleFontSize = options.xAxisTitleFontSize;
   const title = options.xAxisTitle;
 
-  xAxis = `<div class="x-axis"
-  style="font-size: ${options.xAxisLabelFontSize}">
-    <div id="left-corner-${options.Id}"></div>
-      ${xAxis}
-      </div>
-      <div class="x-axis-title" style="font-size: ${options.xAxisTitleFontSize}">
-        ${options.xAxisTitle}
-      </div>`
+  xAxis = (
+    `<div class = "x-axis"
+      style = "font-size: ${labelFontSize}">
+        <div id = "left-corner-${options.Id}"></div>
+          ${xAxis}
+        </div>
+    <div
+      class = "x-axis-title"
+      style = "font-size: ${titleFontSize}">
+        ${title}
+    </div>`);
 
   return xAxis;
 
 };
 
-const checkIfEachValueAreNum = (arr) => {
+const checkIfAllValuesAreNum = (arr) => {
   for (const val of arr) {
     const valIsNum = isNumber(val);
     if (!valIsNum) {
@@ -389,6 +423,12 @@ const dataValidationCheck = (data, options) => {
   const dataIsArray = Array.isArray(data.num);
   const labelIsArray = Array.isArray(data.labels);
   const dataAndLabelHaveSameLength = data.num.length === data.labels.length;
+  const noData = data.num.length === 0;
+  if (noData) {
+    const alert = "There is no data.";
+    console.log(makeAlertMessage(alert));
+    return false;
+  }
 
   if (!dataIsArray) {
     const alert = "Data set is not an array.";
@@ -411,7 +451,7 @@ const dataValidationCheck = (data, options) => {
   const barChartIsStacked = Array.isArray(firstValue);
   options.stacked = barChartIsStacked;
   if (!barChartIsStacked) {
-    const allValAreNumber = checkIfEachValueAreNum(dataValues);
+    const allValAreNumber = checkIfAllValuesAreNum(dataValues);
     if (!allValAreNumber) return false;
   }
   if (barChartIsStacked) {
@@ -429,7 +469,7 @@ const dataValidationCheck = (data, options) => {
         console.log(makeAlertMessage(alert));
         return false;
       }
-      const allValAreNumber = checkIfEachValueAreNum(dataForAStackedBar);
+      const allValAreNumber = checkIfAllValuesAreNum(dataForAStackedBar);
       if (!allValAreNumber) return false;
 
       for (let i = 0; i < numOfStacked - 1; i++) {
