@@ -357,16 +357,16 @@ const makeXAxis = (labelArr, options) => {
   const titleFontSize = options.xAxisTitleFontSize;
   const title = options.xAxisTitle;
 
-  // xAxis =
+  xAxis = `<div class="x-axis"
+  style="font-size: ${options.xAxisLabelFontSize}">
+    <div id="left-corner-${options.Id}"></div>
+      ${xAxis}
+      </div>
+      <div class="x-axis-title" style="font-size: ${options.xAxisTitleFontSize}">
+        ${options.xAxisTitle}
+      </div>`
 
-  return `<div class="x-axis"
-    style="font-size: ${options.xAxisLabelFontSize}">
-      <div id="left-corner-${options.Id}"></div>
-        ${xAxis}
-        </div>
-        <div class="x-axis-title" style="font-size: ${options.xAxisTitleFontSize}">
-          ${options.xAxisTitle}
-        </div>`;
+  return xAxis;
 
 };
 
