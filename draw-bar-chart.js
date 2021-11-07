@@ -28,10 +28,9 @@ const makeClass = (property, styleClass) => {
   return "";
 };
 
-const defineProp = (property, optProp, defaultVal, options) => {
-  const propertyValue = options[optProp];
-  const propertyValueIsSupport = CSS.supports(property, propertyValue);
-  if (propertyValueIsSupport) return propertyValue;
+const defineProp = (property, value, defaultVal) => {
+  const propertyValueIsSupport = CSS.supports(property, value);
+  if (propertyValueIsSupport) return value;
   return defaultVal;
 };
 
@@ -76,13 +75,11 @@ const findTicks = (options, maxVal, minVal) => {
     return interval;
   };
 
-  const tickIntervalIsDefined = "tickInterval" in options;
-  //decide on the tickInterval, either default or option given by the user
   const tickIntervalInOptions = options.tickInterval;
   const tickIntervalIsNumber = isNumber(tickIntervalInOptions);
 
   const tickInterval =
-    tickIntervalIsDefined && tickIntervalIsNumber
+    tickIntervalIsNumber
       ? tickIntervalInOptions
       : defaultInterval();
 
@@ -95,7 +92,7 @@ const findTicks = (options, maxVal, minVal) => {
   //if all values are negative (or zero)
   if (maxVal <= 0) return [tickInterval, 0, minTick];
 
-  // there are positive or negative value
+  // there are both positive and negative values
   return [tickInterval, maxTick, minTick];
 };
 
@@ -104,7 +101,7 @@ const countDecimals = (val) => {
   return val.toString().split(".")[1].length || 0;
 };
 
-let makeYAxis = (options) => {
+const makeYAxis = (options) => {
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
 
@@ -112,23 +109,26 @@ let makeYAxis = (options) => {
   let minTick = options.minTick;
   let tickInterval = options.tickInterval;
 
-  if (options.scientificNotation === true) {
-    let exp = options.tickInterval.toExponential(2);
-    let index = exp.indexOf("e");
-    let pow = parseInt(exp.slice(index + 1));
+  if (options.scientificNotation) {
+    const exp = options.tickInterval.toExponential(2);
+    const index = exp.indexOf("e");
+    const pow = parseInt(exp.slice(index + 1));
     maxTick /= powerOfTen(pow);
     minTick /= powerOfTen(pow);
     tickInterval = parseFloat(exp.slice(0, index));
-    if (pow !== 0) {
-      yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
-    }
+    if (pow !== 0) yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
   }
 
-  yAxisTitle = `<div class="y-axis-title" style="font-size: ${options.yAxisTitleFontSize}">${options.yAxisTitle +  yAxisTitle}`;
+  yAxisTitle = (
+    `<div
+      class="y-axis-title"
+      style="font-size: ${options.yAxisTitleFontSize}">
+      ${options.yAxisTitle +  yAxisTitle}
+    `);
 
-  let decimals = countDecimals(tickInterval);
-  let max = maxTick / tickInterval;
-  let min = minTick / tickInterval;
+  const decimals = countDecimals(tickInterval);
+  const max = maxTick / tickInterval;
+  const min = minTick / tickInterval;
   for (let i = min; i <= max; i ++) {
     yAxisLabel += `<div style="height: 0">${(i * tickInterval).toFixed(decimals)}</div>`;
   }
@@ -138,11 +138,11 @@ let makeYAxis = (options) => {
   return `<div class="y-axis" id="y-axis-${options.Id}">${yAxisTitle + yAxisLabel}</div>`;
 };
 
-let formatByOption = (opt) => {
-  if (opt === true) {
+const formatByOption = (opt) => {
+  if (opt) {
     return (i) => {
-      let exp = i.toExponential(2);
-      let index = exp.indexOf("e");
+      const exp = i.toExponential(2);
+      const index = exp.indexOf("e");
       return `${exp.slice(0, index)}x10<sup><span class="sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`;
     };
   } else {
@@ -150,16 +150,16 @@ let formatByOption = (opt) => {
   }
 };
 
-let makeStackedBars = (data, options) => {
-  let difference = options.maxTick - options.minTick;
+const makeStackedBars = (data, options) => {
+  const difference = options.maxTick - options.minTick;
   let posBars = "";
   let negBars = "";
-  let dataNum = data.length;
+  const dataNum = data.length;
   data = data.map(arr => [arr.filter(x => x < 0), arr.filter(x => x >= 0)]);
 
-  let format = formatByOption(options.scientificNotation);
+  const format = formatByOption(options.scientificNotation);
 
-  let dataLabelColour = defineProp("color", "dataLabelColour", "white", options);
+  let dataLabelColour = defineProp("color", options.dataLabelColour, "white");
   let barColour = [];
 
   if (Array.isArray(options.barColour)) {
