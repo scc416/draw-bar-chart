@@ -9,22 +9,6 @@
 // edit readme.md
 // make github pages
 
-// this function is to reimplement the function Math.pow(10, num)
-const powerOfTen = (num) => {
-  let result = 1;
-  while (num > 0) {
-    result *= 10;
-    num --;
-  }
-  while (num < 0) {
-    result /= 10;
-    num ++;
-  }
-  return result;
-};
-
-
-
 // check if input's type is number
 const isNumber = (num) => {
   const isNumber = typeof num === "number";
@@ -56,13 +40,13 @@ const findTicks = (options, maxVal, minVal) => {
     if (difference >= 1) {
       const roundUpDifference = Math.ceil(difference);
       const numOfDigit = roundUpDifference.toString().length;
-      const interval = powerOfTen(numOfDigit - 1);
+      const interval = Math.pow(10, numOfDigit - 1);
       return interval;
     }
 
     let pow = 0;
-    while (difference <= powerOfTen(pow)) pow --;
-    const interval = powerOfTen(pow);
+    while (difference <= 1 / Math.pow(10, pow)) pow ++;
+    const interval = 1 / Math.pow(10, pow);
     return interval;
   };
 
@@ -88,8 +72,11 @@ const findTicks = (options, maxVal, minVal) => {
 };
 
 const countDecimals = (val) => {
-  if (Math.floor(val) === val) return 0;
-  return val.toString().split(".")[1].length || 0;
+  const noDecimalPlace = Math.floor(val) === val;
+  if (noDecimalPlace) return 0;
+  const strAfterDecimal = val.toString().split(".")[1];
+  const numOfDecimal = strAfterDecimal.length;
+  return numOfDecimal || 0;
 };
 
 const makeYAxis = (options) => {
@@ -101,13 +88,12 @@ const makeYAxis = (options) => {
   let tickInterval = options.tickInterval;
 
   if (options.scientificNotation) {
-    const exp = options.tickInterval.toExponential(2);
-    const index = exp.indexOf("e");
-    const pow = parseInt(exp.slice(index + 1));
-    maxTick /= powerOfTen(pow);
-    minTick /= powerOfTen(pow);
-    tickInterval = parseFloat(exp.slice(0, index));
-    if (pow !== 0) yAxisTitle = ` (10<sup>${pow}</sup>)${yAxisTitle}`;
+    const exp = options.maxTick.toExponential(2);
+    const power = parseInt(exp.split("e")[1]);
+    maxTick /= Math.pow(10, power);
+    minTick /= Math.pow(10, power);
+    tickInterval /= Math.pow(10, power);
+    yAxisTitle = ` (10<sup>${power}</sup>)${yAxisTitle}`;
   }
 
   const titleFontSize = options.yAxisTitleFontSize;
@@ -150,11 +136,20 @@ const makeYAxis = (options) => {
 
 const formatByOption = (isScientificNotation) => {
   if (isScientificNotation) {
-    return (i) => {
-      const exp = i.toExponential(2);
-      const index = exp.indexOf("e");
-      return `${exp.slice(0, index)}x10<sup><span class = "sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`;
+    const format = (num) => {
+      const numInScientificNotation = num.toExponential(2);
+      const [wholeNum, power] = numInScientificNotation.split("e");
+      const formatedNum = (
+        `${wholeNum}x10
+          <sup>
+            <span class = "sup">
+              ${power.replace("+", "")}
+            </span>
+          </sup>`
+      );
+      return formatedNum;
     };
+    return format;
   }
   return i => i;
 };
@@ -188,7 +183,7 @@ const makeStackedBars = (data, options) => {
             width: ${widthOfBar};
             margin: 0 ${horizontalMargin};">
         ${bar}
-      </div>`)
+      </div>`);
     return barDiv;
   };
 
@@ -208,8 +203,7 @@ const makeStackedBars = (data, options) => {
       </div>`
     );
     return stack;
-  }
-
+  };
 
   const blankBar = (
     `<div class = "bar"
@@ -233,15 +227,15 @@ const makeStackedBars = (data, options) => {
 
     if (thereArePositiveVal) {
       for (let i = numOfPositiveValue - 1; i >= 0; i--) {
-        const height = i === 0 ? positiveValues[0] : positiveValues[i] - positiveValues[i - 1];
-        posBar += `<div
-          class="bar ${hoverEffectClass}"
-          style="
-            align-items: ${dataLabelPosition};
-            height: ${height * 100 / maxVal}%;
-            background-color: ${barColour[i + numOfNegativeValue]}; ">
-              <span class="data">${format(positiveValues[i])}</span>
-          </div>`;
+        const height =
+          i === 0
+            ? positiveValues[0]
+            : positiveValues[i] - positiveValues[i - 1];
+        const heightInPercentage = height * 100 / maxVal + "%";
+        const val = positiveValues[i];
+        const barColourIndex = i + numOfNegativeValue;
+        const stack = makeAStack(val, barColourIndex, heightInPercentage);
+        posBar += stack;
       }
     }
     if (!thereArePositiveVal) posBar = blankBar;
@@ -581,18 +575,18 @@ const completeOptions = (options, data) => {
   checkIfOptionIsValid("xAxisTitleFontSize", "24px", x => CSS.supports("font-size", x));
   checkIfOptionIsValid("xAxisLabelFontSize", "16px", x => CSS.supports("font-size", x));
 
-  switch(options.dataLabelPosition) {
-    case ("top"):
-      options.dataLabelPosition = "flex-start";
-      break;
-    case ("centre"):
-      options.dataLabelPosition = "center";
-      break;
-    case ("bottom"):
-      options.dataLabelPosition = "flex-end";
-      break;
-    default:
-      options.dataLabelPosition = "flex-start";
+  switch (options.dataLabelPosition) {
+  case ("top"):
+    options.dataLabelPosition = "flex-start";
+    break;
+  case ("centre"):
+    options.dataLabelPosition = "center";
+    break;
+  case ("bottom"):
+    options.dataLabelPosition = "flex-end";
+    break;
+  default:
+    options.dataLabelPosition = "flex-start";
   }
 
   checkIfOptionIsValid("dataLabelColour", "white", x => CSS.supports("color", x));
