@@ -166,14 +166,13 @@ const makeStackedBars = (data, options) => {
   const dataNum = data.length;
   const positiveData = data.map(arr => arr.filter(x => x >= 0));
   const negativeData = data.map(arr => arr.filter(x => x < 0));
-  data = data.map(arr => [arr.filter(x => x < 0), arr.filter(x => x >= 0)]);
 
   const format = formatByOption(options.scientificNotation);
 
   const dataLabelColour = options.dataLabelColour;
   const barColour = options.barColour;
 
-  let dataLabelPosition;
+  const dataLabelPosition = options.dataLabelPosition;
 
   for (let i = 0; i < dataNum; i++) {
     const positiveValues = positiveData[i];
@@ -543,8 +542,20 @@ const completeOptions = (options, data) => {
   checkIfOptionIsValid("xAxisTitleFontSize", "24px", x => CSS.supports("font-size", x));
   checkIfOptionIsValid("xAxisLabelFontSize", "16px", x => CSS.supports("font-size", x));
 
-  const labelPosition = ["top", "centre", "bottom"];
-  checkIfOptionIsValid("dataLabelPosition", "top", x => labelPosition.indexOf(x) > -1);
+  switch(options.dataLabelPosition) {
+    case ("top"):
+      options.dataLabelPosition = "flex-start";
+      break;
+    case ("centre"):
+      options.dataLabelPosition = "center";
+      console.log("in", options.dataLabelPosition);
+      break;
+    case ("bottom"):
+      options.dataLabelPosition = "flex-end";
+      break;
+    default:
+      options.dataLabelPosition = "flex-start";
+  }
 
   checkIfOptionIsValid("dataLabelColour", "white", x => CSS.supports("color", x));
   checkIfOptionIsValid("dataLabelFontSize", "16px", x => CSS.supports("font-size", x));
