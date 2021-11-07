@@ -167,30 +167,70 @@ const makeStackedBars = (data, options) => {
   const positiveData = data.map(arr => arr.filter(x => x >= 0));
   const negativeData = data.map(arr => arr.filter(x => x < 0));
   const widthOfBar = 100 / dataNum + "%";
-
-  const format = formatByOption(options.scientificNotation);
-
+  const horizontalMargin = options.barSpacing;
+  const maxTick = options.maxTick;
+  const minTick = options.minTick;
   const dataLabelColour = options.dataLabelColour;
   const barColour = options.barColour;
   const hoverEffectClass = options.hoverEffect;
+  const animationEffectClass = options.animationEffect;
 
   const dataLabelPosition = options.dataLabelPosition;
+  const format = formatByOption(options.scientificNotation);
+
+  const makeBarDiv = (bar, height) => {
+    const barDiv = (
+      `<div
+        class = "stacked-bar ${animationEffectClass}"
+          style="
+            color: ${dataLabelColour};
+            height: ${height};
+            width: ${widthOfBar};
+            margin: 0 ${horizontalMargin};">
+        ${bar}
+      </div>`)
+    return barDiv;
+  };
+
+  const makeAStack = (value, indexInBarColour, height) => {
+    const formatVal = format(value);
+    const stackColour = barColour[indexInBarColour];
+    const stack = (
+      `<div
+        class="bar ${hoverEffectClass}"
+        style="
+          align-items: ${dataLabelPosition};
+          height: ${height};
+          background-color: ${stackColour}; ">
+            <span class="data">
+              ${formatVal}
+            </span>
+      </div>`
+    );
+    return stack;
+  }
+
+
   const blankBar = (
     `<div class = "bar"
       style = "width: ${widthOfBar}">
     </div>`);
 
   for (let i = 0; i < dataNum; i++) {
+
     let posBar = "";
     let negBar = "";
     const positiveValues = positiveData[i];
     const numOfPositiveValue = positiveValues.length;
     const negativeValues = negativeData[i];
     const numOfNegativeValue = negativeValues.length;
+
     const maxVal = numOfPositiveValue > 0 ? positiveValues[numOfPositiveValue - 1] : 0;
     const minVal = numOfNegativeValue > 0 ? negativeValues[0] : 0;
+
     const thereArePositiveVal = numOfPositiveValue > 0;
     const thereAreNegativeVal = numOfNegativeValue > 0;
+
     if (thereArePositiveVal) {
       for (let i = numOfPositiveValue - 1; i >= 0; i--) {
         const height = i === 0 ? positiveValues[0] : positiveValues[i] - positiveValues[i - 1];
@@ -208,53 +248,51 @@ const makeStackedBars = (data, options) => {
 
     if (thereAreNegativeVal) {
       for (let i = numOfNegativeValue - 1; i >= 0; i--) {
-        const height = i === numOfNegativeValue - 1 ? negativeValues[numOfNegativeValue - 1] : negativeValues[i] - negativeValues[i + 1];
-        negBar +=
-          (`<div
-            class="bar ${options.hoverEffect}"
-            style="
-              align-items: ${dataLabelPosition};
-              height: ${ height * 100 / minVal }%;
-              background-color: ${barColour[i]}; ">
-                <span class="data">${format(negativeValues[i])}</span>
-            </div>`
-          );
+        const height =
+          i === numOfNegativeValue - 1
+            ? negativeValues[numOfNegativeValue - 1]
+            : negativeValues[i] - negativeValues[i + 1];
+        const heightInPercentage = height * 100 / minVal + "%";
+        const val = negativeValues[i];
+        const stack = makeAStack(val, i, heightInPercentage);
+        negBar += stack;
       }
     }
     if (!thereAreNegativeVal) negBar = blankBar;
 
-    negBars += `<div
-      class = "stacked-bar ${options.animationEffect}"
-      style="
-        color: ${dataLabelColour};
-        height: ${100 * minVal / options.minTick}%;
-        width: ${100 / dataNum}%;
-        margin: 0 ${options.barSpacing};
-        ">
-        ${negBar}
-      </div>`;
-    posBars +=
-      (`<div
-        class = "bar stacked-bar ${options.animationEffect}"
-        style = "
-          color: ${dataLabelColour};
-          height: ${100 * maxVal / options.maxTick}%;
-          width: ${100 / dataNum}%;
-          margin: 0 ${options.barSpacing};
-          ">
-          ${posBar}
-      </div>`);
+    const negBarHeight = 100 * minVal / minTick + "%";
+    negBar = makeBarDiv(negBar, negBarHeight);
+    negBars += negBar;
+
+    const posBarHeight = 100 * maxVal / maxTick + "%";
+    posBar = makeBarDiv(posBar, posBarHeight);
+    posBars += posBar;
   }
 
-  return `<div class="chart-content" style="
-  font-size: ${options.dataLabelFontSize};
-  background-image: repeating-linear-gradient(
-    to top,
-    grey 0px,
-    grey 1px,
-    transparent 1px,
-    transparent ${100 / (difference / options.tickInterval)}%
-    "><div class="bars pos-bars" style=" height: ${100 * options.maxTick / difference}%">${posBars}</div><div class="bars" style="height: ${-100 * options.minTick / difference}%">${negBars}</div></div>`;
+  const bars = (
+    `<div
+      class = "chart-content"
+      style = "
+        font-size: ${options.dataLabelFontSize};
+        background-image: repeating-linear-gradient(
+          to top,
+          grey 0px,
+          grey 1px,
+          transparent 1px,
+          transparent ${100 / (difference / options.tickInterval)}%">
+      <div
+        class = "bars pos-bars"
+        style = " height: ${100 * maxTick / difference}%">
+        ${posBars}
+      </div>
+      <div
+        class = "bars"
+        style="height: ${-100 * minTick / difference}%">
+        ${negBars}
+      </div>
+    </div>`);
+
+  return bars;
 };
 
 const makeNonStackedBars = (data, options) => {
