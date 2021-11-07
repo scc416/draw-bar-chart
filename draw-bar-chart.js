@@ -347,7 +347,7 @@ const checkIfEachValueAreNum = (arr) => {
     }
   }
   return true;
-}
+};
 
 //check if the data all the compulsory options are valid
 const dataValidationCheck = (data, options) => {
@@ -357,7 +357,7 @@ const dataValidationCheck = (data, options) => {
   // }
   const dataIsArray = Array.isArray(data.num);
   const labelIsArray = Array.isArray(data.labels);
-  const dataAndLabelHaveSameLength = data.num.length === data.labels.length
+  const dataAndLabelHaveSameLength = data.num.length === data.labels.length;
   if (!dataIsArray) {
     console.log("ALERT: Data set is not an array.");
     return false;
@@ -396,7 +396,7 @@ const dataValidationCheck = (data, options) => {
       if (!allValAreNumber) return false;
 
       for (let i = 0; i < numOfStacked - 1; i++) {
-        if (arr[i] > arr[i + 1]) {
+        if (dataForAStackedBar[i] > dataForAStackedBar[i + 1]) {
           console.log("One of the value set is not in ascending order.");
           return false;
         }
