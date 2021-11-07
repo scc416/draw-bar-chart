@@ -489,7 +489,7 @@ const completeOptions = (options, data) => {
 
   checkIfOptionIsValid("userSelect", "false", (x) => typeof x === "boolean");
 
-  if (options.userSelect === true) {
+  if (options.userSelect) {
     options.userSelect = "auto";
   } else {
     options.userSelect = "none";
