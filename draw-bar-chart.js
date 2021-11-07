@@ -154,17 +154,9 @@ const makeStackedBars = (data, options) => {
   const format = formatByOption(options.scientificNotation);
 
   const dataLabelColour = options.dataLabelColour;
-  const barColour = [];
+  const barColour = options.barColour;
 
-  if (Array.isArray(options.barColour)) {
-    for (const colour of options.barColour) {
-      if (CSS.supports("background-color", colour)) {
-        barColour.push(colour);
-      } else {
-        barColour.push("black");
-      }
-    }
-  }
+
 
   let dataLabelPosition;
 
@@ -460,8 +452,24 @@ const completeOptions = (options, data) => {
     }
     return false;
   });
-  if (options.stacked === false) {
+  if (!options.stacked) {
     checkIfOptionIsValid("barColour", "black", (x) => CSS.supports("color", x));
+  } else {
+    const barColour = [];
+    if (Array.isArray(options.barColour)) {
+      for (const colour of options.barColour) {
+        if (CSS.supports("background-color", colour)) {
+          barColour.push(colour);
+        } else {
+          barColour.push("black");
+        }
+      }
+    } else {
+      for (let i = 0; i < length; i++) {
+        barColour.push("black");
+      }
+    }
+    options.barColour = barColour;
   }
   checkIfOptionIsValid("dataLabelColour", "white", (x) => CSS.supports("color", x));
   checkIfOptionIsValid("dataLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
