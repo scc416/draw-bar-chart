@@ -39,8 +39,8 @@ const makeTitleDiv = (options) => {
   const title = options.chartTitle;
   return (
     `<div
-      class="chart-title"
-      style="colour: ${colour};
+      class = "chart-title"
+      style = "colour: ${colour};
         font-size: ${fontSize}">
       ${title}
     </div>`);
@@ -115,15 +115,15 @@ const makeYAxis = (options) => {
 
   yAxisTitle = (
     `<div
-      class="y-axis-title"
-      style="font-size: ${titleFontSize}">
+      class = "y-axis-title"
+      style = "font-size: ${titleFontSize}">
       ${title}${yAxisTitle}
     `);
 
   const numOfDecimals = countDecimals(tickInterval);
 
   const formatTickValue = val => val.toFixed(numOfDecimals);
-  const formatTickDiv = formatedVal => `<div style="height: 0">${formatedVal}</div>`;
+  const formatTickDiv = formatedVal => `<div style = "height: 0">${formatedVal}</div>`;
 
   for (let i = minTick; i <= maxTick; i += tickInterval) {
     const val = formatTickValue(i);
@@ -133,15 +133,15 @@ const makeYAxis = (options) => {
 
   yAxisLabel = (
     `<div
-      class="y-axis-label"
-      style="font-size: ${options.yAxisLabelFontSize}">
+      class = "y-axis-label"
+      style = "font-size: ${options.yAxisLabelFontSize}">
       ${yAxisLabel}
     </div>`);
 
   const yAxis = (
     `<div
-      class="y-axis"
-      id="y-axis-${options.Id}">
+      class = "y-axis"
+      id = "y-axis-${options.Id}">
       ${yAxisTitle + yAxisLabel}
     </div>`);
 
@@ -153,7 +153,7 @@ const formatByOption = (opt) => {
     return (i) => {
       const exp = i.toExponential(2);
       const index = exp.indexOf("e");
-      return `${exp.slice(0, index)}x10<sup><span class="sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`;
+      return `${exp.slice(0, index)}x10<sup><span class = "sup">${exp.slice(index + 1).replace("+", "")}</span></sup>`;
     };
   } else {
     return i => i;
@@ -339,11 +339,13 @@ const makeXAxis = (labelArr, options) => {
   const width = 100 / dataNum + "%";
   const makeLabelDiv = val => {
     return `<div
-    class="${className}"
-    style="width: ${width}; margin: 0 ${horizontalMargin}">
-      ${val}
-    </div>`;
+      class = "${className}"
+      style = "width: ${width};
+        margin: 0 ${horizontalMargin}">
+        ${val}
+      </div>`;
   }
+
   //label x-axis
   for (const val of labelArr) {
     const labelDiv = makeLabelDiv(val);
