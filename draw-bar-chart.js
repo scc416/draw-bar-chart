@@ -357,6 +357,7 @@ const dataValidationCheck = (data, options) => {
   const dataIsArray = Array.isArray(data.num);
   const labelIsArray = Array.isArray(data.labels);
   const dataAndLabelHaveSameLength = data.num.length === data.labels.length;
+
   if (!dataIsArray) {
     const alert = "Data set is not an array.";
     console.log(makeAlertMessage(alert));
@@ -408,11 +409,13 @@ const dataValidationCheck = (data, options) => {
       }
     }
   }
+
   const idIsDefined = "Id" in options;
   if (!idIsDefined) {
     const alert = "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
     console.log(makeAlertMessage(alert));
   }
+
   return true;
 };
 
@@ -432,38 +435,47 @@ const completeOptions = (options, data) => {
     const barColourInOption = options.barColour;
     const barColourInOptionsIsArray = Array.isArray(barColourInOption);
     if (barColourInOptionsIsArray) {
-      for (const colour of barColourInOption) {
+      const numOfColourInOptions = barColourInOption.length;
+      for (let i = 0; i < dataNum; i ++) {
+        const indexOfColor = i % numOfColourInOptions;
+        const colour = barColourInOption[indexOfColor];
         const colourIsValid = CSS.supports("background-color", colour);
         if (colourIsValid) barColour.push(colour);
         if (!colourIsValid) barColour.push("black");
       }
     }
     if (!barColourInOptionsIsArray) {
-      for (let i = 0; i < dataNum; i++) barColour.push("black");
+      const barColourIsValid = CSS.supports("background-colour", barColourInOption);
+      const everyBarColour =
+        barColourIsValid
+        ? barColourInOption
+        : "black"
+      for (let i = 0; i < dataNum; i++) barColour.push(everyBarColour);
     }
     options.barColour = barColour;
   }
+
   if (!options.stacked) {
-    checkIfOptionIsValid("barColour", "black", (x) => CSS.supports("color", x));
+    checkIfOptionIsValid("barColour", "black", x => CSS.supports("color", x));
   }
 
-  checkIfOptionIsValid("chartTitle", "Untitled", () => true);
-  checkIfOptionIsValid("titleFontSize", "36px", (x) => CSS.supports("font-size", x));
-  checkIfOptionIsValid("titleColour", "black", (x) => CSS.supports("color", x));
-  checkIfOptionIsValid("width", "90vw", (x) => CSS.supports("width", x));
-  checkIfOptionIsValid("height", "90vh", (x) => CSS.supports("height", x));
-  checkIfOptionIsValid("yAxisTitle", "", () => true);
-  checkIfOptionIsValid("yAxisTitleFontSize", "24px", (x) => CSS.supports("font-size", x));
-  checkIfOptionIsValid("yAxisLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
-  checkIfOptionIsValid("xAxisTitle", "", () => true);
-  checkIfOptionIsValid("xAxisTitleFontSize", "24px", (x) => CSS.supports("font-size", x));
-  checkIfOptionIsValid("xAxisLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
+  checkIfOptionIsValid("chartTitle", "Untitled", x => x !== undefined);
+  checkIfOptionIsValid("titleFontSize", "36px", x => CSS.supports("font-size", x));
+  checkIfOptionIsValid("titleColour", "black", x => CSS.supports("color", x));
+  checkIfOptionIsValid("width", "90vw", x => CSS.supports("width", x));
+  checkIfOptionIsValid("height", "90vh", x => CSS.supports("height", x));
+  checkIfOptionIsValid("yAxisTitle", "", x => x !== undefined);
+  checkIfOptionIsValid("yAxisTitleFontSize", "24px", x => CSS.supports("font-size", x));
+  checkIfOptionIsValid("yAxisLabelFontSize", "16px", x => CSS.supports("font-size", x));
+  checkIfOptionIsValid("xAxisTitle", "", x => x !== undefined);
+  checkIfOptionIsValid("xAxisTitleFontSize", "24px", x => CSS.supports("font-size", x));
+  checkIfOptionIsValid("xAxisLabelFontSize", "16px", x => CSS.supports("font-size", x));
 
   const labelPosition = ["top", "centre", "bottom"];
-  checkIfOptionIsValid("dataLabelPosition", "top", (x) => labelPosition.indexOf(x) > -1);
+  checkIfOptionIsValid("dataLabelPosition", "top", x => labelPosition.indexOfx > -1);
 
-  checkIfOptionIsValid("dataLabelColour", "white", (x) => CSS.supports("color", x));
-  checkIfOptionIsValid("dataLabelFontSize", "16px", (x) => CSS.supports("font-size", x));
+  checkIfOptionIsValid("dataLabelColour", "white", x => CSS.supports("color", x));
+  checkIfOptionIsValid("dataLabelFontSize", "16px", x => CSS.supports("font-size", x));
 
   let defineBarSpacing = (options, dataNum) => {
     if ("barSpacing" in options) {
@@ -478,7 +490,7 @@ const completeOptions = (options, data) => {
 
   options.barSpacing = defineBarSpacing(options, dataNum);
 
-  checkIfOptionIsValid("userSelect", "false", (x) => typeof x === "boolean");
+  checkIfOptionIsValid("userSelect", "false", x => typeof x === "boolean");
 
   if (options.userSelect) {
     options.userSelect = "auto";
@@ -486,9 +498,9 @@ const completeOptions = (options, data) => {
     options.userSelect = "none";
   }
 
-  checkIfOptionIsValid("scientificNotation", "false", (x) => typeof x === "boolean");
-  checkIfOptionIsValid("animationEffect", "true", (x) => typeof x === "boolean");
-  checkIfOptionIsValid("hoverEffect", "true", (x) => typeof x === "boolean");
+  checkIfOptionIsValid("scientificNotation", "false", x => typeof x === "boolean");
+  checkIfOptionIsValid("animationEffect", "true", x => typeof x === "boolean");
+  checkIfOptionIsValid("hoverEffect", "true", x => typeof x === "boolean");
   options.hoverEffect = makeClass(options.hoverEffect, "info");
   options.animationEffect = makeClass(options.animationEffect, "bar-animation");
   //find the tick interval and value of the maximum tick
