@@ -334,13 +334,20 @@ const makeXAxis = (labelArr, options) => {
   let xAxis = "";
   const dataNum = labelArr.length;
 
+  const horizontalMargin = options.barSpacing;
+  const className = options.hoverEffect;
+  const width = 100 / dataNum + "%";
+  const makeLabelDiv = val => {
+    return `<div
+    class="${className}"
+    style="width: ${width}; margin: 0 ${horizontalMargin}">
+      ${val}
+    </div>`;
+  }
   //label x-axis
   for (const val of labelArr) {
-    xAxis += `<div
-      class="${options.hoverEffect}"
-      style="width: ${100 / dataNum}%; margin: 0 ${options.barSpacing}">
-        ${val}
-      </div>`;
+    const labelDiv = makeLabelDiv(val);
+    xAxis += labelDiv;
   }
 
   return `<div class="x-axis"
