@@ -23,10 +23,7 @@ const powerOfTen = (num) => {
   return result;
 };
 
-const makeClass = (property, styleClass) => {
-  if (!property) return styleClass;
-  return "";
-};
+
 
 // check if input's type is number
 const isNumber = (num) => {
@@ -477,22 +474,23 @@ const completeOptions = (options, data) => {
   checkIfOptionIsValid("dataLabelColour", "white", x => CSS.supports("color", x));
   checkIfOptionIsValid("dataLabelFontSize", "16px", x => CSS.supports("font-size", x));
 
-  let defineBarSpacing = (options, dataNum) => {
-    if ("barSpacing" in options) {
-      if (CSS.supports("margin", options.barSpacing)) {
-        let num = parseFloat(options.barSpacing.replace(/\D*/g, ""));
-        let unit = options.barSpacing.replace(/\d*/g, "");
-        return num / 2 + unit;
-      }
+  const defineBarSpacing = (dataNum) => {
+    const barSpacingIsValid = CSS.supports("margin", options.barSpacing);
+    if (barSpacingIsValid) {
+      const num = parseFloat(options.barSpacing.replace(/\D*/g, ""));
+      const unit = options.barSpacing.replace(/\d*/g, "");
+      const margin = num / 2 + unit;
+      return options.barSpacing = margin;
     }
-    return 10 / (dataNum) + "%";
+    const defaultMargin = 10 / (dataNum) + "%";
+    return options.barSpacing = defaultMargin;
   };
 
-  options.barSpacing = defineBarSpacing(options, dataNum);
+  defineBarSpacing(dataNum);
 
   checkIfOptionIsValid("userSelect", "false", x => typeof x === "boolean");
 
-  if (options.userSelect) {
+  if (options.userSelect === true) {
     options.userSelect = "auto";
   } else {
     options.userSelect = "none";
@@ -501,15 +499,22 @@ const completeOptions = (options, data) => {
   checkIfOptionIsValid("scientificNotation", "false", x => typeof x === "boolean");
   checkIfOptionIsValid("animationEffect", "true", x => typeof x === "boolean");
   checkIfOptionIsValid("hoverEffect", "true", x => typeof x === "boolean");
-  options.hoverEffect = makeClass(options.hoverEffect, "info");
-  options.animationEffect = makeClass(options.animationEffect, "bar-animation");
+
+  const makeClassForEffect = (property, styleClass) => {
+    const effectIsOff = options[property] === false;
+    if (effectIsOff) return options[property] = "";
+    return options[property] = styleClass;
+  };
+
+  makeClassForEffect("hoverEffect", "info");
+  makeClassForEffect("animationEffect", "bar-animation");
+
   //find the tick interval and value of the maximum tick
   const { tickInterval, maxTick, minTick } = findTicks(options, Math.max(...data.flat()), Math.min(...data.flat()));
   options.tickInterval = tickInterval;
   options.maxTick = maxTick;
   options.minTick = minTick;
 
-  return options;
 };
 
 
