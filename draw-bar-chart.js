@@ -81,13 +81,13 @@ const findTicks = (options, maxVal, minVal) => {
   const minTick = Math.floor(minVal / tickInterval) * tickInterval;
 
   //if all values are positive (or zero)
-  if (minVal >= 0) return [tickInterval, maxTick, 0];
+  if (minVal >= 0) return { tickInterval, maxTick, minTick: 0 };
 
   //if all values are negative (or zero)
-  if (maxVal <= 0) return [tickInterval, 0, minTick];
+  if (maxVal <= 0) return { tickInterval, minTick, maxTick: 0 };
 
   // there are both positive and negative values
-  return [tickInterval, maxTick, minTick];
+  return { tickInterval, maxTick, minTick };
 };
 
 const countDecimals = (val) => {
@@ -386,7 +386,7 @@ const dataChecker = (data, options) => {
       console.log("ALERT: Options do not have bar colour (barColour).");
       return false;
     }
-    for (let arr of data.num) {
+    for (const arr of data.num) {
       if (arr.length !== length) {
         console.log("ALERT: The value set have different number of data.");
         return false;
@@ -395,7 +395,7 @@ const dataChecker = (data, options) => {
         console.log("ALERT: One of the value set is not an array.");
         return false;
       }
-      for (let data of arr) {
+      for (const data of arr) {
         if (typeof data !== "number") {
           console.log("ALERT: One of the value is not number.");
           return false;
@@ -501,9 +501,10 @@ const completeOptions = (options, data) => {
   options.hoverEffect = makeClass(options.hoverEffect, "info");
   options.animationEffect = makeClass(options.animationEffect, "bar-animation");
   //find the tick interval and value of the maximum tick
-  [options.tickInterval,
-    options.maxTick,
-    options.minTick ] = findTicks(options, Math.max(...data.flat()), Math.min(...data.flat()));
+  const { tickInterval, maxTick, minTick } = findTicks(options, Math.max(...data.flat()), Math.min(...data.flat()));
+  options.tickInterval = tickInterval;
+  options.maxTick = maxTick;
+  options.minTick = minTick;
 
   return options;
 };
