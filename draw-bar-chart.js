@@ -166,45 +166,49 @@ const makeStackedBars = (data, options) => {
   const dataNum = data.length;
   const positiveData = data.map(arr => arr.filter(x => x >= 0));
   const negativeData = data.map(arr => arr.filter(x => x < 0));
+  const widthOfBar = 100 / dataNum + "%";
 
   const format = formatByOption(options.scientificNotation);
 
   const dataLabelColour = options.dataLabelColour;
   const barColour = options.barColour;
+  const hoverEffectClass = options.hoverEffect;
 
   const dataLabelPosition = options.dataLabelPosition;
+  const blankBar = (
+    `<div class = "bar"
+      style = "width: ${widthOfBar}">
+    </div>`);
 
   for (let i = 0; i < dataNum; i++) {
-    const positiveValues = positiveData[i];
-    const posLength = positiveValues.length;
-    const negativeValues = negativeData[i];
-    const negLength = negativeValues.length;
     let posBar = "";
     let negBar = "";
-    const maxVal = posLength > 0 ? positiveValues[posLength - 1] : 0;
-    const minVal = negLength > 0 ? negativeValues[0] : 0;
-    if (posLength > 0) {
-      for (let i = posLength - 1; i >= 0; i--) {
+    const positiveValues = positiveData[i];
+    const numOfPositiveValue = positiveValues.length;
+    const negativeValues = negativeData[i];
+    const numOfNegativeValue = negativeValues.length;
+    const maxVal = numOfPositiveValue > 0 ? positiveValues[numOfPositiveValue - 1] : 0;
+    const minVal = numOfNegativeValue > 0 ? negativeValues[0] : 0;
+    const thereArePositiveVal = numOfPositiveValue > 0;
+    const thereAreNegativeVal = numOfNegativeValue > 0;
+    if (thereArePositiveVal) {
+      for (let i = numOfPositiveValue - 1; i >= 0; i--) {
         const height = i === 0 ? positiveValues[0] : positiveValues[i] - positiveValues[i - 1];
         posBar += `<div
-          class="bar ${options.hoverEffect}"
+          class="bar ${hoverEffectClass}"
           style="
-            align-items: ${options.dataLabelPosition};
+            align-items: ${dataLabelPosition};
             height: ${height * 100 / maxVal}%;
-            background-color: ${barColour[i + negLength]}; ">
+            background-color: ${barColour[i + numOfNegativeValue]}; ">
               <span class="data">${format(positiveValues[i])}</span>
           </div>`;
       }
-    } else {
-      posBar = `<div class="bar"
-      style="
-        width: ${100 / dataNum}%">
-    </div>`;
     }
+    if (!thereArePositiveVal) posBar = blankBar;
 
-    if (negLength > 0) {
-      for (let i = negLength - 1; i >= 0; i--) {
-        const height = i === negLength - 1 ? negativeValues[negLength - 1] : negativeValues[i] - negativeValues[i + 1];
+    if (thereAreNegativeVal) {
+      for (let i = numOfNegativeValue - 1; i >= 0; i--) {
+        const height = i === numOfNegativeValue - 1 ? negativeValues[numOfNegativeValue - 1] : negativeValues[i] - negativeValues[i + 1];
         negBar +=
           (`<div
             class="bar ${options.hoverEffect}"
@@ -216,12 +220,9 @@ const makeStackedBars = (data, options) => {
             </div>`
           );
       }
-    } else {
-      negBar = (`<div class="bar"
-      style="
-        width: ${100 / dataNum}%">
-    </div>`);
     }
+    if (!thereAreNegativeVal) negBar = blankBar;
+
     negBars += `<div
       class = "stacked-bar ${options.animationEffect}"
       style="
@@ -278,7 +279,7 @@ const makeNonStackedBars = (data, options) => {
   const minTick = options.minTick;
   const heightOfBarForNegativeValue = val => 100 * val /  minTick + "%";
 
-  const blankSpace = (
+  const blankBar = (
     `<div class="bar"
       style="
         width: ${widthOfBar};
@@ -314,13 +315,13 @@ const makeNonStackedBars = (data, options) => {
     if (valIsPostive) {
       const barDiv = makeBarDiv(val, true);
       posBars += barDiv;
-      negBars += blankSpace;
+      negBars += blankBar;
     }
 
     if (!valIsPostive) {
       const barDiv = makeBarDiv(val, false);
       negBars += barDiv;
-      posBars += blankSpace;
+      posBars += blankBar;
     }
   }
 
@@ -548,7 +549,6 @@ const completeOptions = (options, data) => {
       break;
     case ("centre"):
       options.dataLabelPosition = "center";
-      console.log("in", options.dataLabelPosition);
       break;
     case ("bottom"):
       options.dataLabelPosition = "flex-end";
@@ -595,12 +595,14 @@ const completeOptions = (options, data) => {
   makeClassForEffect("hoverEffect", "info");
   makeClassForEffect("animationEffect", "bar-animation");
 
+
+  const maxValue = Math.max(...data.flat());
+  const minValue = Math.min(...data.flat());
   //find the tick interval and value of the maximum tick
-  const { tickInterval, maxTick, minTick } = findTicks(options, Math.max(...data.flat()), Math.min(...data.flat()));
+  const { tickInterval, maxTick, minTick } = findTicks(options, maxValue, minValue);
   options.tickInterval = tickInterval;
   options.maxTick = maxTick;
   options.minTick = minTick;
-
 };
 
 
