@@ -352,6 +352,13 @@ const makeXAxis = (labelArr, options) => {
     xAxis += labelDiv;
   }
 
+  const labelFontSize = options.xAxisLabelFontSize;
+  const id = options.id;
+  const titleFontSize = options.xAxisTitleFontSize;
+  const title = options.xAxisTitle;
+
+  // xAxis =
+
   return `<div class="x-axis"
     style="font-size: ${options.xAxisLabelFontSize}">
       <div id="left-corner-${options.Id}"></div>
