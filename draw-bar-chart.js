@@ -4,6 +4,13 @@
 // make notes
 // edit readme.md
 
+// escape function to avoid XSS
+const escape = function (str) {
+  const div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
 // check if input's type is number
 const isNumber = (num) => {
   const isNumber = typeof num === "number";
