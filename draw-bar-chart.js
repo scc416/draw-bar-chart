@@ -73,9 +73,16 @@ const makeYAxis = (options) => {
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
 
-  let { maxTick, minTick, tickInterval } = options;
+  let {
+    maxTick,
+    minTick,
+    tickInterval,
+    scientificNotation,
+    yAxisTitleFontSize,
+    yAxisTitle: yAxisTitleText,
+  } = options;
 
-  if (options.scientificNotation) {
+  if (scientificNotation) {
     const exp = options.maxTick.toExponential(2);
     const power = parseInt(exp.split("e")[1]);
     maxTick /= Math.pow(10, power);
@@ -84,13 +91,10 @@ const makeYAxis = (options) => {
     yAxisTitle = ` (10<sup>${power}</sup>)${yAxisTitle}`;
   }
 
-  const titleFontSize = options.yAxisTitleFontSize;
-  const title = options.yAxisTitle;
-
   yAxisTitle = `<div
       class = "y-axis-title"
-      style = "font-size: ${titleFontSize}">
-      ${title}${yAxisTitle}
+      style = "font-size: ${yAxisTitleFontSize}">
+      ${yAxisTitleText}${yAxisTitle}
     `;
 
   const numOfDecimals = countDecimals(tickInterval);
