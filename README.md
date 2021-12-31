@@ -1,11 +1,42 @@
-# bar-chart-project
+# Draw Bar Chart
 
-## About
-## Give some context to what your project is for
-## Example Screenshots (embedded within the readme as image tags)
-## List the API functions that you would expect a user to use
-## Describe the function and the parameters to each function
-## A Feature list of your library (options it supports, etc)
-## A list of known issues / bugs
-## A list of features that are on the roadmap but haven't been implemented yet
-## A list of all the external resources (tutorials, docs, example code, etc) that you encountered and used to help you create this library
+A library.
+
+## Table of Content
+
+- [Live Demo](#live-demo)
+- [Final Product](#final-product)
+- [Dependencies](#dependencies)
+- [Getting Started](#getting-started)
+- [File Structure](#file-structure)
+
+## Live Demo
+
+The server is deployed to Heroku. CircleCI manages the continuous integration process, and Netlify serves the static client assets:
+https://the-schedule.netlify.app/
+
+## Final Product
+
+### Stacked bar graph
+
+### Animation
+
+## Dependencies
+
+- [React](https://reactjs.org/): library for building the user interface
+
+## Getting Started
+
+Install it:
+
+`npm install @siuc/lotide`
+
+Require it:
+
+`const _ = require('@siuc/lotide');`
+
+Call it:
+
+`const results = _.tail([1, 2, 3]) // => [2, 3]`
+
+## Documentation
