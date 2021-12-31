@@ -449,27 +449,27 @@ const checkIfAllValuesAreNum = (arr) => {
 
 //check if the data all the compulsory options are valid
 const dataValidationCheck = (data, options) => {
-  const dataIsArray = Array.isArray(data.num);
-  const labelIsArray = Array.isArray(data.labels);
-  const dataAndLabelHaveSameLength = data.num.length === data.labels.length;
-  const noData = data.num.length === 0;
+  const { values, labels } = data;
+  const dataIsArray = Array.isArray(values);
+  const labelIsArray = Array.isArray(labels);
+  const dataAndLabelHaveSameLength = values.length === data.labels.length;
+  const noData = values.length === 0;
 
   if (noData) throw noDataErrorMsg;
   if (!dataIsArray) throw dataIsNotArrayErrorMsg;
   if (!labelIsArray) throw labelIsNotArrayErrorMsg;
   if (!dataAndLabelHaveSameLength) throw dataNumAreNotMatchErrorMsg;
 
-  const { num: dataValues } = data;
-  const firstValue = dataValues[0];
+  const firstValue = values[0];
   const barChartIsStacked = Array.isArray(firstValue);
   options.stacked = barChartIsStacked;
   if (!barChartIsStacked) {
-    const allValAreNumber = checkIfAllValuesAreNum(dataValues);
+    const allValAreNumber = checkIfAllValuesAreNum(values);
     if (!allValAreNumber) return false;
   }
   if (barChartIsStacked) {
     const numOfStacked = firstValue.length;
-    for (const dataForAStackedBar of data.num) {
+    for (const dataForAStackedBar of values) {
       const dataIsArray = Array.isArray(dataForAStackedBar);
       if (!dataIsArray) throw stackedDataIsNotArrayErrorMsg;
 
@@ -536,7 +536,9 @@ const completeOptions = (options, data) => {
   }
 
   if (!stacked) {
-    checkIfOptionIsValid("barColour", DEFAULT_CSS_COLOR[0], (x) => CSS.supports("color", x));
+    checkIfOptionIsValid("barColour", DEFAULT_CSS_COLOR[0], (x) =>
+      CSS.supports("color", x)
+    );
   }
 
   checkIfOptionIsValid("chartTitle", "Untitled", (x) => x !== undefined);
@@ -651,7 +653,7 @@ const drawBarChart = (data, options, element) => {
 
   if (dataAreValid) {
     //check if each option is valid and fill in default value to the options that are not filled in / values are not valid
-    completeOptions(options, data.num);
+    completeOptions(options, data.values);
 
     //make title Div
     const chartTitleDiv = makeTitleDiv(options);
@@ -660,7 +662,7 @@ const drawBarChart = (data, options, element) => {
     const yAxis = makeYAxis(options);
 
     //plot the bar graph with value in parameter "data"
-    const bars = makeBars(data.num, options);
+    const bars = makeBars(data.values, options);
 
     //label the x axis
     const xAxis = makeXAxis(data.labels, options);
