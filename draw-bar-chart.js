@@ -582,10 +582,7 @@ const makeXAxis = (labelArr, options) => {
 const checkIfAllValuesAreNum = (arr) => {
   for (const val of arr) {
     const valIsNum = isNumber(val);
-    if (!valIsNum) {
-      console.log("ALERT: One of the value is not number.");
-      return false;
-    }
+    if (!valIsNum) throw " One of the value is not number.";
   }
   return true;
 };
