@@ -642,14 +642,8 @@ const completeOptions = (options, data) => {
 };
 
 // top-level function
-const drawBarChart = (data, options, element) => {
+const drawBarChart = ($element, data, options) => {
   const dataAreValid = dataValidationCheck(data, options);
-
-  if (!dataAreValid) {
-    $(document).ready(() => {
-      element.html("There is problem with the data. Please see web console.");
-    });
-  }
 
   if (dataAreValid) {
     //check if each option is valid and fill in default value to the options that are not filled in / values are not valid
@@ -671,10 +665,10 @@ const drawBarChart = (data, options, element) => {
     const chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;
 
     $(document).ready(function () {
-      element.html(chart);
-      element.css("width", options.width);
-      element.css("height", options.height);
-      element.css("user-select", options.userSelect);
+      $element.html(chart);
+      $element.css("width", options.width);
+      $element.css("height", options.height);
+      $element.css("user-select", options.userSelect);
       $(document).ready(function () {
         $(`#left-corner-${options.id}`).css(
           "min-width",

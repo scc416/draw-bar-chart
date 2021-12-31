@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 
-<HTML lang="en">
+<html lang="en">
   <head>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="../draw-bar-chart.js"></script>
-    <link href="../style.css" rel="stylesheet" type="text/css">
+    <link href="../style.css" rel="stylesheet" type="text/css" />
     <title>Demo for DRAW-BAR-CHART</title>
   </head>
   <body>
-    <div id="demo" class="bar-chart">
-      DEMO
-    </div>
+    <div id="demo" class="bar-chart">DEMO</div>
 
-    <div id="demo2" class="bar-chart">
-      DEMO2
-    </div>
+    <div id="demo2" class="bar-chart">DEMO2</div>
 
     <script>
       drawBarChart(
+        $("#demo"),
         {
           // the first parameter is an array of 2 arrays
           // the first one is data, the second one is label
           // data of a bar a number / array of number (stacked bar chart)
-          values: [1, 0.00000 , -3, 4],
-          labels: ["very very very very very very very very very long value", "value1", "value2", "5"]
+          values: [1, 0.0, -3, 4],
+          labels: [
+            "very very very very very very very very very long value",
+            "value1",
+            "value2",
+            "5",
+          ],
         },
         {
           // Id is crucial especially when there are multiple bar chart (so the function render to the correct bar chart)
@@ -51,18 +53,28 @@
           // tickInterval: 0.005, //optional (default value is calculated based on the value of the max. and min. data)
           scientificNotation: true, // optional, to show the label in scientific notation
           animationEffect: false, // optional (default: true)
-          hoverEffect: false // optional (default: true)
-        },
-        $( "#demo" )
-        );
+          hoverEffect: false, // optional (default: true)
+        }
+      );
 
-        drawBarChart(
+      drawBarChart(
+        $("#demo2"),
         {
           // the first parameter is an array of 2 arrays
           // the first one is data, the second one is label
           // data of a bar a number / array of number (stacked bar chart)
-          values: [[200, 400, 424, 600], [-410,0, 105, 200] , [-500, -200, 300, 600] , [-40, 150, 400, 550]],
-          labels: ["very very very very very very very very very long value", "value1", "value2", "5"]
+          values: [
+            [200, 400, 424, 600],
+            [-410, 0, 105, 200],
+            [-500, -200, 300, 600],
+            [-40, 150, 400, 550],
+          ],
+          labels: [
+            "very very very very very very very very very long value",
+            "value1",
+            "value2",
+            "5",
+          ],
         },
         {
           // Id is crucial especially when there are multiple bar chart (so the function render to the correct bar chart)
@@ -87,11 +99,9 @@
           barSpacing: "10px", // optional (default value is calculated based on the number of data)
           userSelect: "", // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
           tickInterval: 50, //optional (default value is calculated based on the value of the max. and min. data)
-          scientificNotation: false // optional, to show the label in scientific notation
-        },
-        $( "#demo2" )
-        );
+          scientificNotation: false, // optional, to show the label in scientific notation
+        }
+      );
     </script>
   </body>
-
-</HTML>
+</html>
