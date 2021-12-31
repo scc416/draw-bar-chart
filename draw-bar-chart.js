@@ -487,7 +487,7 @@ const dataValidationCheck = (data, options) => {
     }
   }
 
-  const idIsDefined = "Id" in options;
+  const idIsDefined = "id" in options;
   if (!idIsDefined) throw noIdErrorMsg;
 
   return true;
@@ -674,9 +674,9 @@ const drawBarChart = (data, options, element) => {
       element.css("height", options.height);
       element.css("user-select", options.userSelect);
       $(document).ready(function () {
-        $(`#left-corner-${options.Id}`).css(
+        $(`#left-corner-${options.id}`).css(
           "min-width",
-          `${$(`#y-axis-${options.Id}`).outerWidth(true)}px`
+          `${$(`#y-axis-${options.id}`).outerWidth(true)}px`
         );
       });
     });
