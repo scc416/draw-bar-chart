@@ -152,23 +152,26 @@ const formatByOption = (isScientificNotation) => {
 };
 
 const makeStackedBars = (data, options) => {
-  const difference = options.maxTick - options.minTick;
+  const {
+    maxTick,
+    minTick,
+    dataLabelColour,
+    barColour,
+    dataLabelPosition,
+    scientificNotation,
+    barSpacing: horizontalMargin,
+    hoverEffect: hoverEffectClass,
+    animationEffect: animationEffectClass,
+  } = options;
+  const difference = maxTick - minTick;
   let posBars = "";
   let negBars = "";
   const dataNum = data.length;
   const positiveData = data.map((arr) => arr.filter((x) => x >= 0));
   const negativeData = data.map((arr) => arr.filter((x) => x < 0));
   const widthOfBar = 100 / dataNum + "%";
-  const horizontalMargin = options.barSpacing;
-  const maxTick = options.maxTick;
-  const minTick = options.minTick;
-  const dataLabelColour = options.dataLabelColour;
-  const barColour = options.barColour;
-  const hoverEffectClass = options.hoverEffect;
-  const animationEffectClass = options.animationEffect;
 
-  const dataLabelPosition = options.dataLabelPosition;
-  const format = formatByOption(options.scientificNotation);
+  const format = formatByOption(scientificNotation);
 
   const makeBarDiv = (bar, height) => {
     const barDiv = `<div
