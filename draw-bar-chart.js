@@ -13,14 +13,13 @@ const isNumber = (num) => {
 
 //function that use the options to create div for the chart title
 const makeTitleDiv = (options) => {
-  const colour = options.titleColour;
-  const fontSize = options.titleFontSize;
-  const title = options.chartTitle;
+  const { titleColour, titleFontSize, chartTitle } = options;
+
   return `<div
       class = "chart-title"
-      style = "colour: ${colour};
-        font-size: ${fontSize}">
-      ${title}
+      style = "colour: ${titleColour};
+        font-size: ${titleFontSize}">
+      ${chartTitle}
     </div>`;
 };
 
