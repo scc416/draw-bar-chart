@@ -73,9 +73,7 @@ const makeYAxis = (options) => {
   let yAxisLabel = "";
   let yAxisTitle = "</div>";
 
-  let maxTick = options.maxTick;
-  let minTick = options.minTick;
-  let tickInterval = options.tickInterval;
+  let { maxTick, minTick, tickInterval } = options;
 
   if (options.scientificNotation) {
     const exp = options.maxTick.toExponential(2);
