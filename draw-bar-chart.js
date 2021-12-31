@@ -293,6 +293,7 @@ const makeNonStackedBars = (data, options) => {
     scientificNotation,
     dataLabelPosition,
     barColour,
+    tickInterval,
     dataLabelFontSize: labelFontSize,
     dataLabelColour: labelColour,
     hoverEffect: hoverEffectClass,
@@ -352,7 +353,7 @@ const makeNonStackedBars = (data, options) => {
 
   const heightOfPosBars = (100 * maxTick) / difference + "%";
   const heightofNegBars = (-100 * minTick) / difference + "%";
-  const SpaceBetweenTicks = 100 / (difference / options.tickInterval) + "%";
+  const SpaceBetweenTicks = 100 / (difference / tickInterval) + "%";
 
   const barDiv = `<div
       class="chart-content"
@@ -380,7 +381,7 @@ const makeNonStackedBars = (data, options) => {
 };
 
 const makeBars = (data, options) => {
-  const barIsStacked = options.stacked;
+  const { stacked: barIsStacked } = options;
   if (barIsStacked) return makeStackedBars(data, options);
   return makeNonStackedBars(data, options);
 };
