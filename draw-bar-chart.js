@@ -449,23 +449,23 @@ const dataValidationCheck = (data, options) => {
   const noData = data.num.length === 0;
   if (noData) {
     const alert = "There is no data.";
-    console.log(makeAlertMessage(alert));
+    throw (makeAlertMessage(alert));
     return false;
   }
 
   if (!dataIsArray) {
     const alert = "Data set is not an array.";
-    console.log(makeAlertMessage(alert));
-    return false;
+    throw (makeAlertMessage(alert));
+    throw false;
   }
   if (!labelIsArray) {
     const alert = "Label set is not an array.";
-    console.log(makeAlertMessage(alert));
-    return false;
+    throw (makeAlertMessage(alert));
+    throw false;
   }
   if (!dataAndLabelHaveSameLength) {
     const alert = "Number of data doesn't match with number of label";
-    console.log(makeAlertMessage(alert));
+    throw (makeAlertMessage(alert));
     return false;
   }
 
