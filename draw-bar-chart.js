@@ -390,7 +390,14 @@ const makeXAxis = (labelArr, options) => {
   let xAxis = "";
   const dataNum = labelArr.length;
 
-  const { barSpacin: horizontalMargin, hoverEffect: className } = options;
+  const {
+    id,
+    barSpacin: horizontalMargin,
+    hoverEffect: className,
+    xAxisLabelFontSize: labelFontSize,
+    xAxisTitleFontSize: titleFontSize,
+    xAxisTitle: title,
+  } = options;
   const width = 100 / dataNum + "%";
   const makeLabelDiv = (val) => {
     return `<div
@@ -407,13 +414,9 @@ const makeXAxis = (labelArr, options) => {
     xAxis += labelDiv;
   }
 
-  const labelFontSize = options.xAxisLabelFontSize;
-  const titleFontSize = options.xAxisTitleFontSize;
-  const title = options.xAxisTitle;
-
   xAxis = `<div class = "x-axis"
       style = "font-size: ${labelFontSize}">
-        <div id = "left-corner-${options.Id}"></div>
+        <div id = "left-corner-${id}"></div>
           ${xAxis}
         </div>
     <div
