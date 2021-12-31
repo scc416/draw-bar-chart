@@ -614,7 +614,7 @@ const dataValidationCheck = (data, options) => {
     throw alert;
   }
 
-  const dataValues = data.num;
+  const { num: dataValues } = data;
   const firstValue = dataValues[0];
   const barChartIsStacked = Array.isArray(firstValue);
   options.stacked = barChartIsStacked;
@@ -628,14 +628,12 @@ const dataValidationCheck = (data, options) => {
       const dataIsArray = Array.isArray(dataForAStackedBar);
       if (!dataIsArray) {
         const alert = "One of the value set is not an array.";
-        console.log(makeAlertMessage(alert));
-        return false;
+        throw alert;
       }
       const stackedNumIsValid = dataForAStackedBar.length === numOfStacked;
       if (!stackedNumIsValid) {
         const alert = "The value set have different number of data.";
-        console.log(makeAlertMessage(alert));
-        return false;
+        throw alert;
       }
       const allValAreNumber = checkIfAllValuesAreNum(dataForAStackedBar);
       if (!allValAreNumber) return false;
@@ -643,8 +641,7 @@ const dataValidationCheck = (data, options) => {
       for (let i = 0; i < numOfStacked - 1; i++) {
         if (dataForAStackedBar[i] > dataForAStackedBar[i + 1]) {
           const alert = "One of the value set is not in ascending order.";
-          console.log(makeAlertMessage(alert));
-          return false;
+          throw alert;
         }
       }
     }
@@ -654,7 +651,7 @@ const dataValidationCheck = (data, options) => {
   if (!idIsDefined) {
     const alert =
       "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
-    console.log(makeAlertMessage(alert));
+    throw alert;
   }
 
   return true;
