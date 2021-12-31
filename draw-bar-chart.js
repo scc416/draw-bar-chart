@@ -33,7 +33,7 @@ const makeTitleDiv = (options) => {
 };
 
 // the function that find the value of tick interval, max. and min. tick
-const findTicks = (options, maxVal, minVal) => {
+const findTicks = (tickIntervalInOptions, maxVal, minVal) => {
   const difference = maxVal - minVal;
 
   const defaultInterval = () => {
@@ -50,7 +50,6 @@ const findTicks = (options, maxVal, minVal) => {
     return interval;
   };
 
-  const tickIntervalInOptions = options.tickInterval;
   const tickIntervalIsNumber = isNumber(tickIntervalInOptions);
 
   const tickInterval = tickIntervalIsNumber
@@ -518,6 +517,7 @@ const completeOptions = (options, data) => {
     dataLabelPosition,
     barSpacing,
     userSelect,
+    tickInterval: tickIntervalInOptions, 
     barColour: barColourInOption,
   } = options;
   const dataNum = data.length;
@@ -543,7 +543,6 @@ const completeOptions = (options, data) => {
       }
       barColour = barColour.slice(0, stackNum);
     }
-    console.log(barColour);
     options.barColour = barColour;
   }
 
@@ -639,9 +638,10 @@ const completeOptions = (options, data) => {
 
   const maxValue = Math.max(...data.flat());
   const minValue = Math.min(...data.flat());
+
   //find the tick interval and value of the maximum tick
   const { tickInterval, maxTick, minTick } = findTicks(
-    options,
+    tickIntervalInOptions,
     maxValue,
     minValue
   );
