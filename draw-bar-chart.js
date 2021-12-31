@@ -4,7 +4,7 @@
 // make notes
 // edit readme.md
 
-const CSS_COLOR_NAMES = ["Orchid", "SkyBlue", "Yellow"];
+const DEFAULT_CSS_COLOR = ["Orchid", "SkyBlue", "Yellow"];
 
 // escape function to avoid XSS
 const escape = function (str) {
@@ -523,7 +523,7 @@ const completeOptions = (options, data) => {
   const dataNum = data.length;
 
   if (stacked) {
-    const barColour = [];
+    let barColour = [];
     const barColourInOptionsIsArray = Array.isArray(barColourInOption);
     if (barColourInOptionsIsArray) {
       const numOfColourInOptions = barColourInOption.length;
@@ -536,13 +536,13 @@ const completeOptions = (options, data) => {
       }
     }
     if (!barColourInOptionsIsArray) {
-      const barColourIsValid = CSS.supports(
-        "background-colour",
-        barColourInOption
-      );
-      const everyBarColour = barColourIsValid ? barColourInOption : "black";
-      for (let i = 0; i < dataNum; i++) barColour.push(everyBarColour);
+      const stackNum = Math.ceil(data.num);
+      console.log(stackNum)
+      // const colourLength = Math.ceil(dataNum/3);
+      for (let i = 0; i < 3; i++) barColour = barColour.concat(DEFAULT_CSS_COLOR);
+      barColour = barColour.slice(0, 3);
     }
+    console.log(barColour);
     options.barColour = barColour;
   }
 
