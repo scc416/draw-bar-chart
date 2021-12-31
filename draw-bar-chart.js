@@ -80,6 +80,8 @@ const makeYAxis = (options) => {
     scientificNotation,
     yAxisTitleFontSize,
     yAxisTitle: yAxisTitleText,
+    yAxisLabelFontSize,
+    id,
   } = options;
 
   if (scientificNotation) {
@@ -111,13 +113,13 @@ const makeYAxis = (options) => {
 
   yAxisLabel = `<div
       class = "y-axis-label"
-      style = "font-size: ${options.yAxisLabelFontSize}">
+      style = "font-size: ${yAxisLabelFontSize}">
       ${yAxisLabel}
     </div>`;
 
   const yAxis = `<div
       class = "y-axis"
-      id = "y-axis-${options.Id}">
+      id = "y-axis-${id}">
       ${yAxisTitle + yAxisLabel}
     </div>`;
 
