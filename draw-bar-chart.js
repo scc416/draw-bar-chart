@@ -536,11 +536,12 @@ const completeOptions = (options, data) => {
       }
     }
     if (!barColourInOptionsIsArray) {
-      const stackNum = Math.ceil(data.num);
-      console.log(stackNum)
-      // const colourLength = Math.ceil(dataNum/3);
-      for (let i = 0; i < 3; i++) barColour = barColour.concat(DEFAULT_CSS_COLOR);
-      barColour = barColour.slice(0, 3);
+      const stackNum = data[0].length;
+      const stackArrNum = Math.ceil(stackNum / 3);
+      for (let i = 0; i < stackArrNum; i++) {
+        barColour = barColour.concat(DEFAULT_CSS_COLOR);
+      }
+      barColour = barColour.slice(0, stackNum);
     }
     console.log(barColour);
     options.barColour = barColour;
