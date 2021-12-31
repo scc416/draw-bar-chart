@@ -390,8 +390,7 @@ const makeXAxis = (labelArr, options) => {
   let xAxis = "";
   const dataNum = labelArr.length;
 
-  const horizontalMargin = options.barSpacing;
-  const className = options.hoverEffect;
+  const { barSpacin: horizontalMargin, hoverEffect: className } = options;
   const width = 100 / dataNum + "%";
   const makeLabelDiv = (val) => {
     return `<div
