@@ -1,6 +1,6 @@
 # Draw Bar Chart
 
-A library.
+A library that draw bar chart. The library has one function, this function 
 
 ## Table of Content
 
