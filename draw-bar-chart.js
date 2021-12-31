@@ -590,8 +590,6 @@ const checkIfAllValuesAreNum = (arr) => {
   return true;
 };
 
-const makeAlertMessage = (alert) => `ALERT: ${alert}`;
-
 //check if the data all the compulsory options are valid
 const dataValidationCheck = (data, options) => {
   const dataIsArray = Array.isArray(data.num);
@@ -600,24 +598,20 @@ const dataValidationCheck = (data, options) => {
   const noData = data.num.length === 0;
   if (noData) {
     const alert = "There is no data.";
-    throw makeAlertMessage(alert);
-    return false;
+    throw alert;
   }
 
   if (!dataIsArray) {
     const alert = "Data set is not an array.";
-    throw makeAlertMessage(alert);
-    throw false;
+    throw alert;
   }
   if (!labelIsArray) {
     const alert = "Label set is not an array.";
-    throw makeAlertMessage(alert);
-    throw false;
+    throw alert;
   }
   if (!dataAndLabelHaveSameLength) {
     const alert = "Number of data doesn't match with number of label";
-    throw makeAlertMessage(alert);
-    return false;
+    throw alert;
   }
 
   const dataValues = data.num;
