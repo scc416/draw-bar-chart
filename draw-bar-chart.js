@@ -6,6 +6,22 @@
 
 const DEFAULT_CSS_COLOR = ["Orchid", "SkyBlue", "Yellow"];
 
+// string for error messages
+const valIsNotNumberErrorMsg = "One of the value is not number.";
+const noDataErrorMsg = "There is no data.";
+const dataIsNotArrayErrorMsg = "Data set is not an array.";
+const labelIsNotArrayErrorMsg = "Label set is not an array.";
+const dataNumAreNotMatchErrorMsg =
+  "Number of data doesn't match with number of label";
+const stackedDataIsNotArrayErrorMsg = "One of the value set is not an array.";
+const stackedValueSetNumErrorMsg =
+  "The value set have different number of data.";
+const stackedNotAscendingOrderErrorMsg =
+  "One of the value set is not in ascending order.";
+const noIdErrorMsg =
+  "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
+
+
 // escape function to avoid XSS
 const escape = function (str) {
   const div = document.createElement("div");
@@ -429,10 +445,11 @@ const makeXAxis = (labelArr, options) => {
   return xAxis;
 };
 
+
 const checkIfAllValuesAreNum = (arr) => {
   for (const val of arr) {
     const valIsNum = isNumber(val);
-    if (!valIsNum) throw " One of the value is not number.";
+    if (!valIsNum) throw valIsNotNumberErrorMsg;
   }
   return true;
 };
@@ -443,23 +460,11 @@ const dataValidationCheck = (data, options) => {
   const labelIsArray = Array.isArray(data.labels);
   const dataAndLabelHaveSameLength = data.num.length === data.labels.length;
   const noData = data.num.length === 0;
-  if (noData) {
-    const alert = "There is no data.";
-    throw alert;
-  }
 
-  if (!dataIsArray) {
-    const alert = "Data set is not an array.";
-    throw alert;
-  }
-  if (!labelIsArray) {
-    const alert = "Label set is not an array.";
-    throw alert;
-  }
-  if (!dataAndLabelHaveSameLength) {
-    const alert = "Number of data doesn't match with number of label";
-    throw alert;
-  }
+  if (noData) throw noDataErrorMsg;
+  if (!dataIsArray) throw dataIsNotArrayErrorMsg;
+  if (!labelIsArray) throw labelIsNotArrayErrorMsg;
+  if (!dataAndLabelHaveSameLength) throw dataNumAreNotMatchErrorMsg;
 
   const { num: dataValues } = data;
   const firstValue = dataValues[0];
@@ -473,33 +478,24 @@ const dataValidationCheck = (data, options) => {
     const numOfStacked = firstValue.length;
     for (const dataForAStackedBar of data.num) {
       const dataIsArray = Array.isArray(dataForAStackedBar);
-      if (!dataIsArray) {
-        const alert = "One of the value set is not an array.";
-        throw alert;
-      }
+      if (!dataIsArray) throw stackedDataIsNotArrayErrorMsg;
+
       const stackedNumIsValid = dataForAStackedBar.length === numOfStacked;
-      if (!stackedNumIsValid) {
-        const alert = "The value set have different number of data.";
-        throw alert;
-      }
+      if (!stackedNumIsValid) throw stackedValueSetNumErrorMsg;
+
       const allValAreNumber = checkIfAllValuesAreNum(dataForAStackedBar);
       if (!allValAreNumber) return false;
 
       for (let i = 0; i < numOfStacked - 1; i++) {
         if (dataForAStackedBar[i] > dataForAStackedBar[i + 1]) {
-          const alert = "One of the value set is not in ascending order.";
-          throw alert;
+          throw stackedNotAscendingOrderErrorMsg;
         }
       }
     }
   }
 
   const idIsDefined = "Id" in options;
-  if (!idIsDefined) {
-    const alert =
-      "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
-    throw alert;
-  }
+  if (!idIsDefined) throw noIdErrorMsg;
 
   return true;
 };
@@ -517,7 +513,7 @@ const completeOptions = (options, data) => {
     dataLabelPosition,
     barSpacing,
     userSelect,
-    tickInterval: tickIntervalInOptions, 
+    tickInterval: tickIntervalInOptions,
     barColour: barColourInOption,
   } = options;
   const dataNum = data.length;
