@@ -1,5 +1,5 @@
 // to-do list
-// refractor
+
 // add comments
 // make notes
 // edit readme.md
@@ -662,11 +662,17 @@ const completeOptions = (options, data) => {
     return (options[prop] = defaultVal);
   };
 
+  const {
+    stacked,
+    dataLabelPosition,
+    barSpacing,
+    userSelect,
+    barColour: barColourInOption,
+  } = options;
   const dataNum = data.length;
 
-  if (options.stacked) {
+  if (stacked) {
     const barColour = [];
-    const barColourInOption = options.barColour;
     const barColourInOptionsIsArray = Array.isArray(barColourInOption);
     if (barColourInOptionsIsArray) {
       const numOfColourInOptions = barColourInOption.length;
@@ -689,7 +695,7 @@ const completeOptions = (options, data) => {
     options.barColour = barColour;
   }
 
-  if (!options.stacked) {
+  if (!stacked) {
     checkIfOptionIsValid("barColour", "black", (x) => CSS.supports("color", x));
   }
 
@@ -715,7 +721,7 @@ const completeOptions = (options, data) => {
     CSS.supports("font-size", x)
   );
 
-  switch (options.dataLabelPosition) {
+  switch (dataLabelPosition) {
     case "top":
       options.dataLabelPosition = "flex-start";
       break;
@@ -737,10 +743,10 @@ const completeOptions = (options, data) => {
   );
 
   const defineBarSpacing = (dataNum) => {
-    const barSpacingIsValid = CSS.supports("margin", options.barSpacing);
+    const barSpacingIsValid = CSS.supports("margin", barSpacing);
     if (barSpacingIsValid) {
-      const num = parseFloat(options.barSpacing.replace(/\D*/g, ""));
-      const unit = options.barSpacing.replace(/\d*/g, "");
+      const num = parseFloat(barSpacing.replace(/\D*/g, ""));
+      const unit = barSpacing.replace(/\d*/g, "");
       const margin = num / 2 + unit;
       return (options.barSpacing = margin);
     }
@@ -752,10 +758,10 @@ const completeOptions = (options, data) => {
 
   checkIfOptionIsValid("userSelect", "false", (x) => typeof x === "boolean");
 
-  if (options.userSelect === true) {
+  if (userSelect) {
     options.userSelect = "auto";
   } else {
-    options.userSelect = "none";
+    userSelect = "none";
   }
 
   checkIfOptionIsValid(
