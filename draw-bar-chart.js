@@ -1,10 +1,5 @@
-// to-do list
-
-// add comments
-// make notes
-// edit readme.md
-
-const DEFAULT_CSS_COLOR = ["Orchid", "SkyBlue", "Yellow"];
+// default colour for bar chart
+const DEFAULT_CSS_COLOR = ["SkyBlue", "Orchid", "Yellow"];
 
 // string for error messages
 const valIsNotNumberErrorMsg = "One of the value is not number.";
@@ -20,7 +15,6 @@ const stackedNotAscendingOrderErrorMsg =
   "One of the value set is not in ascending order.";
 const noIdErrorMsg =
   "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
-
 
 // escape function to avoid XSS
 const escape = function (str) {
@@ -445,7 +439,6 @@ const makeXAxis = (labelArr, options) => {
   return xAxis;
 };
 
-
 const checkIfAllValuesAreNum = (arr) => {
   for (const val of arr) {
     const valIsNum = isNumber(val);
@@ -528,7 +521,7 @@ const completeOptions = (options, data) => {
         const colour = barColourInOption[indexOfColor];
         const colourIsValid = CSS.supports("background-color", colour);
         if (colourIsValid) barColour.push(colour);
-        if (!colourIsValid) barColour.push("black");
+        if (!colourIsValid) barColour.push(DEFAULT_CSS_COLOR[0]);
       }
     }
     if (!barColourInOptionsIsArray) {
@@ -543,7 +536,7 @@ const completeOptions = (options, data) => {
   }
 
   if (!stacked) {
-    checkIfOptionIsValid("barColour", "black", (x) => CSS.supports("color", x));
+    checkIfOptionIsValid("barColour", DEFAULT_CSS_COLOR[0], (x) => CSS.supports("color", x));
   }
 
   checkIfOptionIsValid("chartTitle", "Untitled", (x) => x !== undefined);
