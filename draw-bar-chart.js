@@ -287,23 +287,26 @@ const makeStackedBars = (data, options) => {
 const makeNonStackedBars = (data, options) => {
   let posBars = "";
   let negBars = "";
-  const difference = options.maxTick - options.minTick;
+  const {
+    maxTick,
+    minTick,
+    scientificNotation,
+    dataLabelPosition,
+    barColour,
+    dataLabelFontSize: labelFontSize,
+    dataLabelColour: labelColour,
+    hoverEffect: hoverEffectClass,
+    animationEffect: animationEffectClass,
+    barSpacing: horizontalMargin,
+  } = options;
+  const difference = maxTick - minTick;
 
   const dataNum = data.length;
-  const scientificNotation = options.scientificNotation;
   const format = formatByOption(scientificNotation);
-  const hoverEffectClass = options.hoverEffect;
-  const animationEffectClass = options.animationEffect;
-  const dataLabelPosition = options.dataLabelPosition;
-  const labelFontSize = options.dataLabelFontSize;
-  const barColour = options.barColour;
-  const labelColour = options.dataLabelColour;
-  const widthOfBar = 100 / dataNum + "%";
-  const horizontalMargin = options.barSpacing;
 
-  const maxTick = options.maxTick;
+  const widthOfBar = 100 / dataNum + "%";
+
   const heightOfBarForPositiveValue = (val) => (100 * val) / maxTick + "%";
-  const minTick = options.minTick;
   const heightOfBarForNegativeValue = (val) => (100 * val) / minTick + "%";
 
   const blankBar = `<div class="bar"
