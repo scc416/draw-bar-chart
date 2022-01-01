@@ -1,6 +1,6 @@
 # Draw Bar Chart
 
-A library that draw bar chart. The library has one function, this function can handle bar chart with stacked values, positive and/or negative values.
+A library that draw bar chart. The library has one function, this function can handle bar chart with stacked (or not stacked) values, positive and/or negative values.
 
 ## Table of Content
 
@@ -8,7 +8,6 @@ A library that draw bar chart. The library has one function, this function can h
 - [Dependencies](#dependencies)
 - [Getting Started](#getting-started)
 - [File Structure](#file-structure)
-
 
 ## Final Product
 
@@ -24,9 +23,20 @@ A library that draw bar chart. The library has one function, this function can h
 
 ## Getting Started
 
+Include jQuery in the html file.
+
+`<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>`
+
+Include the css and javascript file of "Draw Bar Chart".
+
+`<script src="path_to_file/draw-bar-chart.js"></script>`  
+`<link href="path_to_file/draw-bar-chart.css" rel="stylesheet" type="text/css" />`
+
+"Draw Bar Chart" depends on jQuery, so jQuery has to come before the javascript file of Fraw Bar Chart.
+
 ## Documentation
 
-The function `drawBarChart(selector, data, options)`
+The library has only one function, `drawBarChart(selector, data, options)`
 
 ### selector
 
@@ -35,8 +45,14 @@ A string representing a selector expression to find an element for the bar chart
 
 ### data
 
-Type: Object
+Type: PlainObject
+
+A set of key/value pairs that contains the values and labels of the bar chart  
+
+
 
 ### options
 
 Type: Object
+
+A set of key/value pairs that configure the bar chart
