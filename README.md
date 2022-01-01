@@ -36,7 +36,7 @@ Include the css and javascript file of "Draw Bar Chart".
 
 ## Documentation
 
-The library has only one function, `drawBarChart(selector, data, options)`
+The library has only one function, `drawBarChart(selector, data, options)`.
 
 ### selector
 
@@ -45,11 +45,9 @@ A string representing a selector expression to find an element for the bar chart
 
 ### data
 
-Type: PlainObject
+Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-A set of key/value pairs that contains the values and labels of the bar chart  
-
-
+A set of key/value pairs that contains the values and labels of the bar chart
 
 ### options
 
