@@ -542,24 +542,24 @@ const completeOptions = (options, data) => {
   }
 
   checkIfOptionIsValid("chartTitle", "Untitled", (x) => x !== undefined);
-  checkIfOptionIsValid("titleFontSize", "36px", (x) =>
+  checkIfOptionIsValid("titleFontSize", "2em", (x) =>
     CSS.supports("font-size", x)
   );
   checkIfOptionIsValid("titleColour", "black", (x) => CSS.supports("color", x));
   checkIfOptionIsValid("width", "90vw", (x) => CSS.supports("width", x));
   checkIfOptionIsValid("height", "90vh", (x) => CSS.supports("height", x));
   checkIfOptionIsValid("yAxisTitle", "", (x) => x !== undefined);
-  checkIfOptionIsValid("yAxisTitleFontSize", "24px", (x) =>
+  checkIfOptionIsValid("yAxisTitleFontSize", "1.5em", (x) =>
     CSS.supports("font-size", x)
   );
-  checkIfOptionIsValid("yAxisLabelFontSize", "16px", (x) =>
+  checkIfOptionIsValid("yAxisLabelFontSize", "1.2em", (x) =>
     CSS.supports("font-size", x)
   );
   checkIfOptionIsValid("xAxisTitle", "", (x) => x !== undefined);
-  checkIfOptionIsValid("xAxisTitleFontSize", "24px", (x) =>
+  checkIfOptionIsValid("xAxisTitleFontSize", "1.5em", (x) =>
     CSS.supports("font-size", x)
   );
-  checkIfOptionIsValid("xAxisLabelFontSize", "16px", (x) =>
+  checkIfOptionIsValid("xAxisLabelFontSize", "1.2em", (x) =>
     CSS.supports("font-size", x)
   );
 
@@ -580,7 +580,7 @@ const completeOptions = (options, data) => {
   checkIfOptionIsValid("dataLabelColour", "white", (x) =>
     CSS.supports("color", x)
   );
-  checkIfOptionIsValid("dataLabelFontSize", "16px", (x) =>
+  checkIfOptionIsValid("dataLabelFontSize", "1em", (x) =>
     CSS.supports("font-size", x)
   );
 
