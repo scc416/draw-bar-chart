@@ -178,6 +178,7 @@ const makeStackedBars = (data, options) => {
     dataLabelPosition,
     scientificNotation,
     dataLabelFontSize,
+    stackedHoverEffect,
     barSpacing: horizontalMargin,
     hoverEffect: hoverEffectClass,
     animationEffect: animationEffectClass,
@@ -194,14 +195,12 @@ const makeStackedBars = (data, options) => {
     const dataLabelAndBar = !value
       ? bar
       : value > 0
-      ? `<span class="${hoverEffectClass ? "data" : ""} stacked-label" 
+      ? `<span class="${stackedHoverEffect} stacked-label" 
           style="top: ${multiplyCSSValue(
             dataLabelFontSize,
             -1.3
           )}">${value}</span>${bar}`
-      : `${bar}<span class="${
-          hoverEffectClass ? "data" : ""
-        } ${hoverEffectClass} stacked-label" 
+      : `${bar}<span class="${stackedHoverEffect} stacked-label" 
           style="bottom: ${multiplyCSSValue(
             dataLabelFontSize,
             -1.3
@@ -628,6 +627,7 @@ const completeOptions = (options, data) => {
   };
 
   makeClassForEffect("hoverEffect", "info");
+  makeClassForEffect("stackedHoverEffect", "stacked-data");
   makeClassForEffect("animationEffect", "bar-animation");
 
   const getMaxValue = (arr) =>
