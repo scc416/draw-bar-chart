@@ -43,7 +43,7 @@ The library has only one function, `drawBarChart(selector, data, options)`.
 ### selector
 
 - Type: [Selector](https://api.jquery.com/category/selectors/)  
-A string representing a selector expression to find an element for the bar chart to rendered in.
+  A string representing a selector expression to find an element for the bar chart to rendered in.
 
 ### data
 
@@ -54,7 +54,7 @@ A set of key/value pairs that contains the values and labels of the bar chart
 #### **values**
 
 - Type:
-  - For single bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) 
+  - For single bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
   - For stacked bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) (for stacked bar chart)
 
 #### **labels**
@@ -74,15 +74,21 @@ A set of key/value pairs that configure the bar chart. Most of the options are o
 This is crucial, especially when there are multiple bar charts, so the function can get the width of y-axis (of the correct graph) to set the position of the x-axis.  
 Id has to be unique.
 
+#### **tickInterval** (optional)
+
+- Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
+
+- Default: based on the value of the maximum and minimun data values
+
 #### **width** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: width)  
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: width)
 
 - Dafault: `"90vw"`
 
 #### **height** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: height)  
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: height)
 
 - Dafault: `"90vh"`
 
@@ -100,7 +106,7 @@ Id has to be unique.
 
 #### **titleColour** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: color)  
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: color)
 
 - Default: `"black"`
 
@@ -152,7 +158,7 @@ This option indicates the position of the data (value) label on the bar.
 
 - Default: "white"
 
-#### **dataLabelFontSize** 
+#### **dataLabelFontSize**
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
 
@@ -161,6 +167,7 @@ This option indicates the position of the data (value) label on the bar.
 #### **barColour** (optional)
 
 - Type:
+
   - For single bar chart: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
   - For stacked bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (all strings have to be supported by CSS property: color). If the number of colour is less than number of values, the colour array would be repeated. If one of the colour string is not supported by CSS, it will be replaced by one of the colour in `DEFAULT_CSS_COLOR` (defined in `draw-bar-chart.js`)
 
@@ -168,27 +175,36 @@ This option indicates the position of the data (value) label on the bar.
   - For single bar chart: first value of `DEFAULT_CSS_COLOR` (defined in `draw-bar-chart.js`), which is currently `"SkyBlue"`
   - For Stack bar chart: strings in `DEFAULT_CSS_COLOR` (defined in `draw-bar-chart.js`). If there are more values than the number of colour string in `DEFAULT_CSS_COLOR`, then the colour will be repeated
 
-
 #### **barSpacing** (optional)
-: "20px", // optional (default value is calculated based on the number of data)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: margin)
+
+- Default: `"1em"`
 
 #### **userSelect** (optional)
 
-: true, // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
+- Type: [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
-#### **tickInterval** (optional)
+- Default: `false`
 
-0.005, //optional (default value is calculated based on the value of the max. and min. data)
+If the text & value on the graph can be selected (i.e. highlighed) by users.
 
 #### **scientificNotation** (optional)
-: true, // optional, to show the label in scientific notation
+
+- Type: [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+- Default: `false`
+
+If the values are displayed as [scientific notation](https://en.wikipedia.org/wiki/Scientific_notation).
 
 #### **animationEffect** (optional)
-: false, // optional 
+
+- Type: [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
 - Default: `true`
 
 #### **hoverEffect** (optional)
-: false, // optional 
+
+- Type: [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
 
 - Default: `true`

@@ -597,7 +597,7 @@ const completeOptions = (options, data) => {
       const margin = num / 2 + unit;
       return (options.barSpacing = margin);
     }
-    const defaultMargin = 10 / dataNum + "%";
+    const defaultMargin = "0.5em";
     return (options.barSpacing = defaultMargin);
   };
 
