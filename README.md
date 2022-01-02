@@ -89,7 +89,7 @@ Id has to be unique.
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-- Default: `"Untitled"`
+- Default: `""`
 
 #### **titleFontSize** (optional)
 
