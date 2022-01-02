@@ -614,15 +614,15 @@ const completeOptions = (options, data) => {
 
   checkIfOptionIsValid(
     "scientificNotation",
-    "false",
+    false,
     (x) => typeof x === "boolean"
   );
   checkIfOptionIsValid(
     "animationEffect",
-    "true",
+    true,
     (x) => typeof x === "boolean"
   );
-  checkIfOptionIsValid("hoverEffect", "true", (x) => typeof x === "boolean");
+  checkIfOptionIsValid("hoverEffect", true, (x) => typeof x === "boolean");
 
   const makeClassForEffect = (property, styleClass) => {
     const effectIsOff = options[property] === false;

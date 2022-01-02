@@ -169,30 +169,26 @@ This option indicates the position of the data (value) label on the bar.
   - For Stack bar chart: strings in `DEFAULT_CSS_COLOR` (defined in `draw-bar-chart.js`). If there are more values than the number of colour string in `DEFAULT_CSS_COLOR`, then the colour will be repeated
 
 
-barSpacing: "20px", // optional (default value is calculated based on the number of data)
-userSelect: true, // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
-// tickInterval: 0.005, //optional (default value is calculated based on the value of the max. and min. data)
-scientificNotation: true, // optional, to show the label in scientific notation
-animationEffect: false, // optional (default: true)
-hoverEffect: false, // optional (default: true)
+#### **barSpacing** (optional)
+: "20px", // optional (default value is calculated based on the number of data)
 
-titleFontSize: "36px", //optional (default: "36px")
-titleColour: "black", //optional (default: "black")
-// width: "50vw", //optional
-// height: "90vh", //optional
-yAxisTitle: "title of y-axis", //optional
-yAxisTitleFontSize: "24px", //optional (default: "24px")
-yAxisLabelFontSize: "16px", //optional (default: "16px")
-xAxisTitle: "title of x-axis", //optional
-xAxisTitleFontSize: "24px", //optional (default: "24px")
-xAxisLabelFontSize: "16px", //optional (default: "16px")
-dataLabelPosition: "centre", // option: "top", "centre", "bottom" (of the bar) (default: "top")
-dataLabelColour: "green", //optional (default: "white")
-dataLabelFontSize: "16px", //optional (default: "16px")
-// optional for bar chart that is not stacked (exptect type: string)(default: "black")
-// compulsory for stacked bar (expected type: array of string)
-// barColour: ["blue", "black"],
-barSpacing: "10px", // optional (default value is calculated based on the number of data)
-userSelect: "", // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
-tickInterval: 50, //optional (default value is calculated based on the value of the max. and min. data)
-scientificNotation: false, // optional, to show the label in scientific notation
+#### **userSelect** (optional)
+
+: true, // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
+
+#### **tickInterval** (optional)
+
+0.005, //optional (default value is calculated based on the value of the max. and min. data)
+
+#### **scientificNotation** (optional)
+: true, // optional, to show the label in scientific notation
+
+#### **animationEffect** (optional)
+: false, // optional 
+
+- Default: `true`
+
+#### **hoverEffect** (optional)
+: false, // optional 
+
+- Default: `true`
