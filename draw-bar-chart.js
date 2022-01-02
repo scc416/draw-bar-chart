@@ -44,9 +44,8 @@ const makeTitleDiv = (options) => {
 
 // the function that find the value of tick interval, max. and min. tick
 const findTicks = (tickIntervalInOptions, maxVal, minVal) => {
-  const difference = maxVal - minVal;
-
   const defaultInterval = () => {
+    const difference = maxVal > -minVal ? maxVal : -minVal;
     if (difference >= 1) {
       const roundUpDifference = Math.ceil(difference);
       const numOfDigit = roundUpDifference.toString().length;
@@ -617,11 +616,7 @@ const completeOptions = (options, data) => {
     false,
     (x) => typeof x === "boolean"
   );
-  checkIfOptionIsValid(
-    "animationEffect",
-    true,
-    (x) => typeof x === "boolean"
-  );
+  checkIfOptionIsValid("animationEffect", true, (x) => typeof x === "boolean");
   checkIfOptionIsValid("hoverEffect", true, (x) => typeof x === "boolean");
 
   const makeClassForEffect = (property, styleClass) => {
