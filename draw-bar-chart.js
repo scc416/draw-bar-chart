@@ -125,7 +125,7 @@ const makeYAxis = (options) => {
 
   const formatTickValue = (val) => val.toFixed(numOfDecimals);
   const formatTickDiv = (formatedVal) =>
-    `<div style = "height: 0">${formatedVal}</div>`;
+    `<div style="height: 0; position: relative; bottom: ${multiplyCSSValue(yAxisLabelFontSize, 0.6)}">${formatedVal}</div>`;
 
   for (let i = minTick; i <= maxTick; i += tickInterval) {
     const val = formatTickValue(i);
