@@ -109,10 +109,17 @@ Id has to be unique.
 
 - Dafault: `""` (empty string)
 
+#### **yAxisTitleFontSize** (optional)
 
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
 
-// yAxisTitleFontSize: "24px", //optional (default: "1.5em")
-// yAxisLabelFontSize: "16px", //optional (default: "1.2em")
+- Default: "1.5em"
+
+#### **yAxisLabelFontSize** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
+
+- Default: "1.2em"
 xAxisTitle: "title of x-axis", //optional
 // xAxisTitleFontSize: "24px", //optional (default: "1.5em")
 // xAxisLabelFontSize: "16px", //optional (default: "1.2em")
