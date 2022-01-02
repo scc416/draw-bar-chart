@@ -74,7 +74,7 @@ A set of key/value pairs that contains the values and labels of the bar chart
 
 - Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-Labels for legend of stacked bar chart.
+Labels for legend of stacked bar chart. This doesn't need to be defined if `showLegend` is set to false (see `showLegend` in options).
 
 ### options
 
