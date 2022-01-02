@@ -58,7 +58,7 @@ Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/
 
 #### **labels**
 
-Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 ### options
 
@@ -66,14 +66,21 @@ Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
 
 A set of key/value pairs that configure the bar chart. Most of the options are optional.
 
-####
+#### **Id**
 
-// Id is crucial especially when there are multiple bar chart (so the function render to the correct bar chart)
-// it has to be unique
-id: 1,
-chartTitle: "this is the title", //optional (default: "Untitled")
-// titleFontSize: "36px", //optional  (default: "2em")
-titleColour: "red", //optional  (default: "black")
+Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+This is crucial, especially when there are multiple bar charts, so the function can calculated the width of y-axis to set the position of the x-axis.  
+Id has to be unique.
+
+#### **chartTitle** (optional)
+
+Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)  
+Default: "Untitled"
+
+
+// titleFontSize: "36px", //optional (default: "2em")
+titleColour: "red", //optional (default: "black")
 // width: "90vw", //optional
 // height: "90vh", //optional
 yAxisTitle: "title of y-axis", //optional
@@ -94,23 +101,20 @@ userSelect: true, // optiontal, if the text & valu on the graph can be selected 
 scientificNotation: true, // optional, to show the label in scientific notation
 animationEffect: false, // optional (default: true)
 hoverEffect: false, // optional (default: true)
-}
 
-id: 2,
-chartTitle: "this is the title", //optional (default: "Untitled")
-titleFontSize: "36px", //optional  (default: "36px")
-titleColour: "black", //optional  (default: "black")
+titleFontSize: "36px", //optional (default: "36px")
+titleColour: "black", //optional (default: "black")
 // width: "50vw", //optional
 // height: "90vh", //optional
 yAxisTitle: "title of y-axis", //optional
-yAxisTitleFontSize: "24px", //optional  (default: "24px")
-yAxisLabelFontSize: "16px", //optional  (default: "16px")
+yAxisTitleFontSize: "24px", //optional (default: "24px")
+yAxisLabelFontSize: "16px", //optional (default: "16px")
 xAxisTitle: "title of x-axis", //optional
-xAxisTitleFontSize: "24px", //optional  (default: "24px")
-xAxisLabelFontSize: "16px", //optional  (default: "16px")
+xAxisTitleFontSize: "24px", //optional (default: "24px")
+xAxisLabelFontSize: "16px", //optional (default: "16px")
 dataLabelPosition: "centre", // option: "top", "centre", "bottom" (of the bar) (default: "top")
-dataLabelColour: "green", //optional  (default: "white")
-dataLabelFontSize: "16px", //optional  (default: "16px")
+dataLabelColour: "green", //optional (default: "white")
+dataLabelFontSize: "16px", //optional (default: "16px")
 // optional for bar chart that is not stacked (exptect type: string)(default: "black")
 // compulsory for stacked bar (expected type: array of string)
 // barColour: ["blue", "black"],
