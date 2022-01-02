@@ -11,11 +11,13 @@ A library that draw bar chart. The library has one function, this function can h
 
 ## Final Product
 
+### Bar Graph with negative Values
+
 ### Stacked bar graph
 
 ### Animation Effect
 
-### Hover Effect
+### Scientific Notation
 
 ## Dependencies
 
@@ -60,6 +62,12 @@ A set of key/value pairs that contains the values and labels of the bar chart
 #### **labels**
 
 - Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+#### **stackLabels** (Only for stacked bar chart)
+
+- Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+Labels for legend of stacked bar chart.
 
 ### options
 
