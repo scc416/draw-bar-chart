@@ -514,18 +514,23 @@ const completeOptions = (options, data) => {
   if (stacked) {
     let barColour = [];
     const barColourInOptionsIsArray = Array.isArray(barColourInOption);
+    const numOfColour = DEFAULT_CSS_COLOR.length;
     if (barColourInOptionsIsArray) {
       const numOfColourInOptions = barColourInOption.length;
+      let j = 0;
       for (let i = 0; i < dataNum; i++) {
         const indexOfColor = i % numOfColourInOptions;
         const colour = barColourInOption[indexOfColor];
         const colourIsValid = CSS.supports("background-color", colour);
         if (colourIsValid) barColour.push(colour);
-        if (!colourIsValid) barColour.push(DEFAULT_CSS_COLOR[0]);
+        if (!colourIsValid) {
+          if (j >= numOfColour) j = 0;
+          barColour.push(DEFAULT_CSS_COLOR[j]);
+          j++;
+        }
       }
     }
     if (!barColourInOptionsIsArray) {
-      const numOfColour = DEFAULT_CSS_COLOR.length;
       const stackNum = data[0].length;
       const stackArrNum = Math.ceil(stackNum / numOfColour);
       for (let i = 0; i < stackArrNum; i++) {

@@ -162,7 +162,7 @@ This option indicates the position of the data (value) label on the bar.
 
 - Type:
   - For single bar chart: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
-  - For stacked bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (all strings have to be supported by CSS property: color)
+  - For stacked bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (all strings have to be supported by CSS property: color). If the number of colour is less than number of values, the colour array would be repeated. If one of the colour string is not supported by CSS, it will be replaced by one of the colour in `DEFAULT_CSS_COLOR` (defined in `draw-bar-chart.js`)
 
 - Default:
   - For single bar chart: first value of `DEFAULT_CSS_COLOR` (defined in `draw-bar-chart.js`), which is currently `"SkyBlue"`
