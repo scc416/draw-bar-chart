@@ -454,6 +454,23 @@ const makeLegend = (barColour, label) => {
   return `<div class="legend">${labelDiv}</div>`;
 };
 
+const makeContent = (options, yAxis, bars) => {
+  const { stackedPadding, stacked, barColour, showLegend } = options;
+
+  const legend =
+    stacked && showLegend ? makeLegend(barColour, data.stackLabels) : ``;
+
+  //html of the whole chard
+  const content = `
+      <div class="middle"
+        style="${stackedPadding ? `padding: ${stackedPadding} 0` : ""}">
+        ${yAxis}
+        ${bars}
+        ${legend}
+      </div>`;
+  return content;
+};
+
 const checkIfAllValuesAreNum = (arr) => {
   for (const val of arr) {
     const valIsNum = isNumber(val);
@@ -604,7 +621,7 @@ const completeOptions = (options, data) => {
 
   options.stackedPadding = stacked
     ? multiplyCSSValue(options.dataLabelFontSize, 1.3)
-    : 0;
+    : false;
 
   const defineBarSpacing = () => {
     const barSpacingIsValid = CSS.supports("margin", barSpacing);
@@ -690,20 +707,13 @@ const drawBarChart = ($element, data, options) => {
     //label the x axis
     const xAxis = makeXAxis(data.labels, options);
 
-    const { stackedPadding, stacked, barColour, showLegend } = options;
-
-    const legend =
-      stacked && showLegend ? makeLegend(barColour, data.stackLabels) : ``;
+    const content = makeContent(options, yAxis, bars);
 
     //html of the whole chard
     const chart = `
       <div class="bar-chart">
         ${chartTitleDiv}
-        <div class="middle" style="padding: ${stackedPadding} 0">
-          ${yAxis}
-          ${bars}
-          ${legend}
-        </div>
+        ${content}
         ${xAxis}
       </div>`;
 
