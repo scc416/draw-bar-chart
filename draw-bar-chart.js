@@ -438,6 +438,20 @@ const makeXAxis = (labelArr, options) => {
   return xAxis;
 };
 
+const makeLabel = (barColour, label) => {
+  let labelDiv = "";
+  for(let i = 0; i < barColour.length; i++) {
+    const elm = `
+      <div>
+        <div style="background-color: ${barColour[i]}"></div>
+        <span>${label[i]}</span>
+      </div>
+    `;
+    labelDiv += elm;
+  }
+  return `<div class="legend">${labelDiv}</div>`;
+};
+
 const checkIfAllValuesAreNum = (arr) => {
   for (const val of arr) {
     const valIsNum = isNumber(val);
@@ -670,8 +684,8 @@ const drawBarChart = ($element, data, options) => {
     //label the x axis
     const xAxis = makeXAxis(data.labels, options);
 
-    const { stackedPadding } = options;
-    console.log(stackedPadding);
+    const { stackedPadding, stacked, barColour } = options;
+
     //html of the whole chard
     const chart = `
       <div class="bar-chart">
@@ -679,6 +693,7 @@ const drawBarChart = ($element, data, options) => {
         <div class="middle" style="padding: ${stackedPadding} 0">
           ${yAxis}
           ${bars}
+          ${stacked ? makeLabel(barColour, data.stackedLabels) : ``}
         </div>
         ${xAxis}
       </div>`;

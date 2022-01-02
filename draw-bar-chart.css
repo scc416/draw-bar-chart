@@ -131,3 +131,21 @@
   position: absolute;
   width: 100%;
 }
+
+.legend{
+  display: flex;
+  flex-direction: column;
+  padding: 0 1em;
+  justify-content: center;
+}
+
+.legend > div {
+  display: flex;
+  align-items: center;
+}
+
+.legend > div > div {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.2em;
+}
