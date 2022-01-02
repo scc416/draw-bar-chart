@@ -191,11 +191,18 @@ const makeStackedBars = (data, options) => {
     const dataLabelAndBar = !value
       ? bar
       : value > 0
-      ? `<span class="${hoverEffectClass? "data" : ""} stacked-label" 
-          style="top: ${multiplyCSSValue(dataLabelFontSize, -1.3)}">${value}</span>${bar}`
-      : `${bar}<span class="${hoverEffectClass? "data" : ""} ${hoverEffectClass} stacked-label" 
-          style="bottom: ${multiplyCSSValue(dataLabelFontSize, -1.3)}">${value}</span>`;
-
+      ? `<span class="${hoverEffectClass ? "data" : ""} stacked-label" 
+          style="top: ${multiplyCSSValue(
+            dataLabelFontSize,
+            -1.3
+          )}">${value}</span>${bar}`
+      : `${bar}<span class="${
+          hoverEffectClass ? "data" : ""
+        } ${hoverEffectClass} stacked-label" 
+          style="bottom: ${multiplyCSSValue(
+            dataLabelFontSize,
+            -1.3
+          )}">${value}</span>`;
 
     const barDiv = `<div
         class = "stacked-bar ${animationEffectClass}"
@@ -583,19 +590,17 @@ const completeOptions = (options, data) => {
     CSS.supports("font-size", x)
   );
 
-  const defineBarSpacing = (dataNum) => {
+  const defineBarSpacing = () => {
     const barSpacingIsValid = CSS.supports("margin", barSpacing);
     if (barSpacingIsValid) {
-      const num = parseFloat(barSpacing.replace(/\D*/g, ""));
-      const unit = barSpacing.replace(/\d*/g, "");
-      const margin = num / 2 + unit;
+      const margin = multiplyCSSValue(barSpacing, 0.5);
       return (options.barSpacing = margin);
     }
     const defaultMargin = "0.5em";
     return (options.barSpacing = defaultMargin);
   };
 
-  defineBarSpacing(dataNum);
+  defineBarSpacing();
 
   checkIfOptionIsValid("userSelect", "false", (x) => typeof x === "boolean");
 
