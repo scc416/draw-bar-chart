@@ -1,6 +1,7 @@
 # Draw Bar Chart
 
-A library that draw bar chart. The library has one function, this function can handle bar chart with single or stacked values, positive and/or negative values.
+A library that draw bar chart. The library has one function, this function can handle bar chart with single or stacked values, positive and/or negative values.  
+Some optional options include `tickInterval`, `barColour`, `barSpacing`, `showLegend`, `scientificNotation` and `animationEffect`.
 
 ## Table of Content
 
@@ -11,13 +12,17 @@ A library that draw bar chart. The library has one function, this function can h
 
 ## Final Product
 
+All the examples below are in demo（in the `./demo` folder.
+
 ### Bar Graph with negative Values
 
 ### Stacked bar graph
 
-### Animation Effect
+### Auto generated interval
 
 ### Scientific Notation
+
+### Animation Effect
 
 ## Dependencies
 
@@ -36,7 +41,7 @@ Put `draw-bar-chart.js` and `draw-bar-chart.css` into your project folder. Inclu
 
 "Draw Bar Chart" depends on jQuery, so jQuery has to come before the javascript file of Fraw Bar Chart.
 
-You can try the demo in `./demo` folder. It consists of a stacked bar chart and a clustered bar chart.
+You can also try the demo in `./demo` folder.
 
 ## Documentation
 
