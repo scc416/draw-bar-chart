@@ -42,47 +42,72 @@ The library has only one function, `drawBarChart(selector, data, options)`.
 
 ### selector
 
-Type: [Selector](https://api.jquery.com/category/selectors/)  
+- Type: [Selector](https://api.jquery.com/category/selectors/)  
 A string representing a selector expression to find an element for the bar chart to rendered in.
 
 ### data
 
-Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+- Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 A set of key/value pairs that contains the values and labels of the bar chart
 
 #### **values**
 
-Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) (for single bar chart) or;
+- Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) (for single bar chart) or;
 [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) (for stacked bar chart)
 
 #### **labels**
 
-Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+- Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 ### options
 
-Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
+- Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
 A set of key/value pairs that configure the bar chart. Most of the options are optional.
 
 #### **Id**
 
-Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 This is crucial, especially when there are multiple bar charts, so the function can calculated the width of y-axis to set the position of the x-axis.  
 Id has to be unique.
 
 #### **chartTitle** (optional)
 
-Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)  
-Default: "Untitled"
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
+- Default: `"Untitled"`
 
-// titleFontSize: "36px", //optional (default: "2em")
-titleColour: "red", //optional (default: "black")
-// width: "90vw", //optional
-// height: "90vh", //optional
+#### **titleFontSize** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
+
+- Default: `"2em"`
+
+#### **titleColour** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+
+- Default: `"black"`
+
+#### **width** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+
+- Dafault: `"90vw"`
+
+#### **width** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+
+- Dafault: `"90vw"`
+
+#### **height** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+- Dafault: `"90vh"`
+
 yAxisTitle: "title of y-axis", //optional
 // yAxisTitleFontSize: "24px", //optional (default: "1.5em")
 // yAxisLabelFontSize: "16px", //optional (default: "1.2em")
