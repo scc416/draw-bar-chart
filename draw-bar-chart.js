@@ -525,8 +525,9 @@ const completeOptions = (options, data) => {
       }
     }
     if (!barColourInOptionsIsArray) {
+      const numOfColour = DEFAULT_CSS_COLOR.length;
       const stackNum = data[0].length;
-      const stackArrNum = Math.ceil(stackNum / 3);
+      const stackArrNum = Math.ceil(stackNum / numOfColour);
       for (let i = 0; i < stackArrNum; i++) {
         barColour = barColour.concat(DEFAULT_CSS_COLOR);
       }

@@ -53,8 +53,9 @@ A set of key/value pairs that contains the values and labels of the bar chart
 
 #### **values**
 
-- Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) (for single bar chart) or;
-[Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) (for stacked bar chart)
+- Type:
+  - For single bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) 
+  - For stacked bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) (for stacked bar chart)
 
 #### **labels**
 
@@ -145,13 +146,30 @@ Id has to be unique.
 
 This option indicates the position of the data (value) label on the bar.
 
-#### **dataLabelColour**
+#### **dataLabelColour** (optional)
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: color)
 
-: "white", //optional (default: "white")
-// dataLabelFontSize: "16px", //optional (default: "1em")
+- Default: "white"
+
+#### **dataLabelFontSize** 
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
+
+- Default: "1em"
+
+#### **barColour** (optional)
+
+- Type:
+  - For single bar chart: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
+  - For stacked bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (all strings have to be supported by CSS property: color)
+
+- Default:
+  - For single bar chart: first value of `DEFAULT_CSS_COLOR` (defined in `draw-bar-chart.js`), which is currently `"SkyBlue"`
+  - For Stack bar chart: strings in `DEFAULT_CSS_COLOR`, 
 // optional for bar chart that is not stacked (exptect type: string)(default: "black")
+
+
 // compulsory for stacked bar (expected type: array of string)
 barColour: "green",
 barSpacing: "20px", // optional (default value is calculated based on the number of data)
