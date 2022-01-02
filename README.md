@@ -166,12 +166,9 @@ This option indicates the position of the data (value) label on the bar.
 
 - Default:
   - For single bar chart: first value of `DEFAULT_CSS_COLOR` (defined in `draw-bar-chart.js`), which is currently `"SkyBlue"`
-  - For Stack bar chart: strings in `DEFAULT_CSS_COLOR`, 
-// optional for bar chart that is not stacked (exptect type: string)(default: "black")
+  - For Stack bar chart: strings in `DEFAULT_CSS_COLOR` (defined in `draw-bar-chart.js`). If there are more values than the number of colour string in `DEFAULT_CSS_COLOR`, then the colour will be repeated
 
 
-// compulsory for stacked bar (expected type: array of string)
-barColour: "green",
 barSpacing: "20px", // optional (default value is calculated based on the number of data)
 userSelect: true, // optiontal, if the text & valu on the graph can be selected (i.e. highlighed) (default: false)
 // tickInterval: 0.005, //optional (default value is calculated based on the value of the max. and min. data)
