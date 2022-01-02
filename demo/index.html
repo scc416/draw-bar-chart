@@ -10,6 +10,7 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
       rel="stylesheet"
     />
+    <script src="./demo.js"></script>
     <style>
       body {
         font-family: "Open Sans";
@@ -17,48 +18,12 @@
     </style>
   </head>
   <body>
-    <div id="demo">DEMO</div>
-    <div id="demo2">DEMO2</div>
     <div id="demo-1-single-bar-chart"></div>
-    <div id="demo-x-negative-values"></div>
-
-    ### Bar Chart with negative Values ### Stacked Bar Chart ### Auto generated
-    interval ### Scientific Notation ### Animation Effect
-
-    <script>
-      drawBarChart(
-        $("#demo"),
-        {
-          values: [1, 0.0, -3, 4],
-          labels: [
-            "very very very very very very very very very long value",
-            "value1",
-            "value2",
-            "5",
-          ],
-        },
-        { id: 1 }
-      );
-
-      drawBarChart(
-        $("#demo2"),
-        {
-          values: [
-            [400, 200, 424],
-            [-410, 100, -105],
-            [-500, -200, 300],
-            [-40, 150, 400],
-          ],
-          labels: [
-            "very very very very very very very very very long value",
-            "value1",
-            "value2",
-            "5",
-          ],
-          // stackLabels: [1, 2, 3],
-        },
-        { id: 2 }
-      );
-    </script>
+    <div id="demo-2-small-values"></div>
+    <div id="demo-3-negative-values"></div>
+    <div id="demo-x-stacked"></div>
+    <div id="demo-x-auto-generated-interval"></div>
+    <div id="demo-x-scientific-notation"></div>
+    <div id="demo-x-animation-effect"></div>
   </body>
 </html>

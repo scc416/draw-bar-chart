@@ -20,7 +20,7 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Stacked Bar Chart
 
-### Auto generated interval
+### Calculated interval
 
 ### Scientific Notation
 
