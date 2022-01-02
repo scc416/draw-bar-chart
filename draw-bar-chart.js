@@ -541,7 +541,7 @@ const completeOptions = (options, data) => {
     );
   }
 
-  checkIfOptionIsValid("chartTitle", "Untitled", (x) => x !== undefined);
+  checkIfOptionIsValid("chartTitle", "", (x) => x !== undefined);
   checkIfOptionIsValid("titleFontSize", "2em", (x) =>
     CSS.supports("font-size", x)
   );
