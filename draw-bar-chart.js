@@ -13,7 +13,8 @@ const stackedValueSetNumErrorMsg =
   "The value set have different number of data.";
 const noIdErrorMsg =
   "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
-const stackLabelNumErrorMsg = "Number of stack doesn't match with number of stack label";
+const stackLabelNumErrorMsg =
+  "Number of stack doesn't match with number of stack label";
 
 // escape function to avoid XSS
 const escape = function (str) {
@@ -439,9 +440,9 @@ const makeXAxis = (labelArr, options) => {
   return xAxis;
 };
 
-const makeLabel = (barColour, label) => {
+const makeLegend = (barColour, label) => {
   let labelDiv = "";
-  for(let i = 0; i < barColour.length; i++) {
+  for (let i = 0; i < barColour.length; i++) {
     const elm = `
       <div>
         <div style="background-color: ${barColour[i]}"></div>
@@ -617,7 +618,8 @@ const completeOptions = (options, data) => {
 
   defineBarSpacing();
 
-  checkIfOptionIsValid("userSelect", "false", (x) => typeof x === "boolean");
+  checkIfOptionIsValid("userSelect", false, (x) => typeof x === "boolean");
+  checkIfOptionIsValid("showLegend", true, (x) => typeof x === "boolean");
 
   if (userSelect) {
     options.userSelect = "auto";
@@ -688,7 +690,10 @@ const drawBarChart = ($element, data, options) => {
     //label the x axis
     const xAxis = makeXAxis(data.labels, options);
 
-    const { stackedPadding, stacked, barColour } = options;
+    const { stackedPadding, stacked, barColour, showLegend } = options;
+
+    const legend =
+      stacked && showLegend ? makeLegend(barColour, data.stackLabels) : ``;
 
     //html of the whole chard
     const chart = `
@@ -697,7 +702,7 @@ const drawBarChart = ($element, data, options) => {
         <div class="middle" style="padding: ${stackedPadding} 0">
           ${yAxis}
           ${bars}
-          ${stacked ? makeLabel(barColour, data.stackLabels) : ``}
+          ${legend}
         </div>
         ${xAxis}
       </div>`;

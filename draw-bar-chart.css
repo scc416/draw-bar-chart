@@ -17,7 +17,7 @@
 
 .chart-title {
   text-align: center;
-  padding: min(5%, 15px);
+  padding: 0 min(5%, 15px);
 }
 
 .y-tick {

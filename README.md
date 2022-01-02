@@ -12,7 +12,7 @@ Some optional options include `tickInterval`, `barColour`, `barSpacing`, `showLe
 
 ## Final Product
 
-All the examples below are in demo（in the `./demo` folder.
+All the examples below are in demo（in the `./demo` folder).
 
 ### Single Bar Chart
 
@@ -41,7 +41,7 @@ Put `draw-bar-chart.js` and `draw-bar-chart.css` into your project folder. Inclu
 `<script src="path_to_file/draw-bar-chart.js"></script>`  
 `<link href="path_to_file/draw-bar-chart.css" rel="stylesheet" type="text/css" />`
 
-"Draw Bar Chart" depends on jQuery, so jQuery has to come before the javascript file of Fraw Bar Chart.
+"Draw Bar Chart" depends on jQuery, so jQuery has to come before `draw-bar-chart.js`.
 
 You can also try the demo in `./demo` folder.
 
@@ -195,6 +195,12 @@ This option indicates the position of the data (value) label on the bar.
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: margin)
 
 - Default: `"1em"`
+
+#### **showLegend** (optional, only for stacked bar chart)
+
+- Type: [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
+
+- Default: `true`
 
 #### **userSelect** (optional)
 
