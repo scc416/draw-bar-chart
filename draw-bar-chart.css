@@ -131,12 +131,6 @@
   font-weight: bolder;
 }
 
-.data:hover {
-  top: 2%;
-  left: 4%;
-  font-weight: bolder;
-}
-
 .stacked-label {
   text-align: center;
   font-size: 1.1em;
@@ -144,7 +138,10 @@
   width: 100%;
 }
 
-.pos-label {
-  position: absolute;
-  width: 100%;
+.data:hover {
+  top: 2%;
+  left: 4%;
+  font-weight: bolder;
+  position: relative;
+  height: 0;
 }
