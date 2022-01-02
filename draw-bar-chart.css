@@ -125,28 +125,9 @@
   border-top: 1px grey solid;
 }
 
-.data {
-  position: relative;
-  transition: top left 0.1s;
-}
-
-.info:hover > .data {
-  top: 2%;
-  left: 4%;
-  font-weight: bolder;
-}
-
 .stacked-label {
   text-align: center;
   font-size: 1.1em;
   position: absolute;
   width: 100%;
-}
-
-.stacked-data:hover {
-  top: 2%;
-  left: 4%;
-  font-weight: bolder;
-  position: relative;
-  height: 0;
 }

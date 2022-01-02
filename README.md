@@ -204,11 +204,3 @@ If the values are displayed as [scientific notation](https://en.wikipedia.org/wi
 - Default: `true`
 
 See [Final Product](#final-product) for the animation effect.
-
-#### **hoverEffect** (optional)
-
-- Type: [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)
-
-- Default: `true`
-
-See [Final Product](#final-product) for the hover effect.

@@ -178,9 +178,7 @@ const makeStackedBars = (data, options) => {
     dataLabelPosition,
     scientificNotation,
     dataLabelFontSize,
-    stackedHoverEffect,
     barSpacing: horizontalMargin,
-    hoverEffect: hoverEffectClass,
     animationEffect: animationEffectClass,
   } = options;
   const difference = maxTick - minTick;
@@ -195,12 +193,12 @@ const makeStackedBars = (data, options) => {
     const dataLabelAndBar = !value
       ? bar
       : value > 0
-      ? `<span class="${stackedHoverEffect} stacked-label" 
+      ? `<span class="stacked-label" 
           style="top: ${multiplyCSSValue(
             dataLabelFontSize,
             -1.3
           )}">${value}</span>${bar}`
-      : `${bar}<span class="${stackedHoverEffect} stacked-label" 
+      : `${bar}<span class="stacked-label" 
           style="bottom: ${multiplyCSSValue(
             dataLabelFontSize,
             -1.3
@@ -222,12 +220,12 @@ const makeStackedBars = (data, options) => {
     const formatVal = format(value);
     const stackColour = barColour[indexInBarColour];
     const stack = `<div
-        class="bar ${hoverEffectClass}"
+        class="bar"
         style="
           align-items: ${dataLabelPosition};
           height: ${height};
           background-color: ${stackColour}; ">
-            <span class="data">
+            <span>
               ${formatVal}
             </span>
       </div>`;
@@ -314,7 +312,6 @@ const makeNonStackedBars = (data, options) => {
     tickInterval,
     dataLabelFontSize: labelFontSize,
     dataLabelColour: labelColour,
-    hoverEffect: hoverEffectClass,
     animationEffect: animationEffectClass,
     barSpacing: horizontalMargin,
   } = options;
@@ -340,14 +337,14 @@ const makeNonStackedBars = (data, options) => {
         ? heightOfBarForPositiveValue(val)
         : heightOfBarForNegativeValue(val);
     const formatedVal = format(val);
-    const div = `<div class="bar ${hoverEffectClass} ${animationEffectClass}"
+    const div = `<div class="bar ${animationEffectClass}"
         style="
           align-items: ${dataLabelPosition};
           background-color: ${barColour};
           height: ${height};
           width: ${widthOfBar};
           margin: 0 ${horizontalMargin}">
-        <span class="data">
+        <span>
           ${formatedVal}
         </span>
       </div>`;
@@ -412,7 +409,6 @@ const makeXAxis = (labelArr, options) => {
   const {
     id,
     barSpacin: horizontalMargin,
-    hoverEffect: className,
     xAxisLabelFontSize: labelFontSize,
     xAxisTitleFontSize: titleFontSize,
     xAxisTitle: title,
@@ -420,7 +416,6 @@ const makeXAxis = (labelArr, options) => {
   const width = 100 / dataNum + "%";
   const makeLabelDiv = (val) => {
     return `<div
-      class = "${className}"
       style = "width: ${width};
         margin: 0 ${horizontalMargin}">
         ${val}
@@ -618,7 +613,7 @@ const completeOptions = (options, data) => {
     (x) => typeof x === "boolean"
   );
   checkIfOptionIsValid("animationEffect", true, (x) => typeof x === "boolean");
-  checkIfOptionIsValid("hoverEffect", true, (x) => typeof x === "boolean");
+  
 
   const makeClassForEffect = (property, styleClass) => {
     const effectIsOff = options[property] === false;
@@ -626,8 +621,6 @@ const completeOptions = (options, data) => {
     return (options[property] = styleClass);
   };
 
-  makeClassForEffect("hoverEffect", "info");
-  makeClassForEffect("stackedHoverEffect", "stacked-data");
   makeClassForEffect("animationEffect", "bar-animation");
 
   const getMaxValue = (arr) =>
