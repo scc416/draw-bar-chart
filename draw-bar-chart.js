@@ -28,6 +28,13 @@ const isNumber = (num) => {
   return false;
 };
 
+const multiplyCSSValue = (value, multipleNum) => {
+  const num = parseFloat(value.replace(/\D*/g, ""));
+  const unit = value.replace(/\d*/g, "");
+  const result = num * multipleNum + unit;
+  return result;
+};
+
 //function that use the options to create div for the chart title
 const makeTitleDiv = (options) => {
   const { titleColour, titleFontSize, chartTitle } = options;
@@ -180,20 +187,15 @@ const makeStackedBars = (data, options) => {
 
   const format = formatByOption(scientificNotation);
 
-  const multipleValue = (value) => {
-    const num = parseFloat(value.replace(/\D*/g, ""));
-    const unit = value.replace(/\d*/g, "");
-    const result = num * 1.3 + unit;
-    return result;
-  }
-
   const makeBarDiv = (bar, height, value) => {
-    const dataLabelAndBar =
-    !value 
-    ? bar
-    : value > 0
-    ? `<span class="stacked-label pos-label" style="bottom: ${multipleValue(dataLabelFontSize)}">${value}</span>${bar}`
-    : `${bar}<span class="stacked-label">${value}</span>`;
+    const dataLabelAndBar = !value
+      ? bar
+      : value > 0
+      ? `<span class="stacked-label pos-label" style="bottom: ${multiplyCSSValue(
+          dataLabelFontSize,
+          1.3
+        )}">${value}</span>${bar}`
+      : `${bar}<span class="stacked-label">${value}</span>`;
     const barDiv = `<div
         class = "stacked-bar ${animationEffectClass}"
           style="
@@ -621,16 +623,17 @@ const completeOptions = (options, data) => {
 
   const getMaxValue = (arr) =>
     arr.reduce((max, values) => {
-      const sum = values.reduce((sum, val) => sum + val, 0);
+      const sum = values.reduce((sum, val) => (val > 0 ? sum + val : sum), 0);
       if (sum > max) return sum;
       return max;
     }, 0);
 
   const getMinValue = (arr) =>
-    arr.reduce((max, values) => {
-      const sum = values.reduce((sum, val) => sum + val, 0);
-      if (sum < max) return sum;
-      return max;
+    arr.reduce((min, values) => {
+      const sum = values.reduce((sum, val) => (val < 0 ? sum + val : sum), 0);
+      console.log(sum);
+      if (sum < min) return sum;
+      return min;
     }, 0);
 
   const maxValue = stacked ? getMaxValue(data) : Math.max(...data.flat());
@@ -645,8 +648,6 @@ const completeOptions = (options, data) => {
   options.tickInterval = tickInterval;
   options.maxTick = maxTick;
   options.minTick = minTick;
-  options.maxVal = maxValue;
-  options.minVal = minValue;
 };
 
 // top-level function
