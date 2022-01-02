@@ -27,7 +27,7 @@ Include jQuery in the html file.
 
 `<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>`
 
-Include the css and javascript file of "Draw Bar Chart".
+Put `draw-bar-chart.js` and `draw-bar-chart.css` into your project folder. Include them in your `html` file.
 
 `<script src="path_to_file/draw-bar-chart.js"></script>`  
 `<link href="path_to_file/draw-bar-chart.css" rel="stylesheet" type="text/css" />`
@@ -70,7 +70,7 @@ A set of key/value pairs that configure the bar chart. Most of the options are o
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-This is crucial, especially when there are multiple bar charts, so the function can calculated the width of y-axis to set the position of the x-axis.  
+This is crucial, especially when there are multiple bar charts, so the function can get the width of y-axis (of the correct graph) to set the position of the x-axis.  
 Id has to be unique.
 
 #### **chartTitle** (optional)
@@ -97,18 +97,17 @@ Id has to be unique.
 
 - Dafault: `"90vw"`
 
-#### **width** (optional)
-
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
-
-- Dafault: `"90vw"`
-
 #### **height** (optional)
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+
 - Dafault: `"90vh"`
 
-yAxisTitle: "title of y-axis", //optional
+#### **yAxisTitle** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+- Dafault: `""` (empty string)
 // yAxisTitleFontSize: "24px", //optional (default: "1.5em")
 // yAxisLabelFontSize: "16px", //optional (default: "1.2em")
 xAxisTitle: "title of x-axis", //optional
