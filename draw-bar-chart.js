@@ -442,6 +442,7 @@ const makeXAxis = (labelArr, options) => {
 
 const makeLegend = (barColour, label) => {
   let labelDiv = "";
+  if (!label) return labelDiv;
   for (let i = 0; i < barColour.length; i++) {
     const elm = `
       <div>
@@ -454,11 +455,11 @@ const makeLegend = (barColour, label) => {
   return `<div class="legend">${labelDiv}</div>`;
 };
 
-const makeContent = (options, yAxis, bars) => {
+const makeContent = (options, stackLabels, yAxis, bars) => {
   const { stackedPadding, stacked, barColour, showLegend } = options;
 
   const legend =
-    stacked && showLegend ? makeLegend(barColour, data.stackLabels) : ``;
+    stacked && showLegend ? makeLegend(barColour, stackLabels) : ``;
 
   //html of the whole chard
   const content = `
@@ -512,8 +513,10 @@ const dataValidationCheck = (data, options) => {
       if (!allValAreNumber) return false;
     }
 
-    const stackLabelNumIsValid = data.stackLabels.length === numOfStacked;
-    if (!stackLabelNumIsValid) throw stackLabelNumErrorMsg;
+    const stackLabelNumIsValid =
+      !data.stackLabels || data.stackLabels.length === numOfStacked;
+    if (options.showLegend && !stackLabelNumIsValid)
+      throw stackLabelNumErrorMsg;
   }
 
   const idIsDefined = "id" in options;
@@ -707,7 +710,7 @@ const drawBarChart = ($element, data, options) => {
     //label the x axis
     const xAxis = makeXAxis(data.labels, options);
 
-    const content = makeContent(options, yAxis, bars);
+    const content = makeContent(options, data.stackLabels, yAxis, bars);
 
     //html of the whole chard
     const chart = `
