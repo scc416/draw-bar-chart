@@ -120,26 +120,31 @@
   border-top: 1px grey solid;
 }
 
-.info:hover {
-  font-weight: bolder;
-}
-
 .data {
   position: relative;
   transition: top left 0.1s;
 }
 
-.info:hover .data {
+.info:hover > .data {
   top: 2%;
   left: 4%;
+  font-weight: bolder;
+}
+
+.data:hover {
+  top: 2%;
+  left: 4%;
+  font-weight: bolder;
 }
 
 .stacked-label {
-  height: 0;
   text-align: center;
   font-size: 1.1em;
+  position: absolute;
+  width: 100%;
 }
 
 .pos-label {
-  position: relative;
+  position: absolute;
+  width: 100%;
 }

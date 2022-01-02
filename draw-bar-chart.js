@@ -191,11 +191,12 @@ const makeStackedBars = (data, options) => {
     const dataLabelAndBar = !value
       ? bar
       : value > 0
-      ? `<span class="stacked-label pos-label" style="bottom: ${multiplyCSSValue(
-          dataLabelFontSize,
-          1.3
-        )}">${value}</span>${bar}`
-      : `${bar}<span class="stacked-label">${value}</span>`;
+      ? `<span class="${hoverEffectClass? "data" : ""} stacked-label" 
+          style="top: ${multiplyCSSValue(dataLabelFontSize, -1.3)}">${value}</span>${bar}`
+      : `${bar}<span class="${hoverEffectClass? "data" : ""} ${hoverEffectClass} stacked-label" 
+          style="bottom: ${multiplyCSSValue(dataLabelFontSize, -1.3)}">${value}</span>`;
+
+
     const barDiv = `<div
         class = "stacked-bar ${animationEffectClass}"
           style="
