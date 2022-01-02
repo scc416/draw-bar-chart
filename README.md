@@ -119,10 +119,24 @@ Id has to be unique.
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
 
+#### **xAxisTitle** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
+
+- Dafault: `""` (empty string)
+
+#### **xAxisTitleFontSize** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
+
+- Default: "1.5em"
+
+#### **xAxisLabelFontSize** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
+
 - Default: "1.2em"
-xAxisTitle: "title of x-axis", //optional
-// xAxisTitleFontSize: "24px", //optional (default: "1.5em")
-// xAxisLabelFontSize: "16px", //optional (default: "1.2em")
+
 // dataLabelPosition: "bottom", // option: "top", "centre", "bottom" (of the bar) (default: "top")
 // dataLabelColour: "white", //optional (default: "white")
 // dataLabelFontSize: "16px", //optional (default: "1em")
