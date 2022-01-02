@@ -662,7 +662,7 @@ const drawBarChart = ($element, data, options) => {
     const xAxis = makeXAxis(data.labels, options);
 
     //html of the whole chard
-    const chart = `${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}`;
+    const chart = `<div class="bar-chart">${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}</div>`;
 
     $(document).ready(function () {
       $element.html(chart);

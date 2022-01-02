@@ -43,8 +43,7 @@ The library has only one function, `drawBarChart(selector, data, options)`.
 ### selector
 
 Type: [Selector](https://api.jquery.com/category/selectors/)  
-A string representing a selector expression to find an element for the bar chart to rendered in.  
-In the html file, assign classname of `bar-chart` to this element.
+A string representing a selector expression to find an element for the bar chart to rendered in.
 
 ### data
 
