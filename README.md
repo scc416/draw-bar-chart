@@ -137,7 +137,14 @@ Id has to be unique.
 
 - Default: "1.2em"
 
-// dataLabelPosition: "bottom", // option: "top", "centre", "bottom" (of the bar) (default: "top")
+#### **dataLabelPosition** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) - "top", "centre" or "bottom"
+
+- Default: "top"
+
+This option indicates the position of the data (value) label on the bar.
+
 // dataLabelColour: "white", //optional (default: "white")
 // dataLabelFontSize: "16px", //optional (default: "1em")
 // optional for bar chart that is not stacked (exptect type: string)(default: "black")
