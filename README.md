@@ -14,9 +14,11 @@ Some optional options include `tickInterval`, `barColour`, `barSpacing`, `showLe
 
 All the examples below are in demo（in the `./demo` folder.
 
-### Bar Graph with negative Values
+### Single Bar Chart
 
-### Stacked bar graph
+### Bar Chart with negative Values
+
+### Stacked Bar Chart
 
 ### Auto generated interval
 
