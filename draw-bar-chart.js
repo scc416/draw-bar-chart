@@ -13,6 +13,7 @@ const stackedValueSetNumErrorMsg =
   "The value set have different number of data.";
 const noIdErrorMsg =
   "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
+const stackLabelNumErrorMsg = "Number of stack doesn't match with number of stack label";
 
 // escape function to avoid XSS
 const escape = function (str) {
@@ -492,6 +493,9 @@ const dataValidationCheck = (data, options) => {
       const allValAreNumber = checkIfAllValuesAreNum(dataForAStackedBar);
       if (!allValAreNumber) return false;
     }
+
+    const stackLabelNumIsValid = data.stackLabels.length === numOfStacked;
+    if (!stackLabelNumIsValid) throw stackLabelNumErrorMsg;
   }
 
   const idIsDefined = "id" in options;
@@ -693,7 +697,7 @@ const drawBarChart = ($element, data, options) => {
         <div class="middle" style="padding: ${stackedPadding} 0">
           ${yAxis}
           ${bars}
-          ${stacked ? makeLabel(barColour, data.stackedLabels) : ``}
+          ${stacked ? makeLabel(barColour, data.stackLabels) : ``}
         </div>
         ${xAxis}
       </div>`;
