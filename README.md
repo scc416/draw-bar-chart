@@ -49,8 +49,19 @@ Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
 
 A set of key/value pairs that contains the values and labels of the bar chart
 
+#### values
+
+#### labels
+
+Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)  
+Default: 
+
 ### options
 
-Type: Object
+Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)
 
-A set of key/value pairs that configure the bar chart
+A set of key/value pairs that configure the bar chart.
+
+
+ contentType (default: 'application/x-www-form-urlencoded; charset=UTF-8')
+Type: Boolean or String 
