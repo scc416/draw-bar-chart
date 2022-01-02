@@ -198,10 +198,7 @@ const makeStackedBars = (data, options) => {
       ? `<span class="stacked-label" 
           style="top: ${postion}">${value}</span>${bar}`
       : `${bar}<span class="stacked-label" 
-          style="bottom: ${multiplyCSSValue(
-            dataLabelFontSize,
-            -1.3
-          )}">${value}</span>`;
+          style="bottom: ${postion}">${value}</span>`;
 
     const barDiv = `<div
         class = "stacked-bar ${animationEffectClass}"
