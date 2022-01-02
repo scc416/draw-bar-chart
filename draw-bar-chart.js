@@ -125,7 +125,10 @@ const makeYAxis = (options) => {
 
   const formatTickValue = (val) => val.toFixed(numOfDecimals);
   const formatTickDiv = (formatedVal) =>
-    `<div style="height: 0; position: relative; bottom: ${multiplyCSSValue(yAxisLabelFontSize, 0.6)}">${formatedVal}</div>`;
+    `<div class="y-axis-label-text"
+      style="bottom: ${multiplyCSSValue(yAxisLabelFontSize, 0.6)}">
+        ${formatedVal}
+    </div>`;
 
   for (let i = minTick; i <= maxTick; i += tickInterval) {
     const val = formatTickValue(i);
@@ -637,7 +640,6 @@ const completeOptions = (options, data) => {
   const getMinValue = (arr) =>
     arr.reduce((min, values) => {
       const sum = values.reduce((sum, val) => (val < 0 ? sum + val : sum), 0);
-      console.log(sum);
       if (sum < min) return sum;
       return min;
     }, 0);
