@@ -75,13 +75,13 @@ Id has to be unique.
 
 #### **width** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: width)  
 
 - Dafault: `"90vw"`
 
 #### **height** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: height)  
 
 - Dafault: `"90vh"`
 
@@ -93,13 +93,13 @@ Id has to be unique.
 
 #### **titleFontSize** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
 
 - Default: `"2em"`
 
 #### **titleColour** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: color)  
 
 - Default: `"black"`
 
@@ -111,13 +111,13 @@ Id has to be unique.
 
 #### **yAxisTitleFontSize** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
 
 - Default: "1.5em"
 
 #### **yAxisLabelFontSize** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
 
 #### **xAxisTitle** (optional)
 
@@ -127,13 +127,13 @@ Id has to be unique.
 
 #### **xAxisTitleFontSize** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
 
 - Default: "1.5em"
 
 #### **xAxisLabelFontSize** (optional)
 
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
 
 - Default: "1.2em"
 
@@ -145,7 +145,11 @@ Id has to be unique.
 
 This option indicates the position of the data (value) label on the bar.
 
-// dataLabelColour: "white", //optional (default: "white")
+#### **dataLabelColour**
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: color)
+
+: "white", //optional (default: "white")
 // dataLabelFontSize: "16px", //optional (default: "1em")
 // optional for bar chart that is not stacked (exptect type: string)(default: "black")
 // compulsory for stacked bar (expected type: array of string)
