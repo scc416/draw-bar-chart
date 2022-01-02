@@ -38,7 +38,6 @@
   flex-direction: column-reverse;
   justify-content: space-between;
   text-align: right;
-
 }
 
 .y-axis {
@@ -57,8 +56,12 @@
 }
 
 @keyframes height-change {
-  0% { max-height: 0%; }
-  100% { max-height: 100%; }
+  0% {
+    max-height: 0%;
+  }
+  100% {
+    max-height: 100%;
+  }
 }
 
 .bars {
@@ -71,7 +74,6 @@
   border-bottom: 2px black solid;
   align-items: flex-end;
 }
-
 
 .bar {
   display: flex;
@@ -88,6 +90,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  position: relative;
 }
 
 .x-axis {
@@ -129,4 +132,14 @@
 .info:hover .data {
   top: 2%;
   left: 4%;
+}
+
+.stacked-label {
+  height: 0;
+  text-align: center;
+  font-size: 1.1em;
+}
+
+.pos-label {
+  position: relative;
 }

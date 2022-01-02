@@ -11,8 +11,6 @@ const dataNumAreNotMatchErrorMsg =
 const stackedDataIsNotArrayErrorMsg = "One of the value set is not an array.";
 const stackedValueSetNumErrorMsg =
   "The value set have different number of data.";
-const stackedNotAscendingOrderErrorMsg =
-  "One of the value set is not in ascending order.";
 const noIdErrorMsg =
   "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
 
@@ -169,6 +167,7 @@ const makeStackedBars = (data, options) => {
     barColour,
     dataLabelPosition,
     scientificNotation,
+    dataLabelFontSize,
     barSpacing: horizontalMargin,
     hoverEffect: hoverEffectClass,
     animationEffect: animationEffectClass,
@@ -177,13 +176,24 @@ const makeStackedBars = (data, options) => {
   let posBars = "";
   let negBars = "";
   const dataNum = data.length;
-  const positiveData = data.map((arr) => arr.filter((x) => x >= 0));
-  const negativeData = data.map((arr) => arr.filter((x) => x < 0));
   const widthOfBar = 100 / dataNum + "%";
 
   const format = formatByOption(scientificNotation);
 
-  const makeBarDiv = (bar, height) => {
+  const multipleValue = (value) => {
+    const num = parseFloat(value.replace(/\D*/g, ""));
+    const unit = value.replace(/\d*/g, "");
+    const result = num * 1.3 + unit;
+    return result;
+  }
+
+  const makeBarDiv = (bar, height, value) => {
+    const dataLabelAndBar =
+    !value 
+    ? bar
+    : value > 0
+    ? `<span class="stacked-label pos-label" style="bottom: ${multipleValue(dataLabelFontSize)}">${value}</span>${bar}`
+    : `${bar}<span class="stacked-label">${value}</span>`;
     const barDiv = `<div
         class = "stacked-bar ${animationEffectClass}"
           style="
@@ -191,7 +201,7 @@ const makeStackedBars = (data, options) => {
             height: ${height};
             width: ${widthOfBar};
             margin: 0 ${horizontalMargin};">
-        ${bar}
+            ${dataLabelAndBar}
       </div>`;
     return barDiv;
   };
@@ -216,63 +226,49 @@ const makeStackedBars = (data, options) => {
       style = "width: ${widthOfBar}">
     </div>`;
 
+  const stackNum = data[0].length;
+
   for (let i = 0; i < dataNum; i++) {
     let posBar = "";
     let negBar = "";
-    const positiveValues = positiveData[i];
-    const numOfPositiveValue = positiveValues.length;
-    const negativeValues = negativeData[i];
-    const numOfNegativeValue = negativeValues.length;
 
-    const maxVal =
-      numOfPositiveValue > 0 ? positiveValues[numOfPositiveValue - 1] : 0;
-    const minVal = numOfNegativeValue > 0 ? negativeValues[0] : 0;
+    const values = data[i];
+    const maxVal = values.reduce((sum, val) => (val > 0 ? sum + val : sum), 0);
+    const minVal = values.reduce((sum, val) => (val < 0 ? sum + val : sum), 0);
 
-    const thereArePositiveVal = numOfPositiveValue > 0;
-    const thereAreNegativeVal = numOfNegativeValue > 0;
+    for (let j = 0; j < stackNum; j++) {
+      const val = values[j];
+      const valIsPositive = val > 0;
 
-    if (thereArePositiveVal) {
-      for (let i = numOfPositiveValue - 1; i >= 0; i--) {
-        const height =
-          i === 0
-            ? positiveValues[0]
-            : positiveValues[i] - positiveValues[i - 1];
-        const heightInPercentage = (height * 100) / maxVal + "%";
-        const val = positiveValues[i];
-        const barColourIndex = i + numOfNegativeValue;
-        const stack = makeAStack(val, barColourIndex, heightInPercentage);
+      if (valIsPositive) {
+        const height = (val * 100) / maxVal + "%";
+        const stack = makeAStack(val, j, height);
         posBar += stack;
       }
-    }
-    if (!thereArePositiveVal) posBar = blankBar;
 
-    if (thereAreNegativeVal) {
-      for (let i = numOfNegativeValue - 1; i >= 0; i--) {
-        const height =
-          i === numOfNegativeValue - 1
-            ? negativeValues[numOfNegativeValue - 1]
-            : negativeValues[i] - negativeValues[i + 1];
-        const heightInPercentage = (height * 100) / minVal + "%";
-        const val = negativeValues[i];
-        const stack = makeAStack(val, i, heightInPercentage);
+      if (!valIsPositive) {
+        const height = (val * 100) / minVal + "%";
+        const stack = makeAStack(val, j, height);
         negBar += stack;
       }
     }
-    if (!thereAreNegativeVal) negBar = blankBar;
+
+    if (!negBar) negBar = blankBar;
+    if (!posBar) posBar = blankBar;
 
     const negBarHeight = (100 * minVal) / minTick + "%";
-    negBar = makeBarDiv(negBar, negBarHeight);
+    negBar = makeBarDiv(negBar, negBarHeight, minVal);
     negBars += negBar;
 
     const posBarHeight = (100 * maxVal) / maxTick + "%";
-    posBar = makeBarDiv(posBar, posBarHeight);
+    posBar = makeBarDiv(posBar, posBarHeight, maxVal);
     posBars += posBar;
   }
 
   const bars = `<div
       class = "chart-content"
       style = "
-        font-size: ${options.dataLabelFontSize};
+        font-size: ${dataLabelFontSize};
         background-image: repeating-linear-gradient(
           to top,
           grey 0px,
@@ -281,7 +277,7 @@ const makeStackedBars = (data, options) => {
           transparent ${100 / (difference / options.tickInterval)}%">
       <div
         class = "bars pos-bars"
-        style = " height: ${(100 * maxTick) / difference}%">
+        style = "height: ${(100 * maxTick) / difference}%">
         ${posBars}
       </div>
       <div
@@ -326,10 +322,11 @@ const makeNonStackedBars = (data, options) => {
         margin: 0 ${horizontalMargin}">
     </div>`;
 
-  const makeBarDiv = (val, isPositive) => {
-    const height = isPositive
-      ? heightOfBarForPositiveValue(val)
-      : heightOfBarForNegativeValue(val);
+  const makeBarDiv = (val) => {
+    const height =
+      val > 0
+        ? heightOfBarForPositiveValue(val)
+        : heightOfBarForNegativeValue(val);
     const formatedVal = format(val);
     const div = `<div class="bar ${hoverEffectClass} ${animationEffectClass}"
         style="
@@ -349,13 +346,13 @@ const makeNonStackedBars = (data, options) => {
     const valIsPostive = val > 0;
 
     if (valIsPostive) {
-      const barDiv = makeBarDiv(val, true);
+      const barDiv = makeBarDiv(val);
       posBars += barDiv;
       negBars += blankBar;
     }
 
     if (!valIsPostive) {
-      const barDiv = makeBarDiv(val, false);
+      const barDiv = makeBarDiv(val);
       negBars += barDiv;
       posBars += blankBar;
     }
@@ -477,12 +474,6 @@ const dataValidationCheck = (data, options) => {
 
       const allValAreNumber = checkIfAllValuesAreNum(dataForAStackedBar);
       if (!allValAreNumber) return false;
-
-      for (let i = 0; i < numOfStacked - 1; i++) {
-        if (dataForAStackedBar[i] > dataForAStackedBar[i + 1]) {
-          throw stackedNotAscendingOrderErrorMsg;
-        }
-      }
     }
   }
 
@@ -628,17 +619,19 @@ const completeOptions = (options, data) => {
   makeClassForEffect("hoverEffect", "info");
   makeClassForEffect("animationEffect", "bar-animation");
 
-  const getMaxValue = (arr) => arr.reduce((max, values) => {
-    const sum = values.reduce((sum, val) => sum + val, 0);
-    if (sum > max) return sum;
-    return max;
-  }, 0);
+  const getMaxValue = (arr) =>
+    arr.reduce((max, values) => {
+      const sum = values.reduce((sum, val) => sum + val, 0);
+      if (sum > max) return sum;
+      return max;
+    }, 0);
 
-  const getMinValue = (arr) => arr.reduce((max, values) => {
-    const sum = values.reduce((sum, val) => sum + val, 0);
-    if (sum < max) return sum;
-    return max;
-  }, 0);
+  const getMinValue = (arr) =>
+    arr.reduce((max, values) => {
+      const sum = values.reduce((sum, val) => sum + val, 0);
+      if (sum < max) return sum;
+      return max;
+    }, 0);
 
   const maxValue = stacked ? getMaxValue(data) : Math.max(...data.flat());
   const minValue = stacked ? getMinValue(data) : Math.min(...data.flat());
@@ -652,6 +645,8 @@ const completeOptions = (options, data) => {
   options.tickInterval = tickInterval;
   options.maxTick = maxTick;
   options.minTick = minTick;
+  options.maxVal = maxValue;
+  options.minVal = minValue;
 };
 
 // top-level function
