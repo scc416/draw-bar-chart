@@ -178,6 +178,7 @@ const makeStackedBars = (data, options) => {
     dataLabelPosition,
     scientificNotation,
     dataLabelFontSize,
+    stackedPadding,
     barSpacing: horizontalMargin,
     animationEffect: animationEffectClass,
   } = options;
@@ -190,14 +191,12 @@ const makeStackedBars = (data, options) => {
   const format = formatByOption(scientificNotation);
 
   const makeBarDiv = (bar, height, value) => {
+    const postion = "-" + stackedPadding;
     const dataLabelAndBar = !value
       ? bar
       : value > 0
       ? `<span class="stacked-label" 
-          style="top: ${multiplyCSSValue(
-            dataLabelFontSize,
-            -1.3
-          )}">${value}</span>${bar}`
+          style="top: ${postion}">${value}</span>${bar}`
       : `${bar}<span class="stacked-label" 
           style="bottom: ${multiplyCSSValue(
             dataLabelFontSize,
@@ -587,6 +586,10 @@ const completeOptions = (options, data) => {
     CSS.supports("font-size", x)
   );
 
+  options.stackedPadding = stacked
+    ? multiplyCSSValue(options.dataLabelFontSize, 1.3)
+    : 0;
+
   const defineBarSpacing = () => {
     const barSpacingIsValid = CSS.supports("margin", barSpacing);
     if (barSpacingIsValid) {
@@ -613,7 +616,6 @@ const completeOptions = (options, data) => {
     (x) => typeof x === "boolean"
   );
   checkIfOptionIsValid("animationEffect", true, (x) => typeof x === "boolean");
-  
 
   const makeClassForEffect = (property, styleClass) => {
     const effectIsOff = options[property] === false;
@@ -671,8 +673,18 @@ const drawBarChart = ($element, data, options) => {
     //label the x axis
     const xAxis = makeXAxis(data.labels, options);
 
+    const { stackedPadding } = options;
+    console.log(stackedPadding);
     //html of the whole chard
-    const chart = `<div class="bar-chart">${chartTitleDiv}<div class="middle">${yAxis}${bars}</div>${xAxis}</div>`;
+    const chart = `
+      <div class="bar-chart">
+        ${chartTitleDiv}
+        <div class="middle" style="padding: ${stackedPadding} 0">
+          ${yAxis}
+          ${bars}
+        </div>
+        ${xAxis}
+      </div>`;
 
     $(document).ready(function () {
       $element.html(chart);
