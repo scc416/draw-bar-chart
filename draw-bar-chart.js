@@ -628,8 +628,20 @@ const completeOptions = (options, data) => {
   makeClassForEffect("hoverEffect", "info");
   makeClassForEffect("animationEffect", "bar-animation");
 
-  const maxValue = Math.max(...data.flat());
-  const minValue = Math.min(...data.flat());
+  const getMaxValue = (arr) => arr.reduce((max, values) => {
+    const sum = values.reduce((sum, val) => sum + val, 0);
+    if (sum > max) return sum;
+    return max;
+  }, 0);
+
+  const getMinValue = (arr) => arr.reduce((max, values) => {
+    const sum = values.reduce((sum, val) => sum + val, 0);
+    if (sum < max) return sum;
+    return max;
+  }, 0);
+
+  const maxValue = stacked ? getMaxValue(data) : Math.max(...data.flat());
+  const minValue = stacked ? getMinValue(data) : Math.min(...data.flat());
 
   //find the tick interval and value of the maximum tick
   const { tickInterval, maxTick, minTick } = findTicks(
