@@ -73,6 +73,18 @@ A set of key/value pairs that configure the bar chart. Most of the options are o
 This is crucial, especially when there are multiple bar charts, so the function can get the width of y-axis (of the correct graph) to set the position of the x-axis.  
 Id has to be unique.
 
+#### **width** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+
+- Dafault: `"90vw"`
+
+#### **height** (optional)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
+
+- Dafault: `"90vh"`
+
 #### **chartTitle** (optional)
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
@@ -91,23 +103,14 @@ Id has to be unique.
 
 - Default: `"black"`
 
-#### **width** (optional)
-
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
-
-- Dafault: `"90vw"`
-
-#### **height** (optional)
-
-- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS)  
-
-- Dafault: `"90vh"`
-
 #### **yAxisTitle** (optional)
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 - Dafault: `""` (empty string)
+
+
+
 // yAxisTitleFontSize: "24px", //optional (default: "1.5em")
 // yAxisLabelFontSize: "16px", //optional (default: "1.2em")
 xAxisTitle: "title of x-axis", //optional
