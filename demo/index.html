@@ -19,6 +19,11 @@
   <body>
     <div id="demo">DEMO</div>
     <div id="demo2">DEMO2</div>
+    <div id="demo-1-single-bar-chart"></div>
+    <div id="demo-x-negative-values"></div>
+
+    ### Bar Chart with negative Values ### Stacked Bar Chart ### Auto generated
+    interval ### Scientific Notation ### Animation Effect
 
     <script>
       drawBarChart(
@@ -30,33 +35,10 @@
             "value1",
             "value2",
             "5",
-          ]
+          ],
         },
         {
           id: 1,
-          chartTitle: "this is the title",
-          titleFontSize: "36px",
-          titleColour: "red",
-          width: "50vw",
-          height: "90vh",
-          // yAxisTitle: "title of y-axis",
-          yAxisTitleFontSize: "24px",
-          yAxisLabelFontSize: "16px",
-          // xAxisTitle: "title of x-axis",
-          xAxisTitleFontSize: "24px",
-          xAxisLabelFontSize: "16px",
-          dataLabelPosition: "bottom",
-          dataLabelColour: "white",
-          dataLabelFontSize: "16px",
-          barColour: "green",
-          barSpacing: "20px",
-
-          showLegend: true
-          // userSelect: true,
-          // tickInterval: 1,
-          // scientificNotation: true,
-          // animationEffect: false,
-          // hoverEffect: false,
         }
       );
 
@@ -75,28 +57,9 @@
             "value2",
             "5",
           ],
-          stackLabels: [1, 2, 3]
+          stackLabels: [1, 2, 3],
         },
-        {
-          id: 2,
-          chartTitle: "this is the title",
-          titleFontSize: "36px",
-          titleColour: "black",
-          yAxisTitle: "title of y-axis",
-          yAxisTitleFontSize: "24px",
-          yAxisLabelFontSize: "16px",
-          xAxisTitle: "title of x-axis",
-          xAxisTitleFontSize: "24px",
-          xAxisLabelFontSize: "16px",
-          dataLabelPosition: "centre",
-          dataLabelColour: "green",
-          dataLabelFontSize: "16px",
-          barSpacing: "10px",
-          userSelect: "",
-          tickInterval: 100,
-          scientificNotation: false,
-          showLegend: false
-        }
+        { id: 2 }
       );
     </script>
   </body>
