@@ -1,6 +1,6 @@
 # Draw Bar Chart
 
-A library for displaying bar chart on web page. The library has one function, this function can handle bar chart with single or stacked values, positive and/or negative values.  
+A library for displaying bar chart with jQuery. The library has one function, this function can handle bar chart with single or stacked values, positive and/or negative values.  
 Some optional options include `tickInterval`, `barColour`, `barSpacing`, `showLegend`, `scientificNotation` and `animationEffect`.
 
 ## Table of Content
