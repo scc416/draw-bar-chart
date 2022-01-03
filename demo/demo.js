@@ -2,16 +2,13 @@ $(() => {
   drawBarChart(
     $("#demo-1-single-bar-chart"),
     {
-      values: [3.6, 3.4, 4.9, 3.8, 3.8, 2.5, 6.5, 4.3],
+      values: [3.6, 4.9, 3.8, 2.5, 6.5],
       labels: [
         "Australia",
-        "Belgium",
         "Canada",
         "Germany",
-        "Denmark",
         "Japan",
         "United States",
-        "United Kingdom",
       ],
     },
     {
@@ -27,7 +24,6 @@ $(() => {
     {
       values: [0.409, 0.15, 0.857, 0.0583, 0.183],
       labels: ["Albania", "Barbados", "Chile", "Hong Kong", "Singapore"],
-      // stackLabels: [1, 2, 3],
     },
     {
       id: 2,
@@ -40,15 +36,15 @@ $(() => {
   drawBarChart(
     $("#demo-3-neg-values"),
     {
-      values: [0.409, 0.15, 0.857, 0.0583, 0.183],
-      labels: ["Albania", "Barbados", "Chile", "Hong Kong", "Singapore"],
-      // stackLabels: [1, 2, 3],
+      values: [-1.25, -6.21, -6.34, -11.2, -2.50],
+      labels: ["Australia", "Belgium", "Canada", "Spain", "Poland"],
     },
     {
-      id: 2,
-      chartTitle: "Deposit interest rate in 2020",
-      yAxisTitle: "Deposit interest rate (%)",
+      id: 3,
+      chartTitle: "GDP per capita growth in 2020",
+      yAxisTitle: "GDP per capita growth (annual %)",
       xAxisTitle: "Country",
+      tickInterval: 2
     }
   );
 });
