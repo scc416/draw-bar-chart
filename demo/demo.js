@@ -79,4 +79,33 @@ $(() => {
       dataLabelPosition: "centre",
     }
   );
+
+  drawBarChart(
+    $("#demo-6-with-no-preset-tick-interval"),
+    {
+      values: [3.6, 4.9, 3.8, 2.5, 6.5],
+      labels: ["Australia", "Canada", "Germany", "Japan", "United States"],
+    },
+    {
+      id: 6,
+      chartTitle: "Mortality rate in 2019",
+      yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
+      xAxisTitle: "Country",
+    }
+  );
+
+  drawBarChart(
+    $("#demo-7-with-preset-interval"),
+    {
+      values: [3.6, 4.9, 3.8, 2.5, 6.5],
+      labels: ["Australia", "Canada", "Germany", "Japan", "United States"],
+    },
+    {
+      id: 7,
+      chartTitle: "Mortality rate in 2019",
+      yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
+      xAxisTitle: "Country",
+      tickInterval: 0.5
+    }
+  );
 });
