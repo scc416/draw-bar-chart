@@ -430,6 +430,7 @@ const makeXAxis = (labelArr, options) => {
       style = "font-size: ${labelFontSize}">
         <div id = "left-corner-${id}"></div>
           ${xAxis}
+          <div id = "right-corner-${id}"></div>
         </div>
     <div
       class = "x-axis-title"
@@ -440,7 +441,7 @@ const makeXAxis = (labelArr, options) => {
   return xAxis;
 };
 
-const makeLegend = (barColour, label) => {
+const makeLegend = (barColour, label, id) => {
   let labelDiv = "";
   if (!label) return labelDiv;
   for (let i = 0; i < barColour.length; i++) {
@@ -452,14 +453,14 @@ const makeLegend = (barColour, label) => {
     `;
     labelDiv += elm;
   }
-  return `<div class="legend">${labelDiv}</div>`;
+  return `<div class="legend" id="legend-${id}">${labelDiv}</div>`;
 };
 
 const makeContent = (options, stackLabels, yAxis, bars) => {
-  const { stackedFontSize, stacked, barColour, showLegend } = options;
+  const { stackedFontSize, stacked, barColour, showLegend, id } = options;
 
   const legend =
-    stacked && showLegend ? makeLegend(barColour, stackLabels) : ``;
+    stacked && showLegend ? makeLegend(barColour, stackLabels, id) : ``;
 
   //html of the whole chard
   const content = `
@@ -733,6 +734,11 @@ const drawBarChart = ($element, data, options) => {
           "min-width",
           `${$(`#y-axis-${options.id}`).outerWidth(true)}px`
         );
+
+        $(`#right-corner-${options.id}`).css(
+          "min-width",
+          `${$(`#legend-${options.id}`).outerWidth(true)}px`
+        )
       });
     });
   }
