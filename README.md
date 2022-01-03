@@ -80,8 +80,9 @@ The library has only one function, `drawBarChart(selector, data, options)`.
 
 ### selector
 
-- Type: [Selector](https://api.jquery.com/category/selectors/)  
-  A string representing a selector expression to find an element for the bar chart to rendered in.
+- Type: [Selector](https://api.jquery.com/category/selectors/)
+
+A string representing a selector expression to find an element for the bar chart to rendered in.
 
 ### data
 
@@ -202,7 +203,7 @@ This option indicates the position of the data (value) label on the bar.
 
 - Default: "white"
 
-#### **dataLabelFontSize**
+#### **dataLabelFontSize** (optional)
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
 
@@ -257,7 +258,7 @@ If the text & value on the graph can be selected (i.e. highlighed) by users.
 
 - Default: `false`
 
-If the values are displayed as [scientific notation](https://en.wikipedia.org/wiki/Scientific_notation).
+If the values are displayed as [scientific notation](https://en.wikipedia.org/wiki/Scientific_notation). See [Final Product](#final-product) for more.
 
 #### **animationEffect** (optional)
 
