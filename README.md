@@ -12,7 +12,7 @@ Some optional options include `tickInterval`, `barColour`, `barSpacing`, `showLe
 
 ## Final Product
 
-All the examples below are in demo（in `index.html` file).
+All the examples below are in demo（run `index.html` file on your device or visit https://scc416.github.io/draw-bar-chart/).
 
 ### Single Bar Chart
 
