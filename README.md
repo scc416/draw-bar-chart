@@ -16,6 +16,8 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Single Bar Chart
 
+### Single Bar Chart with all values below 1
+
 ### Bar Chart with negative Values
 
 ### Stacked Bar Chart

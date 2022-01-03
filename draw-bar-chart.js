@@ -1,5 +1,5 @@
 // default colour for bar chart
-const DEFAULT_CSS_COLOR = ["SkyBlue", "Orchid", "Yellow"];
+const DEFAULT_CSS_COLOR = ["SkyBlue", "Orchid", "LightGreen", "Coral"];
 
 // string for error messages
 const valIsNotNumberErrorMsg = "One of the value is not number.";

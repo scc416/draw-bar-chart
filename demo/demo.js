@@ -19,12 +19,12 @@ $(() => {
       chartTitle:
         "Mortality rate, under-5 (per 1,000 live births) in 2019 by country",
       yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
-      xAxisTitle: "Country"
+      xAxisTitle: "Country",
     }
   );
 
   drawBarChart(
-    $("#demo-2-small-values"),
+    $("#demo-2-values-below-1"),
     {
       values: [
         [400, 200, 424],
