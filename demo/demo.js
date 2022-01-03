@@ -47,4 +47,19 @@ $(() => {
       tickInterval: 2
     }
   );
+
+  drawBarChart(
+    $("#demo-4-pos-neg-values"),
+    {
+      values: [-1.25, -6.21, 4.04, 1.98, -2.50],
+      labels: ["Australia", "Belgium", "Guinea", "Vietnam", "Poland"],
+    },
+    {
+      id: 4,
+      chartTitle: "GDP per capita growth in 2020",
+      yAxisTitle: "GDP per capita growth (annual %)",
+      xAxisTitle: "Country",
+      tickInterval: 2
+    }
+  );
 });
