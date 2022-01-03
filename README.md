@@ -16,6 +16,8 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Single Bar Chart
 
+![single bar chart](./docs/single-bar-chart.png)
+
 ### Single Bar Chart with all values below 1
 
 ![single bar chart](./docs/single-bar-chart-below-1.png)
