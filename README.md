@@ -28,6 +28,8 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Single Bar Chart with positive and negative values
 
+![pos and neg values](./docs/pos-and-neg-values.png)
+
 ### Stacked Bar Chart
 
 ### Calculated interval
