@@ -18,6 +18,8 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Single Bar Chart with all values below 1
 
+![single bar chart](./docs/single-bar-chart-below-1.png)
+
 ### Bar Chart with negative Values
 
 ### Single Bar Chart with positive and negative values
@@ -30,7 +32,7 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Animation Effect
 
-![animation effect](./docs/animation-effect.gif)  
+![animation effect](./docs/animation-effect.gif)
 
 This effect can be turned off. Read `animationEffect` in options.
 
