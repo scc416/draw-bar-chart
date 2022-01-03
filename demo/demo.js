@@ -72,7 +72,7 @@ $(() => {
       stackLabels: ["hi"]
     },
     {
-      id: 4,
+      id: 5,
       chartTitle: "GDP per capita growth in 2020",
       yAxisTitle: "GDP per capita growth (annual %)",
       xAxisTitle: "Country",

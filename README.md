@@ -206,6 +206,18 @@ This option indicates the position of the data (value) label on the bar.
 
 - Default: `true`
 
+#### stackLabelFontSize (optional, only for stacked bar chart)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
+
+- Default: `"1.1em"`
+
+#### stackLabelColour (optional, only for stacked bar chart)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: color)
+
+- Default: `"black"`
+
 #### **userSelect** (optional)
 
 - Type: [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)

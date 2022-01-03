@@ -180,7 +180,8 @@ const makeStackedBars = (data, options) => {
     dataLabelPosition,
     scientificNotation,
     dataLabelFontSize,
-    stackedPadding,
+    stackLabelFontSize,
+    stackLabelColour,
     barSpacing: horizontalMargin,
     animationEffect: animationEffectClass,
   } = options;
@@ -193,14 +194,13 @@ const makeStackedBars = (data, options) => {
   const format = formatByOption(scientificNotation);
 
   const makeBarDiv = (bar, height, value) => {
-    const postion = "-" + stackedPadding;
+    const postion = multiplyCSSValue(stackLabelFontSize, -1.1);
     const dataLabelAndBar = !value
       ? bar
-      : value > 0
-      ? `<span class="stacked-label" 
-          style="top: ${postion}">${value}</span>${bar}`
-      : `${bar}<span class="stacked-label" 
-          style="bottom: ${postion}">${value}</span>`;
+      : `<span class="stacked-label" 
+          style="top: ${postion};
+            font-size: ${stackLabelFontSize};
+            color: ${stackLabelColour};">${value}</span>${bar}`;
 
     const barDiv = `<div
         class = "stacked-bar ${animationEffectClass}"
@@ -264,13 +264,13 @@ const makeStackedBars = (data, options) => {
     if (!negBar) negBar = blankBar;
     if (!posBar) posBar = blankBar;
 
-    const negBarHeight = (100 * minVal) / minTick + "%";
-    negBar = makeBarDiv(negBar, negBarHeight, minVal);
-    negBars += negBar;
-
     const posBarHeight = (100 * maxVal) / maxTick + "%";
-    posBar = makeBarDiv(posBar, posBarHeight, maxVal);
+    posBar = makeBarDiv(posBar, posBarHeight, maxVal + minVal);
     posBars += posBar;
+
+    const negBarHeight = (100 * minVal) / minTick + "%";
+    negBar = makeBarDiv(negBar, negBarHeight);
+    negBars += negBar;
   }
 
   const bars = `<div
@@ -456,7 +456,7 @@ const makeLegend = (barColour, label) => {
 };
 
 const makeContent = (options, stackLabels, yAxis, bars) => {
-  const { stackedPadding, stacked, barColour, showLegend } = options;
+  const { stackedFontSize, stacked, barColour, showLegend } = options;
 
   const legend =
     stacked && showLegend ? makeLegend(barColour, stackLabels) : ``;
@@ -464,7 +464,7 @@ const makeContent = (options, stackLabels, yAxis, bars) => {
   //html of the whole chard
   const content = `
       <div class="middle"
-        style="${stackedPadding ? `padding: ${stackedPadding} 0` : ""}">
+        style="${stackedFontSize ? `padding: ${stackedFontSize} 0` : ""}">
         ${yAxis}
         ${bars}
         ${legend}
@@ -571,6 +571,13 @@ const completeOptions = (options, data) => {
       barColour = barColour.slice(0, stackNum);
     }
     options.barColour = barColour;
+
+    checkIfOptionIsValid("stackLabelFontSize", "1.1em", (x) =>
+      CSS.supports("font-size", x)
+    );
+    checkIfOptionIsValid("stackLabelColour", "black", (x) =>
+      CSS.supports("color", x)
+    );
   }
 
   if (!stacked) {
@@ -621,10 +628,6 @@ const completeOptions = (options, data) => {
   checkIfOptionIsValid("dataLabelFontSize", "1em", (x) =>
     CSS.supports("font-size", x)
   );
-
-  options.stackedPadding = stacked
-    ? multiplyCSSValue(options.dataLabelFontSize, 1.3)
-    : false;
 
   const defineBarSpacing = () => {
     const barSpacingIsValid = CSS.supports("margin", barSpacing);
