@@ -12,7 +12,7 @@ Some optional options include `tickInterval`, `barColour`, `barSpacing`, `showLe
 
 ## Final Product
 
-All the examples below are in demo（in the `./demo` folder).
+All the examples below are in demo（in `index.html` file).
 
 ### Single Bar Chart
 
@@ -72,7 +72,7 @@ Put `draw-bar-chart.js` and `draw-bar-chart.css` into your project folder. Inclu
 
 "Draw Bar Chart" depends on jQuery, so jQuery has to come before `draw-bar-chart.js`.
 
-You can also try the demo in `./demo` folder.
+You can also try the demo in `index.html`.
 
 ## Documentation
 
