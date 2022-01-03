@@ -24,11 +24,11 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Bar Chart with negative Values
 
-![neg values](./docs/neg-values.png)
+![neg values](./docs/neg-val.png)
 
 ### Single Bar Chart with positive and negative values
 
-![pos and neg values](./docs/pos-and-neg-values.png)
+![pos and neg values](./docs/pos-and-neg-val.png)
 
 ### Stacked Bar Chart
 
