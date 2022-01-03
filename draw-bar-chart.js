@@ -118,6 +118,7 @@ const makeYAxis = (options) => {
   }
 
   yAxisTitle = `<div
+      id = "y-axis-title-${id}"
       class = "y-axis-title"
       style = "font-size: ${yAxisTitleFontSize}">
       ${yAxisTitleText}${yAxisTitle}
@@ -126,11 +127,7 @@ const makeYAxis = (options) => {
   const numOfDecimals = countDecimals(tickInterval);
 
   const formatTickValue = (val) => val.toFixed(numOfDecimals);
-  const formatTickDiv = (formatedVal) =>
-    `<div class="y-axis-label-text"
-      style="bottom: ${multiplyCSSValue(yAxisLabelFontSize, 0.6)}">
-        ${formatedVal}
-    </div>`;
+  const formatTickDiv = (formatedVal) => `<div>${formatedVal}</div>`;
 
   for (let i = minTick; i <= maxTick; i += tickInterval) {
     const val = formatTickValue(i);
@@ -140,15 +137,12 @@ const makeYAxis = (options) => {
 
   yAxisLabel = `<div
       class = "y-axis-label"
+      id = "y-axis-label-${id}"
       style = "font-size: ${yAxisLabelFontSize}">
       ${yAxisLabel}
     </div>`;
 
-  const yAxis = `<div
-      class = "y-axis"
-      id = "y-axis-${id}">
-      ${yAxisTitle + yAxisLabel}
-    </div>`;
+  const yAxis = yAxisTitle + yAxisLabel;
 
   return yAxis;
 };
@@ -732,7 +726,7 @@ const drawBarChart = ($element, data, options) => {
       $(document).ready(function () {
         $(`#left-corner-${options.id}`).css(
           "min-width",
-          `${$(`#y-axis-${options.id}`).outerWidth(true)}px`
+          `${$(`#y-axis-label-${options.id}`).outerWidth(true) + $(`#y-axis-title-${options.id}`).outerWidth(true)}px`
         );
 
         $(`#right-corner-${options.id}`).css(
