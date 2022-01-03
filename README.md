@@ -244,4 +244,4 @@ See [Final Product](#final-product) for the animation effect.
 
 ### Credits
 
-- All the statistics in the demo come from [World Bank](https://www.worldbank.org/en/home)
+- Statistics in the demo are taken from [World Bank](https://www.worldbank.org/en/home)

@@ -465,7 +465,7 @@ const makeContent = (options, stackLabels, yAxis, bars) => {
   //html of the whole chard
   const content = `
       <div class="middle"
-        style="${stackedFontSize ? `padding: ${stackedFontSize} 0` : ""}">
+        style="${stackedFontSize ? `padding-top: ${stackedFontSize}` : ""}">
         ${yAxis}
         ${bars}
         ${legend}

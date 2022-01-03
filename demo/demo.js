@@ -3,13 +3,7 @@ $(() => {
     $("#demo-1-single-bar-chart"),
     {
       values: [3.6, 4.9, 3.8, 2.5, 6.5],
-      labels: [
-        "Australia",
-        "Canada",
-        "Germany",
-        "Japan",
-        "United States",
-      ],
+      labels: ["Australia", "Canada", "Germany", "Japan", "United States"],
     },
     {
       id: 1,
@@ -36,7 +30,7 @@ $(() => {
   drawBarChart(
     $("#demo-3-neg-values"),
     {
-      values: [-1.25, -6.21, -6.34, -11.2, -2.50],
+      values: [-1.25, -6.21, -6.34, -11.2, -2.5],
       labels: ["Australia", "Belgium", "Canada", "Spain", "Poland"],
     },
     {
@@ -44,14 +38,14 @@ $(() => {
       chartTitle: "GDP per capita growth in 2020",
       yAxisTitle: "GDP per capita growth (annual %)",
       xAxisTitle: "Country",
-      tickInterval: 2
+      tickInterval: 2,
     }
   );
 
   drawBarChart(
     $("#demo-4-pos-neg-values"),
     {
-      values: [-1.25, -6.21, 4.04, 1.98, -2.50],
+      values: [-1.25, -6.21, 4.04, 1.98, -2.5],
       labels: ["Australia", "Belgium", "Guinea", "Vietnam", "Poland"],
     },
     {
@@ -59,24 +53,30 @@ $(() => {
       chartTitle: "GDP per capita growth in 2020",
       yAxisTitle: "GDP per capita growth (annual %)",
       xAxisTitle: "Country",
-      tickInterval: 2
+      tickInterval: 2,
     }
   );
-
 
   drawBarChart(
     $("#demo-5-stacked"),
     {
-      values: [[-1.25], [-6.21], [4.04], [1.98], [-2.50]],
-      labels: ["Australia", "Belgium", "Guinea", "Vietnam", "Poland"],
-      stackLabels: ["hi"]
+      values: [
+        [1, 2, 3],
+        [-1, 2, 3],
+        [3.5, 1, -4],
+        [1, 0.5, -3],
+        [-2.5, 3, -1],
+      ],
+      labels: ["A", "B", "C", "D", "E"],
+      stackLabels: ["label1", "label2", "label3"],
     },
     {
       id: 5,
-      chartTitle: "GDP per capita growth in 2020",
-      yAxisTitle: "GDP per capita growth (annual %)",
+      chartTitle: "Random Data",
+      yAxisTitle: "y-axis",
       xAxisTitle: "Country",
-      tickInterval: 2
+      tickInterval: 2,
+      dataLabelPosition: "centre",
     }
   );
 });
