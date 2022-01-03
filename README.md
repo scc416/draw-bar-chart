@@ -30,6 +30,10 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Animation Effect
 
+![animation effect](./docs/animation-effect.gif)  
+
+This effect can be turned off. Read `animationEffect` in options.
+
 ## Dependencies
 
 - [jQuery](https://jquery.com/): library to select and manipulate elements
