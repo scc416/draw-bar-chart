@@ -20,9 +20,11 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Single Bar Chart with all values below 1
 
-![single bar chart](./docs/single-bar-chart-below-1.png)
+![single bar chart below 1](./docs/single-bar-chart-below-1.png)
 
 ### Bar Chart with negative Values
+
+![negative values](./docs/negative-values.png)
 
 ### Single Bar Chart with positive and negative values
 
