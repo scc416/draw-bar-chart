@@ -138,7 +138,8 @@ const makeYAxis = (options) => {
   yAxisLabel = `<div
       class = "y-axis-label"
       id = "y-axis-label-${id}"
-      style = "font-size: ${yAxisLabelFontSize}">
+      style = "font-size: ${yAxisLabelFontSize};
+        min-height: calc(100% + ${yAxisLabelFontSize});">
       ${yAxisLabel}
     </div>`;
 
@@ -726,13 +727,16 @@ const drawBarChart = ($element, data, options) => {
       $(document).ready(function () {
         $(`#left-corner-${options.id}`).css(
           "min-width",
-          `${$(`#y-axis-label-${options.id}`).outerWidth(true) + $(`#y-axis-title-${options.id}`).outerWidth(true)}px`
+          `${
+            $(`#y-axis-label-${options.id}`).outerWidth(true) +
+            $(`#y-axis-title-${options.id}`).outerWidth(true)
+          }px`
         );
 
         $(`#right-corner-${options.id}`).css(
           "min-width",
           `${$(`#legend-${options.id}`).outerWidth(true)}px`
-        )
+        );
       });
     });
   }
