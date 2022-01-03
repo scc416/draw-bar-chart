@@ -36,4 +36,19 @@ $(() => {
       xAxisTitle: "Country",
     }
   );
+
+  drawBarChart(
+    $("#demo-3-neg-values"),
+    {
+      values: [0.409, 0.15, 0.857, 0.0583, 0.183],
+      labels: ["Albania", "Barbados", "Chile", "Hong Kong", "Singapore"],
+      // stackLabels: [1, 2, 3],
+    },
+    {
+      id: 2,
+      chartTitle: "Deposit interest rate in 2020",
+      yAxisTitle: "Deposit interest rate (%)",
+      xAxisTitle: "Country",
+    }
+  );
 });

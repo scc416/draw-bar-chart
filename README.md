@@ -20,6 +20,8 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Bar Chart with negative Values
 
+### Single Bar Chart with positive and negative values
+
 ### Stacked Bar Chart
 
 ### Calculated interval
