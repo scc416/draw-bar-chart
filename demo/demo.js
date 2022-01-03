@@ -16,8 +16,7 @@ $(() => {
     },
     {
       id: 1,
-      chartTitle:
-        "Mortality rate, under-5 (per 1,000 live births) in 2019 by country",
+      chartTitle: "Mortality rate in 2019",
       yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
       xAxisTitle: "Country",
     }
@@ -26,20 +25,15 @@ $(() => {
   drawBarChart(
     $("#demo-2-values-below-1"),
     {
-      values: [
-        [400, 200, 424],
-        [-410, 100, -105],
-        [-500, -200, 300],
-        [-40, 150, 400],
-      ],
-      labels: [
-        "very very very very very very very very very long value",
-        "value1",
-        "value2",
-        "5",
-      ],
+      values: [0.409, 0.15, 0.857, 0.0583, 0.183],
+      labels: ["Albania", "Barbados", "Chile", "Hong Kong", "Singapore"],
       // stackLabels: [1, 2, 3],
     },
-    { id: 2 }
+    {
+      id: 2,
+      chartTitle: "Deposit interest rate in 2020",
+      yAxisTitle: "Deposit interest rate (%)",
+      xAxisTitle: "Country",
+    }
   );
 });
