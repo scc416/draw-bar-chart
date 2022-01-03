@@ -36,9 +36,14 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Calculated interval
 
-![set tick interval](./docs/set-tick-interval.png)
+![no preset tick interval](./docs/no-preset-tick-interval.png)  
 
-![no preset tick interval](./docs/no-preset-tick-interval.png)
+Bar chart with no preset tick interval.  
+
+![set tick interval](./docs/set-tick-interval.png)  
+
+The same data with preset tick interval (0.5).
+
 
 ### Scientific Notation
 
