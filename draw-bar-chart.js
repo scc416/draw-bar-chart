@@ -33,10 +33,7 @@ const isNumber = (num) => {
 const multiplyCSSValue = (value, multipleNum) => {
   const num = parseFloat(value.replace(/\D*$/, ""));
   const unit = value.replace(/\d*/g, "").replace(".", "");
-  
   const result = num * multipleNum + unit;
-
-  console.log(value, num, unit, multipleNum, result);
   return result;
 };
 
