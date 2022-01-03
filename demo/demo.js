@@ -105,7 +105,23 @@ $(() => {
       chartTitle: "Mortality rate in 2019",
       yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
       xAxisTitle: "Country",
-      tickInterval: 0.5
+      tickInterval: 0.5,
+    }
+  );
+
+  drawBarChart(
+    $("#demo-8-scientific-notation"),
+    {
+      values: [10903384, 2775187, 875633, 9086766, 10179380],
+      labels: ["Angola", "Czech Republic", "Jordan", "Spain", "Zambia"],
+    },
+    {
+      id: 8,
+      chartTitle: "Rural population in 2020",
+      yAxisTitle: "Rural population",
+      xAxisTitle: "Country",
+      scientificNotation: true,
+      tickInterval: 1000000
     }
   );
 });
