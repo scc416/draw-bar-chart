@@ -24,7 +24,7 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Bar Chart with negative Values
 
-![negative values](./docs/negative-values.png)
+![neg values](./docs/neg-values.png)
 
 ### Single Bar Chart with positive and negative values
 
