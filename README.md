@@ -32,9 +32,17 @@ All the examples below are in demo（in the `./demo` folder).
 
 ### Stacked Bar Chart
 
+![stacked](./docs/stacked.png)
+
 ### Calculated interval
 
+![set tick interval](./docs/set-tick-interval.png)
+
+![no preset tick interval](./docs/no-preset-tick-interval.png)
+
 ### Scientific Notation
+
+![sci notation](./docs/sci-notation.png)
 
 ### Animation Effect
 
