@@ -229,3 +229,7 @@ If the values are displayed as [scientific notation](https://en.wikipedia.org/wi
 - Default: `true`
 
 See [Final Product](#final-product) for the animation effect.
+
+### Credits
+
+- All the statistics in the demo come from [World Bank](https://www.worldbank.org/en/home)
