@@ -43,7 +43,7 @@ const makeTitleDiv = (options) => {
 
   return `<div
       class = "chart-title"
-      style = "colour: ${titleColour};
+      style = "color: ${titleColour};
         font-size: ${titleFontSize}">
       ${chartTitle}
     </div>`;
