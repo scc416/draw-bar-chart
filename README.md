@@ -1,6 +1,6 @@
 # Draw Bar Chart
 
-A library for displaying bar chart with jQuery. The library has one function, this function can handle bar chart with single or stacked values, positive and/or negative values.  
+A library for displaying responsive bar chart with jQuery. The library has one function, this function can handle bar chart with single or stacked values, positive and/or negative values.  
 Some optional options include `tickInterval`, `barColour`, `barSpacing`, `showLegend`, `scientificNotation` and `animationEffect`.
 
 ## Table of Content
@@ -13,6 +13,11 @@ Some optional options include `tickInterval`, `barColour`, `barSpacing`, `showLe
 ## Final Product
 
 All the examples below are in demo（run `index.html` file on your device or visit https://scc416.github.io/draw-bar-chart/).
+
+### Responsive Design
+
+![responsive](./docs/responsive.gif)
+The options `height` and `width` are set as `"90vh"` and `"90vw"`.
 
 ### Single Bar Chart
 
