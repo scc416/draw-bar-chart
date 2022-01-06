@@ -11,7 +11,7 @@ $(() => {
       yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
       xAxisTitle: "Country",
       width: "90vw",
-      height: "90vh"
+      height: "90vh",
     }
   );
 
@@ -26,6 +26,8 @@ $(() => {
       chartTitle: "Deposit interest rate in 2020",
       yAxisTitle: "Deposit interest rate (%)",
       xAxisTitle: "Country",
+      width: "90vw",
+      height: "90vh",
     }
   );
 
@@ -41,6 +43,8 @@ $(() => {
       yAxisTitle: "GDP per capita growth (annual %)",
       xAxisTitle: "Country",
       tickInterval: 2,
+      width: "90vw",
+      height: "90vh",
     }
   );
 
@@ -56,6 +60,8 @@ $(() => {
       yAxisTitle: "GDP per capita growth (annual %)",
       xAxisTitle: "Country",
       tickInterval: 2,
+      width: "90vw",
+      height: "90vh",
     }
   );
 
@@ -79,6 +85,8 @@ $(() => {
       xAxisTitle: "Country",
       tickInterval: 2,
       dataLabelPosition: "centre",
+      width: "90vw",
+      height: "90vh",
     }
   );
 
@@ -93,6 +101,8 @@ $(() => {
       chartTitle: "Mortality rate in 2019",
       yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
       xAxisTitle: "Country",
+      width: "90vw",
+      height: "90vh"
     }
   );
 
@@ -108,6 +118,8 @@ $(() => {
       yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
       xAxisTitle: "Country",
       tickInterval: 0.5,
+      width: "90vw",
+      height: "90vh"
     }
   );
 
@@ -123,7 +135,9 @@ $(() => {
       yAxisTitle: "Rural population",
       xAxisTitle: "Country",
       scientificNotation: true,
-      tickInterval: 1000000
+      tickInterval: 1000000,
+      width: "90vw",
+      height: "90vh"
     }
   );
 });
