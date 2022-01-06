@@ -17,7 +17,7 @@ All the examples below are in demo（run `index.html` file on your device or vis
 ### Responsive Design
 
 ![responsive](./docs/responsive.gif)
-The options `height` and `width` are set as `"90vh"` and `"90vw"`.
+The options `height` and `width` are set as `"90vh"` and `"90vw"` respectively.
 
 ### Single Bar Chart
 
