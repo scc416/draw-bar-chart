@@ -6,9 +6,6 @@ const noValueErrorMsg = "No Value.";
 const valIsNotNumberErrorMsg = "One of the value is not number.";
 const noDataErrorMsg = "There is no data.";
 const dataIsNotArrayErrorMsg = "Data set is not an array.";
-const labelIsNotArrayErrorMsg = "Label set is not an array.";
-const dataNumAreNotMatchErrorMsg =
-  "Number of data doesn't match with number of label";
 const stackedDataIsNotArrayErrorMsg = "One of the value set is not an array.";
 const stackedValueSetNumErrorMsg =
   "The value set have different number of data.";
@@ -772,7 +769,7 @@ const drawBarChart = ($element, data, options) => {
         ${xAxis}
       </div>`;
 
-    $(document).ready(function () {
+    $(document).ready(() => {
       $element.html(chart);
       $element.css("width", options.width);
       $element.css("height", options.height);
@@ -808,7 +805,7 @@ const drawBarChart = ($element, data, options) => {
         <div>${error}</div>
         <div>${chartInfo}</div>
       </div>`;
-    $(document).ready(function () {
+    $(document).ready(() => {
       $element.html(errorElm);
       $element.css("width", options.width);
       $element.css("height", options.height);
