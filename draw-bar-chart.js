@@ -697,13 +697,12 @@ const fixElmSizeFunctionGenerator = (id, yAxisLabelFontSize) => {
   const $rightCorner = $(`#right-corner-${id}`);
   const $yAxisLabel = $(`#y-axis-label-${id}`);
   const $legend = $(`#legend-${id}`);
+  const $yAxisTitle = $(`#y-axis-title-${id}`);
 
   return () => {
     $leftCorner.css(
       "min-width",
-      `${
-        $yAxisLabel.outerWidth(true) + $(`#y-axis-title-${id}`).outerWidth(true)
-      }px`
+      `${$yAxisLabel.outerWidth(true) + $yAxisTitle.outerWidth(true)}px`
     );
 
     $rightCorner.css("min-width", `${$legend.outerWidth(true)}px`);
