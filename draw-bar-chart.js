@@ -692,7 +692,7 @@ const completeOptions = (options, data) => {
   options.minTick = minTick;
 };
 
-const fixElmSizeFunctionGenerator = (id, yAxisLabelFontSize) => {
+const setElmSizeFunctionGenerator = (id, yAxisLabelFontSize) => {
   const $leftCorner = $(`#left-corner-${id}`);
   const $rightCorner = $(`#right-corner-${id}`);
   const $yAxisLabel = $(`#y-axis-label-${id}`);
@@ -751,14 +751,17 @@ const drawBarChart = ($element, data, options) => {
       $element.css("height", options.height);
       $element.css("user-select", options.userSelect);
 
-      const fixElmSize = fixElmSizeFunctionGenerator(
-        options.id,
-        options.yAxisLabelFontSize
-      );
-
       $(document).ready(() => {
-        fixElmSize();
-        $(window).resize(fixElmSize);
+        const setElmSize = setElmSizeFunctionGenerator(
+          options.id,
+          options.yAxisLabelFontSize
+        );
+
+        // set the size of elements initially
+        setElmSize();
+
+        // set the size of elements when the window is resized
+        $(window).resize(setElmSize);
       });
     });
   }
