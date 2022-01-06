@@ -167,6 +167,7 @@ const formatByOption = (isScientificNotation) => {
 
 const makeStackedBars = (data, options) => {
   const {
+    id,
     maxTick,
     minTick,
     dataLabelColour,
@@ -691,6 +692,27 @@ const completeOptions = (options, data) => {
   options.minTick = minTick;
 };
 
+const fixElmSize = (id, yAxisLabelFontSize) => {
+  $(`#left-corner-${id}`).css(
+    "min-width",
+    `${
+      $(`#y-axis-label-${id}`).outerWidth(true) +
+      $(`#y-axis-title-${id}`).outerWidth(true)
+    }px`
+  );
+
+  $(`#right-corner-${id}`).css(
+    "min-width",
+    `${$(`#legend-${id}`).outerWidth(true)}px`
+  );
+
+  $(`#y-axis-label-${id}`).css(
+    "min-height",
+    `calc(${$(`#bars-${id}`).outerHeight(true)}px +
+    ${yAxisLabelFontSize})`
+  );
+};
+
 // top-level function
 const drawBarChart = ($element, data, options) => {
   const dataAreValid = dataValidationCheck(data, options);
@@ -726,25 +748,9 @@ const drawBarChart = ($element, data, options) => {
       $element.css("width", options.width);
       $element.css("height", options.height);
       $element.css("user-select", options.userSelect);
-      $(document).ready(function () {
-        $(`#left-corner-${options.id}`).css(
-          "min-width",
-          `${
-            $(`#y-axis-label-${options.id}`).outerWidth(true) +
-            $(`#y-axis-title-${options.id}`).outerWidth(true)
-          }px`
-        );
-
-        $(`#right-corner-${options.id}`).css(
-          "min-width",
-          `${$(`#legend-${options.id}`).outerWidth(true)}px`
-        );
-
-        $(`#y-axis-label-${options.id}`).css(
-          "min-height",
-          `calc(${$(`#bars-${options.id}`).outerHeight(true)}px +
-          ${options.yAxisLabelFontSize})`
-        );
+      $(document).ready(() => {
+        fixElmSize(options.id, options.yAxisLabelFontSize);
+        $(window).resize(() => fixElmSize(options.id, options.yAxisLabelFontSize));
       });
     });
   }
