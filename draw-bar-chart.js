@@ -794,10 +794,19 @@ const drawBarChart = ($element, data, options) => {
   }
 
   if (!valid) {
+    const chartInfo = 
+      options.id && options.chartTitle 
+      ? `<div>(Chart id: ${options.id}, Chart title: ${options.chartTitle})</div>`
+      : options.id
+      ? `<div>(Chart id: ${options.id})</div>`
+      : options.chartTitle 
+      ? `<div>(Chart id: ${options.id}, Chart title: ${options.chartTitle})</div>`
+      : ""
+
     const errorElm = `
       <div class="bar-chart bar-chart-error">
         <div>${error}</div>
-        ${options.id ? `<div>(Chart Id: ${options.id})</div>` : ""}
+        <div>${chartInfo}</div>
       </div>`;
     $(document).ready(function () {
       $element.html(errorElm);
