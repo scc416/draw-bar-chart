@@ -176,6 +176,8 @@ Id has to be unique.
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
 
+- Default: "1.2em"
+
 #### **xAxisTitle** (optional)
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)

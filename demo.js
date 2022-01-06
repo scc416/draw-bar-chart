@@ -87,6 +87,7 @@ $(() => {
       dataLabelPosition: "centre",
       width: "90vw",
       height: "90vh",
+      yAxisLabelFontSize: "10em"
     }
   );
 
