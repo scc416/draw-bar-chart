@@ -533,6 +533,7 @@ const dataValidationCheck = (data, options) => {
 };
 
 const completeOptions = (options, data) => {
+  const { values } = data;
   const checkIfOptionIsValid = (prop, defaultVal, callback) => {
     const val = options[prop];
     const valIsValid = callback(val);
@@ -548,7 +549,7 @@ const completeOptions = (options, data) => {
     tickInterval: tickIntervalInOptions,
     barColour: barColourInOption,
   } = options;
-  const dataNum = data.length;
+  const dataNum = values.length;
 
   if (stacked) {
     let barColour = [];
@@ -570,7 +571,7 @@ const completeOptions = (options, data) => {
       }
     }
     if (!barColourInOptionsIsArray) {
-      const stackNum = data[0].length;
+      const stackNum = values[0].length;
       const stackArrNum = Math.ceil(stackNum / numOfColour);
       for (let i = 0; i < stackArrNum; i++) {
         barColour = barColour.concat(DEFAULT_CSS_COLOR);
@@ -692,8 +693,8 @@ const completeOptions = (options, data) => {
       return min;
     }, 0);
 
-  const maxValue = stacked ? getMaxValue(data) : Math.max(...data.flat());
-  const minValue = stacked ? getMinValue(data) : Math.min(...data.flat());
+  const maxValue = stacked ? getMaxValue(values) : Math.max(...values.flat());
+  const minValue = stacked ? getMinValue(values) : Math.min(...values.flat());
 
   //find the tick interval and value of the maximum tick
   const { tickInterval, maxTick, minTick } = findTicks(
@@ -735,7 +736,7 @@ const drawBarChart = ($element, data, options) => {
 
   if (valid) {
     //check if each option is valid and fill in default value to the options that are not filled in / values are not valid
-    completeOptions(options, data.values);
+    completeOptions(options, data);
 
     //make title Div
     const chartTitleDiv = makeTitleDiv(options);
