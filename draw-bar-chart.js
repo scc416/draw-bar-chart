@@ -533,7 +533,7 @@ const dataValidationCheck = (data, options) => {
 };
 
 const completeOptions = (options, data) => {
-  const { values } = data;
+  const { values, labels, stackLabels } = data;
   const checkIfOptionIsValid = (prop, defaultVal, callback) => {
     const val = options[prop];
     const valIsValid = callback(val);
@@ -549,7 +549,13 @@ const completeOptions = (options, data) => {
     tickInterval: tickIntervalInOptions,
     barColour: barColourInOption,
   } = options;
+
   const dataNum = values.length;
+
+  if (!labels) data.labels = [];
+  while (data.labels.length < dataNum) {
+    data.labels.push("");
+  }
 
   if (stacked) {
     let barColour = [];
