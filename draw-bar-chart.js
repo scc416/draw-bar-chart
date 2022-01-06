@@ -698,20 +698,22 @@ const setElmSizeFunctionGenerator = (id, yAxisLabelFontSize) => {
   const $yAxisLabel = $(`#y-axis-label-${id}`);
   const $legend = $(`#legend-${id}`);
   const $yAxisTitle = $(`#y-axis-title-${id}`);
+  const $bars = $(`#bars-${id}`);
+
+  const getLeftCornerWidth = () =>
+    `${$yAxisLabel.outerWidth(true) + $yAxisTitle.outerWidth(true)}px`;
+
+  const getRightCornerWidth = () => `${$legend.outerWidth(true)}px`;
+
+  const getYAxisLabelHeight = () =>
+    `calc(${$bars.outerHeight(true)}px + ${yAxisLabelFontSize})`;
 
   return () => {
-    $leftCorner.css(
-      "min-width",
-      `${$yAxisLabel.outerWidth(true) + $yAxisTitle.outerWidth(true)}px`
-    );
+    $leftCorner.css("min-width", getLeftCornerWidth());
 
-    $rightCorner.css("min-width", `${$legend.outerWidth(true)}px`);
+    $rightCorner.css("min-width", getRightCornerWidth());
 
-    $yAxisLabel.css(
-      "min-height",
-      `calc(${$(`#bars-${id}`).outerHeight(true)}px +
-    ${yAxisLabelFontSize})`
-    );
+    $yAxisLabel.css("min-height", getYAxisLabelHeight());
   };
 };
 
