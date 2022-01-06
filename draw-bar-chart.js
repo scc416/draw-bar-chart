@@ -6,13 +6,13 @@ const noValueErrorMsg = "No Value.";
 const valIsNotNumberErrorMsg = "One of the value is not number.";
 const noDataErrorMsg = "There is no data.";
 const dataIsNotArrayErrorMsg = "Data set is not an array.";
-const stackedDataIsNotArrayErrorMsg = "One of the value set is not an array.";
+const dataIsNotNumberErrorMsg = "At least one data is not a number.";
+const stackedDataIsNotArrayErrorMsg =
+  "One of the stacked value set is not an array.";
 const stackedValueSetNumErrorMsg =
   "The value set have different number of data.";
 const noIdErrorMsg =
   "A bar chart doesn't have an Id, it may causes problem(s) in layout of the bar chart.";
-const stackLabelNumErrorMsg =
-  "Number of stack doesn't match with number of stack label";
 
 // escape function to avoid XSS
 const escape = function (str) {
@@ -495,7 +495,10 @@ const checkIfAllValuesAreNum = (arr) => {
 
 //check if the data all the compulsory options are valid
 const dataValidationCheck = (data, options) => {
-  const { values, labels } = data;
+  const idIsDefined = "id" in options;
+  if (!idIsDefined) return { error: noIdErrorMsg };
+
+  const { values, stackLabels } = data;
   if (!values) return { error: noValueErrorMsg };
 
   const noData = values.length === 0;
@@ -504,41 +507,28 @@ const dataValidationCheck = (data, options) => {
   const dataIsArray = Array.isArray(values);
   if (!dataIsArray) return { error: dataIsNotArrayErrorMsg };
 
-  const labelIsArray = Array.isArray(labels);
-  const dataAndLabelHaveSameLength = values.length === data.labels.length;
-
-  if (!labelIsArray) throw labelIsNotArrayErrorMsg;
-  if (!dataAndLabelHaveSameLength) throw dataNumAreNotMatchErrorMsg;
-
   const firstValue = values[0];
   const barChartIsStacked = Array.isArray(firstValue);
+
   options.stacked = barChartIsStacked;
   if (!barChartIsStacked) {
     const allValAreNumber = checkIfAllValuesAreNum(values);
-    if (!allValAreNumber) return false;
+    if (!allValAreNumber) return { error: dataIsNotArrayErrorMsg };
   }
+
   if (barChartIsStacked) {
     const numOfStacked = firstValue.length;
     for (const dataForAStackedBar of values) {
       const dataIsArray = Array.isArray(dataForAStackedBar);
-      if (!dataIsArray) throw stackedDataIsNotArrayErrorMsg;
+      if (!dataIsArray) return { error: stackedDataIsNotArrayErrorMsg };
 
       const stackedNumIsValid = dataForAStackedBar.length === numOfStacked;
-      if (!stackedNumIsValid) throw stackedValueSetNumErrorMsg;
+      if (!stackedNumIsValid) return { error: stackedValueSetNumErrorMsg };
 
       const allValAreNumber = checkIfAllValuesAreNum(dataForAStackedBar);
-      if (!allValAreNumber) return false;
+      if (!allValAreNumber) return { error: dataIsNotArrayErrorMsg };
     }
-
-    const stackLabelNumIsValid =
-      !data.stackLabels || data.stackLabels.length === numOfStacked;
-    if (options.showLegend && !stackLabelNumIsValid)
-      throw stackLabelNumErrorMsg;
   }
-
-  const idIsDefined = "id" in options;
-  if (!idIsDefined) throw noIdErrorMsg;
-
   return { valid: true };
 };
 
@@ -791,14 +781,14 @@ const drawBarChart = ($element, data, options) => {
   }
 
   if (!valid) {
-    const chartInfo = 
-      options.id && options.chartTitle 
-      ? `<div>(Chart id: ${options.id}, Chart title: ${options.chartTitle})</div>`
-      : options.id
-      ? `<div>(Chart id: ${options.id})</div>`
-      : options.chartTitle 
-      ? `<div>(Chart id: ${options.id}, Chart title: ${options.chartTitle})</div>`
-      : ""
+    const chartInfo =
+      options.id && options.chartTitle
+        ? `<div>(Chart id: ${options.id}, Chart title: ${options.chartTitle})</div>`
+        : options.id
+        ? `<div>(Chart id: ${options.id})</div>`
+        : options.chartTitle
+        ? `<div>(Chart id: ${options.id}, Chart title: ${options.chartTitle})</div>`
+        : "";
 
     const errorElm = `
       <div class="bar-chart bar-chart-error">
