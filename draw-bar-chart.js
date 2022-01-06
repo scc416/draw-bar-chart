@@ -694,22 +694,21 @@ const completeOptions = (options, data) => {
 
 const fixElmSizeFunctionGenerator = (id, yAxisLabelFontSize) => {
   const $leftCorner = $(`#left-corner-${id}`);
+  const $rightCorner = $(`#right-corner-${id}`);
+  const $yAxisLabel = $(`#y-axis-label-${id}`);
+  const $legend = $(`#legend-${id}`);
 
   return () => {
-    $(`#left-corner-${id}`).css(
+    $leftCorner.css(
       "min-width",
       `${
-        $(`#y-axis-label-${id}`).outerWidth(true) +
-        $(`#y-axis-title-${id}`).outerWidth(true)
+        $yAxisLabel.outerWidth(true) + $(`#y-axis-title-${id}`).outerWidth(true)
       }px`
     );
 
-    $(`#right-corner-${id}`).css(
-      "min-width",
-      `${$(`#legend-${id}`).outerWidth(true)}px`
-    );
+    $rightCorner.css("min-width", `${$legend.outerWidth(true)}px`);
 
-    $(`#y-axis-label-${id}`).css(
+    $yAxisLabel.css(
       "min-height",
       `calc(${$(`#bars-${id}`).outerHeight(true)}px +
     ${yAxisLabelFontSize})`
