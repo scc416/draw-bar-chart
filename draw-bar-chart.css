@@ -149,6 +149,7 @@
 .legend > div {
   display: flex;
   align-items: center;
+  padding: 0.1em;
 }
 
 .legend > div > div {

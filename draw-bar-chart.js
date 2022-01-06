@@ -598,6 +598,13 @@ const completeOptions = (options, data) => {
     checkIfOptionIsValid("legendColour", "black", (x) =>
       CSS.supports("color", x)
     );
+
+    const stackNum = values[0].length;
+
+    if (!stackLabels) data.stackLabels = [];
+    while (data.stackLabels.length < stackNum) {
+      data.stackLabels.push("");
+    }
   }
 
   if (!stacked) {
