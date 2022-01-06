@@ -468,7 +468,7 @@ const makeContent = (options, stackLabels, yAxis, bars) => {
     showLegend,
     id,
     legendFontSize,
-    legendColour
+    legendColour,
   } = options;
 
   const legend =
@@ -597,8 +597,8 @@ const completeOptions = (options, data) => {
       CSS.supports("font-size", x)
     );
     checkIfOptionIsValid("legendColour", "black", (x) =>
-    CSS.supports("color", x)
-  );
+      CSS.supports("color", x)
+    );
   }
 
   if (!stacked) {
@@ -732,9 +732,7 @@ const setElmSizeFunctionGenerator = (id, yAxisLabelFontSize) => {
 
   return () => {
     $leftCorner.css("min-width", getLeftCornerWidth());
-
     $rightCorner.css("min-width", getRightCornerWidth());
-
     $yAxisLabel.css("min-height", getYAxisLabelHeight());
   };
 };
