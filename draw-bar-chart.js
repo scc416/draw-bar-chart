@@ -439,7 +439,7 @@ const makeXAxis = (labelArr, options) => {
   return xAxis;
 };
 
-const makeLegend = (barColour, label, id) => {
+const makeLegend = (barColour, label, id, legendFontSize) => {
   let labelDiv = "";
   if (!label) return labelDiv;
   for (let i = 0; i < barColour.length; i++) {
@@ -451,14 +451,28 @@ const makeLegend = (barColour, label, id) => {
     `;
     labelDiv += elm;
   }
-  return `<div class="legend" id="legend-${id}">${labelDiv}</div>`;
+  return `
+    <div class="legend" 
+      id="legend-${id}" 
+      style="font-size: ${legendFontSize}">
+      ${labelDiv}
+    </div>`;
 };
 
 const makeContent = (options, stackLabels, yAxis, bars) => {
-  const { stackedFontSize, stacked, barColour, showLegend, id } = options;
+  const {
+    stackedFontSize,
+    stacked,
+    barColour,
+    showLegend,
+    id,
+    legendFontSize,
+  } = options;
 
   const legend =
-    stacked && showLegend ? makeLegend(barColour, stackLabels, id) : ``;
+    stacked && showLegend
+      ? makeLegend(barColour, stackLabels, id, legendFontSize)
+      : ``;
 
   //html of the whole chard
   const content = `
@@ -576,6 +590,9 @@ const completeOptions = (options, data) => {
     );
     checkIfOptionIsValid("stackLabelColour", "black", (x) =>
       CSS.supports("color", x)
+    );
+    checkIfOptionIsValid("legendFontSize", "1.2em", (x) =>
+      CSS.supports("font-size", x)
     );
   }
 
