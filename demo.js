@@ -86,8 +86,7 @@ $(() => {
       tickInterval: 2,
       dataLabelPosition: "centre",
       width: "90vw",
-      height: "90vh",
-      yAxisLabelFontSize: "10em"
+      height: "90vh"
     }
   );
 
