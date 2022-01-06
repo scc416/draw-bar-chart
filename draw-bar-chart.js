@@ -587,8 +587,8 @@ const completeOptions = (options, data) => {
     CSS.supports("font-size", x)
   );
   checkIfOptionIsValid("titleColour", "black", (x) => CSS.supports("color", x));
-  checkIfOptionIsValid("width", "90vw", (x) => CSS.supports("width", x));
-  checkIfOptionIsValid("height", "90vh", (x) => CSS.supports("height", x));
+  checkIfOptionIsValid("width", "100%", (x) => CSS.supports("width", x));
+  checkIfOptionIsValid("height", "100%", (x) => CSS.supports("height", x));
   checkIfOptionIsValid("yAxisTitle", "", (x) => x !== undefined);
   checkIfOptionIsValid("yAxisTitleFontSize", "1.5em", (x) =>
     CSS.supports("font-size", x)

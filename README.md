@@ -129,13 +129,13 @@ Id has to be unique.
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: width)
 
-- Dafault: `"90vw"`
+- Dafault: `"100%"`
 
 #### **height** (optional)
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: height)
 
-- Dafault: `"90vh"`
+- Dafault: `"100%"`
 
 #### **chartTitle** (optional)
 

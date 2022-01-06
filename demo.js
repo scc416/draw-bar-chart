@@ -10,6 +10,8 @@ $(() => {
       chartTitle: "Mortality rate in 2019",
       yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
       xAxisTitle: "Country",
+      width: "90vw",
+      height: "90vh"
     }
   );
 
