@@ -8,7 +8,7 @@ Some optional options include `tickInterval`, `barColour`, `barSpacing`, `showLe
 - [Final Product](#final-product)
 - [Dependencies](#dependencies)
 - [Getting Started](#getting-started)
-- [File Structure](#file-structure)
+- [Credits](#credits)
 
 ## Final Product
 
