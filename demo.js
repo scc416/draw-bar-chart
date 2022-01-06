@@ -1,10 +1,7 @@
 $(() => {
   drawBarChart(
     $("#demo-1-single-bar-chart"),
-    {
-      values: [3.6, 4.9, 3.8, 2.5, 6.5],
-      labels: ["Australia", "Canada", "Germany", "Japan", "United States"],
-    },
+    { values: {}},
     {
       id: 1,
       chartTitle: "Mortality rate in 2019",

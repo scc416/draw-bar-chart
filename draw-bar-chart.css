@@ -156,3 +156,9 @@
   height: 1em;
   margin-right: 0.2em;
 }
+
+.bar-chart-error {
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+}

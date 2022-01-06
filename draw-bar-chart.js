@@ -2,6 +2,7 @@
 const DEFAULT_CSS_COLOR = ["SkyBlue", "Orchid", "LightGreen", "Coral"];
 
 // string for error messages
+const noValueErrorMsg = "No Value.";
 const valIsNotNumberErrorMsg = "One of the value is not number.";
 const noDataErrorMsg = "There is no data.";
 const dataIsNotArrayErrorMsg = "Data set is not an array.";
@@ -498,13 +499,17 @@ const checkIfAllValuesAreNum = (arr) => {
 //check if the data all the compulsory options are valid
 const dataValidationCheck = (data, options) => {
   const { values, labels } = data;
+  if (!values) return { error: noValueErrorMsg };
+
+  const noData = values.length === 0;
+  if (noData) return { error: noDataErrorMsg };
+
   const dataIsArray = Array.isArray(values);
+  if (!dataIsArray) return { error: dataIsNotArrayErrorMsg };
+
   const labelIsArray = Array.isArray(labels);
   const dataAndLabelHaveSameLength = values.length === data.labels.length;
-  const noData = values.length === 0;
 
-  if (noData) throw noDataErrorMsg;
-  if (!dataIsArray) throw dataIsNotArrayErrorMsg;
   if (!labelIsArray) throw labelIsNotArrayErrorMsg;
   if (!dataAndLabelHaveSameLength) throw dataNumAreNotMatchErrorMsg;
 
@@ -537,7 +542,7 @@ const dataValidationCheck = (data, options) => {
   const idIsDefined = "id" in options;
   if (!idIsDefined) throw noIdErrorMsg;
 
-  return true;
+  return { valid: true };
 };
 
 const completeOptions = (options, data) => {
@@ -739,9 +744,9 @@ const setElmSizeFunctionGenerator = (id, yAxisLabelFontSize) => {
 
 // top-level function
 const drawBarChart = ($element, data, options) => {
-  const dataAreValid = dataValidationCheck(data, options);
+  const { valid, error } = dataValidationCheck(data, options);
 
-  if (dataAreValid) {
+  if (valid) {
     //check if each option is valid and fill in default value to the options that are not filled in / values are not valid
     completeOptions(options, data.values);
 
@@ -785,6 +790,20 @@ const drawBarChart = ($element, data, options) => {
         // set the size of elements when the window is resized
         $(window).resize(setElmSize);
       });
+    });
+  }
+
+  if (!valid) {
+    const errorElm = `
+      <div class="bar-chart bar-chart-error">
+        <div>${error}</div>
+        ${options.id ? `<div>(Chart Id: ${options.id})</div>` : ""}
+      </div>`;
+    $(document).ready(function () {
+      $element.html(errorElm);
+      $element.css("width", options.width);
+      $element.css("height", options.height);
+      $element.css("user-select", options.userSelect);
     });
   }
 };
