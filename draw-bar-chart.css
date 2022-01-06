@@ -44,14 +44,11 @@
 
 .y-axis-label {
   display: flex;
+  align-self: center;
   flex-direction: column-reverse;
   justify-content: space-between;
   text-align: right;
   padding-right: 0.2em;
-}
-
-.y-axis {
-  display: flex;
 }
 
 .y-axis-title {

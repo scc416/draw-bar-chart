@@ -138,8 +138,7 @@ const makeYAxis = (options) => {
   yAxisLabel = `<div
       class = "y-axis-label"
       id = "y-axis-label-${id}"
-      style = "font-size: ${yAxisLabelFontSize};
-        min-height: calc(100% + ${yAxisLabelFontSize});">
+      style = "font-size: ${yAxisLabelFontSize}">
       ${yAxisLabel}
     </div>`;
 
@@ -270,6 +269,7 @@ const makeStackedBars = (data, options) => {
 
   const bars = `<div
       class = "chart-content"
+      id = "bars-${id}"
       style = "
         font-size: ${dataLabelFontSize};
         background-image: repeating-linear-gradient(
@@ -297,6 +297,7 @@ const makeNonStackedBars = (data, options) => {
   let posBars = "";
   let negBars = "";
   const {
+    id,
     maxTick,
     minTick,
     scientificNotation,
@@ -366,6 +367,7 @@ const makeNonStackedBars = (data, options) => {
 
   const barDiv = `<div
       class="chart-content"
+      id = "bars-${id}"
       style="
         color: ${labelColour};
         font-size: ${labelFontSize};
@@ -736,6 +738,12 @@ const drawBarChart = ($element, data, options) => {
         $(`#right-corner-${options.id}`).css(
           "min-width",
           `${$(`#legend-${options.id}`).outerWidth(true)}px`
+        );
+
+        $(`#y-axis-label-${options.id}`).css(
+          "min-height",
+          `calc(${$(`#bars-${options.id}`).outerHeight(true)}px +
+          ${options.yAxisLabelFontSize})`
         );
       });
     });
