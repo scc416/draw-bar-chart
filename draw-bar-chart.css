@@ -11,6 +11,7 @@
   overflow-wrap: break-word;
   min-width: 0;
   min-height: 0;
+  word-wrap: break-word;
 }
 
 .bar-chart * {
@@ -71,6 +72,8 @@
 
 .bars {
   display: flex;
+  min-width: 0;
+  min-height: 0;
 }
 
 .pos-bars {
@@ -81,6 +84,9 @@
 .bar {
   display: flex;
   justify-content: center;
+  min-width: 0;
+  min-height: 0;
+  
 }
 
 .bar-animation {
@@ -123,6 +129,8 @@
   border-right: 1px black solid;
   border-left: 1px black solid;
   border-top: 1px grey solid;
+  min-width: 0;
+  min-height: 0;
 }
 
 .stacked-label {
