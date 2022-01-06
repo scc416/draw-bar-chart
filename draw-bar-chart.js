@@ -439,7 +439,7 @@ const makeXAxis = (labelArr, options) => {
   return xAxis;
 };
 
-const makeLegend = (barColour, label, id, legendFontSize) => {
+const makeLegend = (barColour, label, id, legendFontSize, legendColour) => {
   let labelDiv = "";
   if (!label) return labelDiv;
   for (let i = 0; i < barColour.length; i++) {
@@ -454,7 +454,8 @@ const makeLegend = (barColour, label, id, legendFontSize) => {
   return `
     <div class="legend" 
       id="legend-${id}" 
-      style="font-size: ${legendFontSize}">
+      style="font-size: ${legendFontSize};
+        color: ${legendColour}">
       ${labelDiv}
     </div>`;
 };
@@ -467,14 +468,15 @@ const makeContent = (options, stackLabels, yAxis, bars) => {
     showLegend,
     id,
     legendFontSize,
+    legendColour
   } = options;
 
   const legend =
     stacked && showLegend
-      ? makeLegend(barColour, stackLabels, id, legendFontSize)
+      ? makeLegend(barColour, stackLabels, id, legendFontSize, legendColour)
       : ``;
 
-  //html of the whole chard
+  //html of the whole chart
   const content = `
       <div class="middle"
         style="${stackedFontSize ? `padding-top: ${stackedFontSize}` : ""}">
@@ -594,6 +596,9 @@ const completeOptions = (options, data) => {
     checkIfOptionIsValid("legendFontSize", "1.2em", (x) =>
       CSS.supports("font-size", x)
     );
+    checkIfOptionIsValid("legendColour", "black", (x) =>
+    CSS.supports("color", x)
+  );
   }
 
   if (!stacked) {

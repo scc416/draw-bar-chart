@@ -86,7 +86,7 @@ $(() => {
       tickInterval: 2,
       dataLabelPosition: "centre",
       width: "90vw",
-      height: "90vh"
+      height: "90vh",
     }
   );
 
@@ -102,7 +102,7 @@ $(() => {
       yAxisTitle: "Mortality rate, under-5 (per 1,000 live births)",
       xAxisTitle: "Country",
       width: "90vw",
-      height: "90vh"
+      height: "90vh",
     }
   );
 
@@ -119,7 +119,7 @@ $(() => {
       xAxisTitle: "Country",
       tickInterval: 0.5,
       width: "90vw",
-      height: "90vh"
+      height: "90vh",
     }
   );
 
@@ -137,7 +137,7 @@ $(() => {
       scientificNotation: true,
       tickInterval: 1000000,
       width: "90vw",
-      height: "90vh"
+      height: "90vh",
     }
   );
 });

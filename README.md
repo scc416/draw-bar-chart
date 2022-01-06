@@ -245,6 +245,16 @@ This option indicates the position of the data (value) label on the bar.
 
 - Default: `"1.2em"`
 
+Font size of the text in legend.
+
+#### **legendColour** (optional, only for stacked bar chart)
+
+- Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: color)
+
+- Default: `"black"`
+
+Colour of the text in legend.
+
 #### stackLabelFontSize (optional, only for stacked bar chart)
 
 - Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) (any values that is supported by CSS property: font-size)
