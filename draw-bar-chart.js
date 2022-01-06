@@ -692,25 +692,29 @@ const completeOptions = (options, data) => {
   options.minTick = minTick;
 };
 
-const fixElmSize = (id, yAxisLabelFontSize) => {
-  $(`#left-corner-${id}`).css(
-    "min-width",
-    `${
-      $(`#y-axis-label-${id}`).outerWidth(true) +
-      $(`#y-axis-title-${id}`).outerWidth(true)
-    }px`
-  );
+const fixElmSizeFunctionGenerator = (id, yAxisLabelFontSize) => {
+  const $leftCorner = $(`#left-corner-${id}`);
 
-  $(`#right-corner-${id}`).css(
-    "min-width",
-    `${$(`#legend-${id}`).outerWidth(true)}px`
-  );
+  return () => {
+    $(`#left-corner-${id}`).css(
+      "min-width",
+      `${
+        $(`#y-axis-label-${id}`).outerWidth(true) +
+        $(`#y-axis-title-${id}`).outerWidth(true)
+      }px`
+    );
 
-  $(`#y-axis-label-${id}`).css(
-    "min-height",
-    `calc(${$(`#bars-${id}`).outerHeight(true)}px +
+    $(`#right-corner-${id}`).css(
+      "min-width",
+      `${$(`#legend-${id}`).outerWidth(true)}px`
+    );
+
+    $(`#y-axis-label-${id}`).css(
+      "min-height",
+      `calc(${$(`#bars-${id}`).outerHeight(true)}px +
     ${yAxisLabelFontSize})`
-  );
+    );
+  };
 };
 
 // top-level function
@@ -748,9 +752,15 @@ const drawBarChart = ($element, data, options) => {
       $element.css("width", options.width);
       $element.css("height", options.height);
       $element.css("user-select", options.userSelect);
+
+      const fixElmSize = fixElmSizeFunctionGenerator(
+        options.id,
+        options.yAxisLabelFontSize
+      );
+
       $(document).ready(() => {
-        fixElmSize(options.id, options.yAxisLabelFontSize);
-        $(window).resize(() => fixElmSize(options.id, options.yAxisLabelFontSize));
+        fixElmSize();
+        $(window).resize(fixElmSize);
       });
     });
   }
