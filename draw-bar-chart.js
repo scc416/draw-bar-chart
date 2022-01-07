@@ -557,6 +557,10 @@ const completeOptions = (options, data) => {
     data.labels.push("");
   }
 
+  if (labels.length > dataNum) {
+    data.labels = labels.slice(0, dataNum);
+  }
+
   if (stacked) {
     let barColour = [];
     const barColourInOptionsIsArray = Array.isArray(barColourInOption);
@@ -604,6 +608,10 @@ const completeOptions = (options, data) => {
     if (!stackLabels || !labels.isArray) data.stackLabels = [];
     while (data.stackLabels.length < stackNum) {
       data.stackLabels.push("");
+    }
+
+    if (stackLabels.length > stackNum) {
+      data.stackLabels = stackLabels.slice(0, stackNum);
     }
   }
 
