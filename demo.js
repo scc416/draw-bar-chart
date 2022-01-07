@@ -3,7 +3,7 @@ $(() => {
     $("#demo-1-single-bar-chart"),
     {
       values: [3.6, 4.9, 3.8, 2.5, 6.5],
-      labels: ["Australia", "Canada", "Germany", "Japan",],
+      labels: ["Australia", "Canada", "Germany", "Japan", "United States"],
     },
     {
       id: 1,
@@ -138,6 +138,15 @@ $(() => {
       tickInterval: 1000000,
       width: "90vw",
       height: "90vh",
+    }
+  );
+
+  drawBarChart(
+    $("#demo-9-error"),
+    {},
+    {
+      id: 9,
+      chartTitle: "error handling",
     }
   );
 });

@@ -60,6 +60,10 @@ See `scientificNotation` in options for this function.
 
 This effect can be turned off. Read `animationEffect` in options.
 
+### Error Handling
+
+![error handling](./docs/error-handling.png)
+
 ## Dependencies
 
 - [jQuery](https://jquery.com/): library to select and manipulate elements
@@ -101,15 +105,18 @@ A set of key/value pairs that contains the values and labels of the bar chart
   - For single bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
   - For stacked bar chart: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
 
-#### **labels**
+#### **labels** (optional)
 
 - Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
-#### **stackLabels** (Only for stacked bar chart)
+If `labels` is not defined (or it is not an array), or if number of labels is less than number of `values`, then nothing will be displayed for (some) label.
+
+#### **stackLabels** (Optional, only for stacked bar chart)
 
 - Type: [Array](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) of [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)
 
 Labels for legend of stacked bar chart. This doesn't need to be defined if `showLegend` is set to false (see `showLegend` in options).
+If `stackLabels` is not defined (or it is not an array) the labels array is empty, or number of stack labels is less than number of stack, then nothing will be displayed for (some) labels in legend.
 
 ### options
 

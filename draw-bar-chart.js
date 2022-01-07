@@ -552,7 +552,7 @@ const completeOptions = (options, data) => {
 
   const dataNum = values.length;
 
-  if (!labels) data.labels = [];
+  if (!labels || !labels.isArray) data.labels = [];
   while (data.labels.length < dataNum) {
     data.labels.push("");
   }
@@ -601,7 +601,7 @@ const completeOptions = (options, data) => {
 
     const stackNum = values[0].length;
 
-    if (!stackLabels) data.stackLabels = [];
+    if (!stackLabels || !labels.isArray) data.stackLabels = [];
     while (data.stackLabels.length < stackNum) {
       data.stackLabels.push("");
     }
