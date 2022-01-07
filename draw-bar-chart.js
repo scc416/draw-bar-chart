@@ -723,6 +723,7 @@ const completeOptions = (options, data) => {
     maxValue,
     minValue
   );
+
   options.tickInterval = tickInterval;
   options.maxTick = maxTick;
   options.minTick = minTick;
@@ -817,6 +818,7 @@ const drawBarChart = ($element, data, options) => {
         <div>${error}</div>
         <div>${chartInfo}</div>
       </div>`;
+
     $(document).ready(() => {
       $element.html(errorElm);
       $element.css("width", options.width);

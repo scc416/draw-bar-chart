@@ -1,5 +1,5 @@
 {
-  "name": "bar-chart-1",
+  "name": "draw-bar-chart",
   "version": "0.0.0",
-  "description": ""
+  "description": "A library for displaying responsive bar chart with jQuery. The library has one function, this function can handle bar chart with single or stacked values, positive and/or negative values. Some optional options include tickInterval, barColour, barSpacing, showLegend, scientificNotation and animationEffect."
 }
