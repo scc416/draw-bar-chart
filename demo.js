@@ -147,6 +147,8 @@ $(() => {
     {
       id: 9,
       chartTitle: "error handling",
+      width: "90vw",
+      height: "90vh",
     }
   );
 });
